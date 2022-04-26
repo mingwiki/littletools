@@ -1,27 +1,22 @@
 import { Cascader } from 'antd'
 import React, { useState } from 'react'
-const options = [
-  {
-    value: 'zhejiang',
-    label: 'Zhejiang',
-    children: [
-      {
-        value: 'hangzhou',
-        label: 'Hangzhou'
+import { miniAppPages } from './data.js'
+
+const options = Object.entries(miniAppPages).map(e => {
+  const app = {
+    value: e[0],
+    label: e[0],
+    children: Object.keys(e[1]).map(e => {
+      const page = {
+        value: e,
+        label: e
       }
-    ]
-  },
-  {
-    value: 'jiangsu',
-    label: 'Jiangsu',
-    children: [
-      {
-        value: 'nanjing',
-        label: 'Nanjing'
-      }
-    ]
+      return page
+    })
   }
-]
+  return app
+})
+
 const Component = () => {
   const [text, setText] = useState('未选择')
 
