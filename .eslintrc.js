@@ -18,5 +18,11 @@ module.exports = {
     'react'
   ],
   rules: {
-  }
+  },
+  settings: {
+    react: {
+      version: "detect", // React version. "detect" automatically picks the version you have installed.
+    },
+  },
+  ignorePatterns: ["*.svg", "src/*.svg", "*.css", "**/*.css", "*.scss", "**/*.scss"],
 }
