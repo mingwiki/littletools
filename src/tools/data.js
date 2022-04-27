@@ -4,7 +4,7 @@ export const sidebar = [
   {
     key: '1',
     icon: <LinkOutlined />,
-    label: <a href='/AppPageToUrl'>生成小程序链接</a>
+    label: <a href='/littletools/#/AppPageToUrl'>生成小程序链接</a>
   }
 ]
 export const appTitle = '小小工具箱'

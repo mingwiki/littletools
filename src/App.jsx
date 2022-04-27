@@ -24,8 +24,8 @@ const App = () => {
     <StyledLayout>
       <Sider collapsible collapsed={isCollapsed} onCollapse={toggle}>
         <div className="logo" style={{ textAlign: 'center' }}>
-          <a href="/" >
-            <img src={logo} href="/" className="App-logo" alt="logo" />
+          <a href="/littletools" >
+            <img src={logo} className="App-logo" alt="logo" />
           </a>
         </div>
         <Menu
