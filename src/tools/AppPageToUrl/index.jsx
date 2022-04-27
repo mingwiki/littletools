@@ -52,6 +52,8 @@ const Component = () => {
         }
         return e
       })
+    } else {
+      appCheckData = []
     }
   }
   const addInputBox = () => {
