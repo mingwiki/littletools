@@ -4,7 +4,7 @@ import './index.css'
 import 'antd/dist/antd.css'
 import { Layout, Menu } from 'antd'
 import Router from './router'
-import { sidebar } from './tools/data.js'
+import { sidebar, appTitle } from './tools/data.js'
 import styled from 'styled-components'
 
 const { Sider, Content, Header, Footer } = Layout
@@ -17,13 +17,12 @@ const StyledFooter = styled(Footer)`
 const App = () => {
   const [isCollapsed, setIsCollapsed] = useState(false)
   const toggle = () => setIsCollapsed(!isCollapsed)
-  const appTitle = '小工具'
   React.useEffect(() => {
     document.title = appTitle
   }, [])
   return (
     <StyledLayout>
-      <Sider collapsible collapsed={isCollapsed} onCollapse={toggle} width='fit-content'>
+      <Sider collapsible collapsed={isCollapsed} onCollapse={toggle}>
         <div className="logo" style={{ textAlign: 'center' }}>
           <a href="/" >
             <img src={logo} href="/" className="App-logo" alt="logo" />

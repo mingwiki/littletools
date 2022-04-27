@@ -4,52 +4,52 @@ export const miniAppIds = {
 }
 export const miniAppPages = {
   vv会员: {
-    '首页/办理页': 'pages/index/index',
-    '详情页/生效页': 'pages/detail/index',
-    会员管理: 'pages/manage/index',
-    会员规则: 'pages/memberRule/index',
-    会员退订: 'pages/exit/index',
-    退订调查问卷: 'pages/question/index',
-    会员攻略: 'pages/strategy/index',
-    权益中间页: 'pages/yinge/index',
-    会员账单: 'pages/billList/index',
-    会员周: 'pages/memberWeek/index',
-    会员任务: 'pages/task/index'
+    '首页/办理页': 'index/index',
+    '详情页/生效页': 'detail/index',
+    会员管理: 'manage/index',
+    会员规则: 'memberRule/index',
+    会员退订: 'exit/index',
+    退订调查问卷: 'question/index',
+    会员攻略: 'strategy/index',
+    权益中间页: 'yinge/index',
+    会员账单: 'billList/index',
+    会员周: 'memberWeek/index',
+    会员任务: 'task/index'
   },
   存量小程序: {
-    首页: 'pages/index/index',
-    支付结果页: 'pages/payResult/index',
-    订单列表: 'pages/tradeList/index',
-    订单详情: 'pages/tradeDetail/index',
-    协议页面: 'pages/pureText/index'
+    首页: 'index/index',
+    支付结果页: 'payResult/index',
+    订单列表: 'tradeList/index',
+    订单详情: 'tradeDetail/index',
+    协议页面: 'pureText/index'
   }
 }
 export const miniAppPageExtra = {
-  存量小程序: {
-    首页: { // 'index/index'
+  2021002181632074: {
+    'index/index': {
       pathname: ['splitItem', 'swiperItem', 'singleItem']
     }
   },
-  vv会员: {
-    '首页/办理页': { // 'index/index'
+  2021002152610059: {
+    'index/index': {
       upgrade: true,
       type: 'basic',
       frame: 'single',
       anchor: ['call', 'life', 'fee']
     },
-    会员退订: { // 'exit/index'
+    'exit/index': {
       type: ['vip', 'basic']
     },
-    会员管理: { // 'manage/index'
+    'manage/index': {
       type: ['vip', 'basic']
     },
-    会员规则: { // 'memberRule/index'
+    'memberRule/index': {
       type: ['vip', 'basic']
     },
-    退订调查问卷: { // 'question/index'
+    'question/index': {
       type: ['vip', 'basic']
     },
-    会员攻略: { // 'strategy/index'
+    'strategy/index': {
       type: ['vip', 'basic']
     }
   }
