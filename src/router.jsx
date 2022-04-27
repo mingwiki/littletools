@@ -15,7 +15,8 @@ const Component = () => {
           <div>有任何建议或意见请提Issue或Pull Request</div>
           <div>仓库地址：<a href="//github.com/mingwiki/toolkits">github.com/mingwiki/toolkits</a></div>
           <div>镜像地址：<a href="//gitee.com/mingwiki/toolkits">gitee.com/mingwiki/toolkits</a></div>
-          <div>工具地址: <a href="//mingwiki.gitee.io/toolkits">mingwiki.gitee.io/toolkits</a></div>
+          <div>工具地址：<a href="//mingwiki.gitee.io/toolkits">mingwiki.gitee.io/toolkits</a></div>
+          <div>备用地址：<a href="//zed.ink/toolkits">zed.ink/toolkits</a></div>
           <div>邮件：mingwiki@gmail.com</div>
           </>} />
           <Route path="/AppPageToUrl" element={<AppPageToUrl />} />
