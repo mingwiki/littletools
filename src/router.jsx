@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { HashRouter, Routes, Route } from 'react-router-dom'
 import { Spin } from 'antd'
 import { appTitle } from './tools/data'
 
@@ -7,7 +7,7 @@ const AppPageToUrl = React.lazy(() => import('./tools/AppPageToUrl'))
 
 const Component = () => {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Suspense fallback={<Spin size="large" />} >
         <Routes>
           <Route path="/" element={<>
@@ -21,7 +21,7 @@ const Component = () => {
           <Route path="/AppPageToUrl" element={<AppPageToUrl />} />
         </Routes>
       </Suspense>
-    </BrowserRouter>
+    </HashRouter>
   )
 }
 export default Component
