@@ -1,10 +1,9 @@
-/*eslint-disable*/
-import React, { useState, useCallback } from 'react'
-import { Select, Cascader, Segmented, message, Button, Space, Popover, Radio, Checkbox } from 'antd'
-import { AlipayCircleOutlined, DoubleRightOutlined } from '@ant-design/icons';
+import React, { useState } from 'react'
+import { Cascader, message, Button, Space, Popover, Radio, Checkbox } from 'antd'
+import { AlipayCircleOutlined, DoubleRightOutlined } from '@ant-design/icons'
 import { miniAppIds, miniAppPages, miniAppPageExtra } from './data.js'
 import styled from 'styled-components'
-import QRCode from 'qrcode.react';
+import QRCode from 'qrcode.react'
 
 const StyledInputWrapper = styled.div`
   display: flex;
@@ -56,12 +55,12 @@ const Component = () => {
     }
   }
   const addInputBox = () => {
-    let temp = [...inputQueries]
+    const temp = [...inputQueries]
     temp.push({ key: '', val: '' })
     setInputQueries(temp)
   }
   const delInputBox = (idx) => {
-    let temp = [...inputQueries]
+    const temp = [...inputQueries]
     temp.splice(idx, 1)
     setInputQueries(temp)
   }
