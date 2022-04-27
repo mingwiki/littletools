@@ -4,12 +4,12 @@ import './index.css'
 import 'antd/dist/antd.css'
 import { Layout, Menu } from 'antd'
 import Router from './router'
-import { sidebar } from './tools/cons.js'
+import { sidebar } from './tools/data.js'
 import styled from 'styled-components'
 
 const { Sider, Content, Header, Footer } = Layout
 const StyledLayout = styled(Layout)`
-  height: 100vh; 
+  min-height: 100vh; 
 `
 const StyledFooter = styled(Footer)`
   text-align: center;
@@ -17,7 +17,7 @@ const StyledFooter = styled(Footer)`
 const App = () => {
   const [isCollapsed, setIsCollapsed] = useState(false)
   const toggle = () => setIsCollapsed(!isCollapsed)
-  const appTitle = '常用小工具'
+  const appTitle = '小工具'
   React.useEffect(() => {
     document.title = appTitle
   }, [])

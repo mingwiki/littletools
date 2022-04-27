@@ -24,3 +24,33 @@ export const miniAppPages = {
     协议页面: 'pages/pureText/index'
   }
 }
+export const miniAppPageExtra = {
+  存量小程序: {
+    首页: { // 'index/index'
+      pathname: ['splitItem', 'swiperItem', 'singleItem']
+    }
+  },
+  vv会员: {
+    '首页/办理页': { // 'index/index'
+      upgrade: true,
+      type: 'basic',
+      frame: 'single',
+      anchor: ['call', 'life', 'fee']
+    },
+    会员退订: { // 'exit/index'
+      type: ['vip', 'basic']
+    },
+    会员管理: { // 'manage/index'
+      type: ['vip', 'basic']
+    },
+    会员规则: { // 'memberRule/index'
+      type: ['vip', 'basic']
+    },
+    退订调查问卷: { // 'question/index'
+      type: ['vip', 'basic']
+    },
+    会员攻略: { // 'strategy/index'
+      type: ['vip', 'basic']
+    }
+  }
+}

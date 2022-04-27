@@ -1,9 +1,9 @@
 import React from 'react'
-import { TagOutlined } from '@ant-design/icons'
+import { LinkOutlined } from '@ant-design/icons'
 export const sidebar = [
   {
     key: '1',
-    icon: <TagOutlined />,
+    icon: <LinkOutlined />,
     label: '生成小程序链接'
   }
 ]
