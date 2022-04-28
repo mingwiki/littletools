@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useDeferredValue } from 'react'
 import { Cascader, notification, Button, Space, Popover, Radio, Checkbox, PageHeader, Layout, Modal, Drawer, Typography } from 'antd'
 import { AlipayCircleOutlined, DoubleRightOutlined, GroupOutlined, GlobalOutlined } from '@ant-design/icons'
 import { miniAppIds, miniAppPages, miniAppPageExtra } from './data.js'
@@ -90,6 +90,7 @@ const Component = () => {
   const encodePage = encodeURIComponent(pathUrl + (pageCheckUrl === '' && pageInputUrl === '' && globalInputUrl === '' ? '' : '?') + pageCheckUrl + (pageCheckUrl !== '' && pageInputUrl !== '' ? '&' : '') + pageInputUrl)
   const encodeGlobal = (globalInputUrl !== '' ? '&query=' : '') + encodeURIComponent(globalInputUrl)
   const encodedUrl = pagePath === '' ? '' : `alipays://platformapi/startapp?appId=${appId}&page=${encodePage}${encodeGlobal}`
+  const deferredEncodedUrl = useDeferredValue(encodedUrl)
   useEffect(() => {
     setIsShowDrawerQR(new Array(Object.entries(JSON.parse(localStorage.getItem('encodedUrl_history')) || {}).length).fill(false))
   }, [])
@@ -116,7 +117,7 @@ const Component = () => {
             notification.warning({ description: '页面数据已全部清除' })
           }}>清空页面</Button>,
           <Button key="2" onClick={() => {
-            if (encodedUrl !== '') {
+            if (deferredEncodedUrl !== '') {
               setIsShowModel(true)
             } else {
               notification.error({ description: '当前链接地址为空，请检查。' })
@@ -131,7 +132,7 @@ const Component = () => {
           onOk={() => {
             if (modelInput !== '') {
               const temp = JSON.parse(localStorage.getItem('encodedUrl_history')) || {}
-              temp[modelInput] = encodedUrl
+              temp[modelInput] = deferredEncodedUrl
               localStorage.setItem('encodedUrl_history', JSON.stringify(temp))
               setModelInput('')
             } else {
@@ -183,7 +184,7 @@ const Component = () => {
             &nbsp;
             {text}
           </div>
-          {!encodedUrl
+          {!deferredEncodedUrl
             ? null
             : <>
               <ParamsWrapper>
@@ -263,14 +264,14 @@ const Component = () => {
                   </StyledInputWrapper>
                 })}
               </ParamsWrapper>
-              <StyledUrlWrapper>{encodedUrl}</StyledUrlWrapper>
+              <StyledUrlWrapper>{deferredEncodedUrl}</StyledUrlWrapper>
               <Space>
                 <Button type="primary" onClick={() => {
-                  navigator.clipboard.writeText(encodedUrl)
+                  navigator.clipboard.writeText(deferredEncodedUrl)
                   notification.success({ description: '链接已复制到剪切板' })
                 }}>点击复制链接</Button>
                 <Popover
-                  content={<QRCode value={encodedUrl} size={200} />}
+                  content={<QRCode value={deferredEncodedUrl} size={200} />}
                   title="请扫描二维码"
                   trigger="click"
                   visible={isShowPopover}
