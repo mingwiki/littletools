@@ -106,12 +106,12 @@ const Component = () => {
               })}
             {pageInputQueries.map(({ key, val }, idx) => {
               return <StyledInputWrapper key={idx}>
-                <StyledInput placeholder="输入key，最长20位，以字母开头" value={key} maxLength="20" size="30" pattern="^[A-Za-z].*" onChange={(e) => {
+                <StyledInput placeholder="输入key，最长20位，以字母开头" value={key} maxLength="20" size="30" pattern="^[A-Za-z](\w)*" onChange={(e) => {
                   const temp = [...pageInputQueries]
                   temp[idx].key = e.target.value
                   setPageInputQueries(temp)
                 }} />
-                <StyledInput placeholder="输入value，最长20位" value={val} maxLength="20" size="30" onChange={(e) => {
+                <StyledInput placeholder="输入value，最长20位" value={val} maxLength="20" size="30" pattern="(\w)*" onChange={(e) => {
                   const temp = [...pageInputQueries]
                   temp[idx].val = e.target.value
                   setPageInputQueries(temp)
@@ -137,12 +137,12 @@ const Component = () => {
             <div><GlobalOutlined /> 全局级参数</div>
             {globalInputQueries.map(({ key, val }, idx) => {
               return <StyledInputWrapper key={idx}>
-                <StyledInput placeholder="输入key，最长20位，以字母开头" value={key} maxLength="20" size="30" pattern="^[A-Za-z].*" onChange={(e) => {
+                <StyledInput placeholder="输入key，最长20位，以字母开头" value={key} maxLength="20" size="30" pattern="^[A-Za-z](\w)*" onChange={(e) => {
                   const temp = [...globalInputQueries]
                   temp[idx].key = e.target.value
                   setGlobalInputQueries(temp)
                 }} />
-                <StyledInput placeholder="输入value，最大长度20位" value={val} maxLength="20" size="30" onChange={(e) => {
+                <StyledInput placeholder="输入value，最大长度20位" value={val} maxLength="20" size="30" pattern="(\w)*" onChange={(e) => {
                   const temp = [...globalInputQueries]
                   temp[idx].val = e.target.value
                   setGlobalInputQueries(temp)
