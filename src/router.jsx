@@ -1,4 +1,4 @@
-import React, { Suspense, useState } from 'react'
+import React, { Suspense, useState, useMemo } from 'react'
 import logo from './logo.svg'
 import { HashRouter, Routes, Route, Link } from 'react-router-dom'
 import { Layout, Menu, Spin } from 'antd'
@@ -30,7 +30,6 @@ const Component = () => {
           <Menu
             theme="dark"
             mode="inline"
-            defaultSelectedKeys={['1']}
             items={sidebar}
           />
         </Sider>
@@ -41,7 +40,7 @@ const Component = () => {
               <Route path="/AppPageToUrl" element={<AppPageToUrl />} />
             </Routes>
           </Suspense>
-          <StyledFooter>{appTitle} &copy; {new Date().getFullYear()}</StyledFooter>
+          <StyledFooter>{appTitle} &copy; {useMemo(() => new Date().getFullYear(), [])}</StyledFooter>
         </StyledLayout>
       </Layout>
     </HashRouter>
