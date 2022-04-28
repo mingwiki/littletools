@@ -151,7 +151,7 @@ const Component = () => {
         <Drawer title="历史记录" placement="right" onClose={() => setIsShowDrawer(false)} visible={isShowDrawer}>
           {Object.entries(JSON.parse(localStorage.getItem('encodedUrl_history'))).map((e, idx) => (
             <StyledHistoryLine key={idx}>
-              <Text strong>${e[0]}</Text>
+              <Text strong>{e[0]}</Text>
               <Popover
                 content={<QRCode value={e[1]} size={200} />}
                 title="请扫描二维码"
