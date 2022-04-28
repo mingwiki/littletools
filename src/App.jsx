@@ -7,7 +7,7 @@ import Router from './router'
 import { sidebar, appTitle } from './tools/data.js'
 import styled from 'styled-components'
 
-const { Sider, Content, Header, Footer } = Layout
+const { Sider, Footer } = Layout
 const StyledLayout = styled(Layout)`
   min-height: 100vh; 
 `
@@ -36,12 +36,7 @@ const App = () => {
         />
       </Sider>
       <Layout>
-        <Header className="site-layout-sub-header-background" style={{ padding: 0 }} />
-        <Content className="content">
-          <div className="site-layout-background" style={{ padding: 24, minHeight: 360, display: 'flex', flexDirection: 'column', gap: 20 }} >
-            <Router />
-          </div>
-        </Content>
+        <Router />
         <StyledFooter>{appTitle} &copy; {new Date().getFullYear()}</StyledFooter>
       </Layout>
     </StyledLayout >
