@@ -116,13 +116,15 @@ const Component = () => {
                   temp[idx].val = e.target.value
                   setPageInputQueries(temp)
                 }} />
-                {pageInputQueries.length === 1
-                  ? null
-                  : <Button type="primary" onClick={() => {
-                    const temp = [...pageInputQueries]
+                <Button type="primary" onClick={() => {
+                  let temp = [...pageInputQueries]
+                  if (pageInputQueries.length !== 1) {
                     temp.splice(idx, 1)
-                    setPageInputQueries(temp)
-                  }}>-</Button>}
+                  } else {
+                    temp = [{ key: '', val: '' }]
+                  }
+                  setPageInputQueries(temp)
+                }}>-</Button>
                 {idx === pageInputQueries.length - 1
                   ? <Button type="primary" onClick={() => {
                     const temp = [...pageInputQueries]
@@ -147,13 +149,15 @@ const Component = () => {
                   temp[idx].val = e.target.value
                   setGlobalInputQueries(temp)
                 }} />
-                {globalInputQueries.length === 1
-                  ? null
-                  : <Button type="primary" onClick={() => {
-                    const temp = [...globalInputQueries]
+                <Button type="primary" onClick={() => {
+                  let temp = [...globalInputQueries]
+                  if (globalInputQueries.length !== 1) {
                     temp.splice(idx, 1)
-                    setGlobalInputQueries(temp)
-                  }}>-</Button>}
+                  } else {
+                    temp = [{ key: '', val: '' }]
+                  }
+                  setGlobalInputQueries(temp)
+                }}>-</Button>
                 {idx === globalInputQueries.length - 1
                   ? <Button type="primary" onClick={() => {
                     const temp = [...globalInputQueries]
