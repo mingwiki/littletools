@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Cascader, message, Button, Space, Popover, Radio, Checkbox } from 'antd'
-import { AlipayCircleOutlined, DoubleRightOutlined } from '@ant-design/icons'
+import { AlipayCircleOutlined, DoubleRightOutlined, GroupOutlined, GlobalOutlined } from '@ant-design/icons'
 import { miniAppIds, miniAppPages, miniAppPageExtra } from './data.js'
 import styled from 'styled-components'
 import QRCode from 'qrcode.react'
@@ -16,7 +16,19 @@ const StyledUrlWrapper = styled.p`
   padding: 10px;
   box-shadow: 0px 0px 5px 2px #5D7EA3;
 `
-const appPageData = Object.entries(miniAppPages).map(e => {
+const ParamsWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+  border: 1px solid;
+`
+const StyledInput = styled.input`
+  &:invalid {
+    background-color: red;
+  }
+`
+const cascaderData = Object.entries(miniAppPages).map(e => {
   const app = {
     value: e[0],
     label: e[0],
@@ -30,20 +42,21 @@ const appPageData = Object.entries(miniAppPages).map(e => {
   }
   return app
 })
-let appCheckData = []
+let pageCheckData = []
 const Component = () => {
   const [text, setText] = useState('小程序名称和对应页面')
   const [appId, setAppId] = useState('')
   const [pagePath, setPagePath] = useState('')
-  const [checkQueries, setCheckQueries] = useState({})
-  const [inputQueries, setInputQueries] = useState([{ key: '', val: '' }])
+  const [pageCheckQuerie, setPageCheckQuerie] = useState({})
+  const [pageInputQueries, setPageInputQueries] = useState([{ key: '', val: '' }])
+  const [globalInputQueries, setGlobalInputQueries] = useState([{ key: '', val: '' }])
   const [isShowPopover, setIsShowPopover] = useState(false)
   const onChangeAppPage = (value) => {
     setText(<>{value[0]} <DoubleRightOutlined /> {value[1]}</>)
     setAppId(miniAppIds[value[0]])
     setPagePath(miniAppPages[value[0]][value[1]])
     if (miniAppPageExtra[miniAppIds[value[0]]][miniAppPages[value[0]][value[1]]]) {
-      appCheckData = Object.entries(miniAppPageExtra[miniAppIds[value[0]]][miniAppPages[value[0]][value[1]]]).map((e) => {
+      pageCheckData = Object.entries(miniAppPageExtra[miniAppIds[value[0]]][miniAppPages[value[0]][value[1]]]).map((e) => {
         if (typeof e[1] === 'boolean') {
           e[1] = e[1].toString()
         }
@@ -53,31 +66,23 @@ const Component = () => {
         return e
       })
     } else {
-      appCheckData = []
+      pageCheckData = []
     }
   }
-  const addInputBox = () => {
-    const temp = [...inputQueries]
-    temp.push({ key: '', val: '' })
-    setInputQueries(temp)
-  }
-  const delInputBox = (idx) => {
-    const temp = [...inputQueries]
-    temp.splice(idx, 1)
-    setInputQueries(temp)
-  }
   const pathUrl = `pages/${pagePath}`
-  const checkUrl = Object.keys(checkQueries).length === 0 ? '' : Object.entries(checkQueries).map((e) => e[1].length !== 0 ? `${e[0]}=${e[1]}` : '').filter(e => e !== '').join('&')
-  const inputUrl = inputQueries.length === 1 && inputQueries[0].key === '' && inputQueries[0].val === '' ? '' : inputQueries.map(e => e.key !== '' && e.val !== '' ? `${e.key}=${e.val}` : '').filter(e => e !== '').join('&')
-  const url = pathUrl + (checkUrl === '' && inputUrl === '' ? '' : '?') + checkUrl + (checkUrl !== '' && inputUrl !== '' ? '&' : '') + inputUrl
-  const encodedUrl = pagePath === '' ? '' : `alipays://platformapi/startapp?appId=${appId}&page=${encodeURIComponent(url)}`
+  const pageCheckUrl = Object.keys(pageCheckQuerie).length === 0 ? '' : Object.entries(pageCheckQuerie).map((e) => e[1].length !== 0 ? `${e[0]}=${e[1]}` : '').filter(e => e !== '').join('&')
+  const pageInputUrl = pageInputQueries.length === 1 && pageInputQueries[0].key === '' && pageInputQueries[0].val === '' ? '' : pageInputQueries.map(e => e.key !== '' && e.val !== '' ? `${e.key}=${e.val}` : '').filter(e => e !== '').join('&')
+  const globalInputUrl = globalInputQueries.length === 1 && globalInputQueries[0].key === '' && globalInputQueries[0].val === '' ? '' : globalInputQueries.map(e => e.key !== '' && e.val !== '' ? `${e.key}=${e.val}` : '').filter(e => e !== '').join('&')
+  const encodePage = encodeURIComponent(pathUrl + (pageCheckUrl === '' && pageInputUrl === '' && globalInputUrl === '' ? '' : '?') + pageCheckUrl + (pageCheckUrl !== '' && pageInputUrl !== '' ? '&' : '') + pageInputUrl)
+  const encodeGlobal = (globalInputUrl !== '' ? '&query=' : '') + encodeURIComponent(globalInputUrl)
+  const encodedUrl = pagePath === '' ? '' : `alipays://platformapi/startapp?appId=${appId}&page=${encodePage}${encodeGlobal}`
   return (
     <>
       <Radio.Group value={'alipay'} size='large'>
         <Radio value={'alipay'}><AlipayCircleOutlined /> Alipay 协议</Radio>
       </Radio.Group>
       <div>
-        <Cascader options={appPageData} onChange={onChangeAppPage} size='large' notFoundContent='无数据'>
+        <Cascader options={cascaderData} onChange={onChangeAppPage} size='large' notFoundContent='无数据'>
           <a href="#">点击选择</a>
         </Cascader>
         &nbsp;
@@ -86,37 +91,79 @@ const Component = () => {
       {!encodedUrl
         ? null
         : <>
-          {appCheckData.length === 0
-            ? null
-            : appCheckData.map((val, idx) => {
-              return <div key={idx}>
-                {val[0]}: <Checkbox.Group options={val[1]} value={checkQueries[val[0]]} onChange={(e) => {
-                  const temp = { ...checkQueries }
-                  e.length < 2 ? temp[val[0]] = e : temp[val[0]] = e.filter(x => !temp[val[0]].includes(x))
-                  setCheckQueries(temp)
+          <ParamsWrapper>
+            <div><GroupOutlined /> 页面级参数</div>
+            {pageCheckData.length === 0
+              ? null
+              : pageCheckData.map((val, idx) => {
+                return <div key={idx}>
+                  {val[0]}: <Checkbox.Group options={val[1]} value={pageCheckQuerie[val[0]]} onChange={(e) => {
+                    const temp = { ...pageCheckQuerie }
+                    e.length < 2 ? temp[val[0]] = e : temp[val[0]] = e.filter(x => !temp[val[0]].includes(x))
+                    setPageCheckQuerie(temp)
+                  }} />
+                </div>
+              })}
+            {pageInputQueries.map(({ key, val }, idx) => {
+              return <StyledInputWrapper key={idx}>
+                <StyledInput placeholder="输入key，最长20位，以字母开头" value={key} maxLength="20" size="30" pattern="^[A-Za-z].*" onChange={(e) => {
+                  const temp = [...pageInputQueries]
+                  temp[idx].key = e.target.value
+                  setPageInputQueries(temp)
                 }} />
-              </div>
+                <StyledInput placeholder="输入value，最长20位" value={val} maxLength="20" size="30" onChange={(e) => {
+                  const temp = [...pageInputQueries]
+                  temp[idx].val = e.target.value
+                  setPageInputQueries(temp)
+                }} />
+                {pageInputQueries.length === 1
+                  ? null
+                  : <Button type="primary" onClick={() => {
+                    const temp = [...pageInputQueries]
+                    temp.splice(idx, 1)
+                    setPageInputQueries(temp)
+                  }}>-</Button>}
+                {idx === pageInputQueries.length - 1
+                  ? <Button type="primary" onClick={() => {
+                    const temp = [...pageInputQueries]
+                    temp.push({ key: '', val: '' })
+                    setPageInputQueries(temp)
+                  }}>+</Button>
+                  : null}
+              </StyledInputWrapper>
             })}
-          {inputQueries.map(({ key, val }, idx) => {
-            return <StyledInputWrapper key={idx}>
-              <input placeholder="输入key" value={key} onChange={(e) => {
-                const temp = [...inputQueries]
-                temp[idx].key = e.target.value
-                setInputQueries(temp)
-              }} />
-              <input placeholder="输入value" value={val} onChange={(e) => {
-                const temp = [...inputQueries]
-                temp[idx].val = e.target.value
-                setInputQueries(temp)
-              }} />
-              {inputQueries.length === 1
-                ? null
-                : <Button type="primary" onClick={() => delInputBox(idx)}>-</Button>}
-              {idx === inputQueries.length - 1
-                ? <Button type="primary" onClick={() => addInputBox()}>+</Button>
-                : null}
-            </StyledInputWrapper>
-          })}
+          </ParamsWrapper>
+          <ParamsWrapper>
+            <div><GlobalOutlined /> 全局级参数</div>
+            {globalInputQueries.map(({ key, val }, idx) => {
+              return <StyledInputWrapper key={idx}>
+                <StyledInput placeholder="输入key，最长20位，以字母开头" value={key} maxLength="20" size="30" pattern="^[A-Za-z].*" onChange={(e) => {
+                  const temp = [...globalInputQueries]
+                  temp[idx].key = e.target.value
+                  setGlobalInputQueries(temp)
+                }} />
+                <StyledInput placeholder="输入value，最大长度20位" value={val} maxLength="20" size="30" onChange={(e) => {
+                  const temp = [...globalInputQueries]
+                  temp[idx].val = e.target.value
+                  setGlobalInputQueries(temp)
+                }} />
+                {globalInputQueries.length === 1
+                  ? null
+                  : <Button type="primary" onClick={() => {
+                    const temp = [...globalInputQueries]
+                    temp.splice(idx, 1)
+                    setGlobalInputQueries(temp)
+                  }}>-</Button>}
+                {idx === globalInputQueries.length - 1
+                  ? <Button type="primary" onClick={() => {
+                    const temp = [...globalInputQueries]
+                    temp.push({ key: '', val: '' })
+                    setGlobalInputQueries(temp)
+                  }}>+</Button>
+                  : null}
+              </StyledInputWrapper>
+            })}
+          </ParamsWrapper>
           <StyledUrlWrapper>{encodedUrl}</StyledUrlWrapper>
           <Space>
             <Button type="primary" onClick={() => {
