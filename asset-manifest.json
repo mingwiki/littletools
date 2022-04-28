@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/toolkits/static/css/main.bf561f1a.css",
-    "main.js": "/toolkits/static/js/main.bd5b243a.js",
+    "main.js": "/toolkits/static/js/main.b1516561.js",
     "static/js/80.37e25ff8.chunk.js": "/toolkits/static/js/80.37e25ff8.chunk.js",
     "static/js/22.19ead206.chunk.js": "/toolkits/static/js/22.19ead206.chunk.js",
     "static/js/787.820b5ff2.chunk.js": "/toolkits/static/js/787.820b5ff2.chunk.js",
@@ -9,7 +9,7 @@
     "static/media/logo.svg": "/toolkits/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
     "index.html": "/toolkits/index.html",
     "main.bf561f1a.css.map": "/toolkits/static/css/main.bf561f1a.css.map",
-    "main.bd5b243a.js.map": "/toolkits/static/js/main.bd5b243a.js.map",
+    "main.b1516561.js.map": "/toolkits/static/js/main.b1516561.js.map",
     "80.37e25ff8.chunk.js.map": "/toolkits/static/js/80.37e25ff8.chunk.js.map",
     "22.19ead206.chunk.js.map": "/toolkits/static/js/22.19ead206.chunk.js.map",
     "787.820b5ff2.chunk.js.map": "/toolkits/static/js/787.820b5ff2.chunk.js.map",
@@ -17,6 +17,6 @@
   },
   "entrypoints": [
     "static/css/main.bf561f1a.css",
-    "static/js/main.bd5b243a.js"
+    "static/js/main.b1516561.js"
   ]
 }
