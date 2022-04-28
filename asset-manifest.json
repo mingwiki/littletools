@@ -1,20 +1,20 @@
 {
   "files": {
     "main.css": "/toolkits/static/css/main.bf561f1a.css",
-    "main.js": "/toolkits/static/js/main.9dcf4f9e.js",
-    "static/js/22.f6850607.chunk.js": "/toolkits/static/js/22.f6850607.chunk.js",
+    "main.js": "/toolkits/static/js/main.9630a5ff.js",
+    "static/js/22.8e8e8b92.chunk.js": "/toolkits/static/js/22.8e8e8b92.chunk.js",
     "static/js/787.820b5ff2.chunk.js": "/toolkits/static/js/787.820b5ff2.chunk.js",
-    "static/js/237.b7842f6c.chunk.js": "/toolkits/static/js/237.b7842f6c.chunk.js",
+    "static/js/799.2ad3ac06.chunk.js": "/toolkits/static/js/799.2ad3ac06.chunk.js",
     "static/media/logo.svg": "/toolkits/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
     "index.html": "/toolkits/index.html",
     "main.bf561f1a.css.map": "/toolkits/static/css/main.bf561f1a.css.map",
-    "main.9dcf4f9e.js.map": "/toolkits/static/js/main.9dcf4f9e.js.map",
-    "22.f6850607.chunk.js.map": "/toolkits/static/js/22.f6850607.chunk.js.map",
+    "main.9630a5ff.js.map": "/toolkits/static/js/main.9630a5ff.js.map",
+    "22.8e8e8b92.chunk.js.map": "/toolkits/static/js/22.8e8e8b92.chunk.js.map",
     "787.820b5ff2.chunk.js.map": "/toolkits/static/js/787.820b5ff2.chunk.js.map",
-    "237.b7842f6c.chunk.js.map": "/toolkits/static/js/237.b7842f6c.chunk.js.map"
+    "799.2ad3ac06.chunk.js.map": "/toolkits/static/js/799.2ad3ac06.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.bf561f1a.css",
-    "static/js/main.9dcf4f9e.js"
+    "static/js/main.9630a5ff.js"
   ]
 }
