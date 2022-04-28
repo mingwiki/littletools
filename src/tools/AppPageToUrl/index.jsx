@@ -91,7 +91,7 @@ const Component = () => {
   const encodeGlobal = (globalInputUrl !== '' ? '&query=' : '') + encodeURIComponent(globalInputUrl)
   const encodedUrl = pagePath === '' ? '' : `alipays://platformapi/startapp?appId=${appId}&page=${encodePage}${encodeGlobal}`
   useEffect(() => {
-    setIsShowDrawerQR(new Array(Object.entries(JSON.parse(localStorage.getItem('encodedUrl_history'))).length).fill(false))
+    setIsShowDrawerQR(new Array(Object.entries(JSON.parse(localStorage.getItem('encodedUrl_history')) || {}).length).fill(false))
   }, [])
   return (
     <>
@@ -149,7 +149,7 @@ const Component = () => {
           }} />
         </Modal>
         <Drawer title="历史记录" placement="right" onClose={() => setIsShowDrawer(false)} visible={isShowDrawer}>
-          {Object.entries(JSON.parse(localStorage.getItem('encodedUrl_history'))).map((e, idx) => (
+          {Object.entries(JSON.parse(localStorage.getItem('encodedUrl_history')) || {}).map((e, idx) => (
             <StyledHistoryLine key={idx}>
               <Text strong>{e[0]}</Text>
               <Popover
