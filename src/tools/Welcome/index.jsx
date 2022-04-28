@@ -1,8 +1,8 @@
 import React from 'react'
 import { appTitle } from '../data.js'
 import { Layout } from 'antd'
-const { Header, Content } = Layout
 
+const { Header, Content } = Layout
 const Component = () => {
   return (
     <>

@@ -7,7 +7,7 @@ import styled from 'styled-components'
 
 const { Sider, Footer } = Layout
 const StyledLayout = styled(Layout)`
-  min-height: 100vh; 
+  height: 100vh;
 `
 const StyledFooter = styled(Footer)`
   text-align: center;
@@ -19,7 +19,7 @@ const Component = () => {
   const [isCollapsed, setIsCollapsed] = useState(false)
   const toggle = () => setIsCollapsed(!isCollapsed)
   return (
-    <StyledLayout>
+    <Layout>
       <HashRouter>
         <Suspense fallback={<Spin size="large" style={{ position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }} />} >
           <Sider collapsible collapsed={isCollapsed} onCollapse={toggle}>
@@ -35,16 +35,16 @@ const Component = () => {
               items={sidebar}
             />
           </Sider>
-          <Layout>
+          <StyledLayout>
             <Routes>
               <Route path="/" element={<Welcome />} />
               <Route path="/AppPageToUrl" element={<AppPageToUrl />} />
             </Routes>
-          </Layout>
-          <StyledFooter>{appTitle} &copy; {new Date().getFullYear()}</StyledFooter>
+            <StyledFooter>{appTitle} &copy; {new Date().getFullYear()}</StyledFooter>
+          </StyledLayout>
         </Suspense>
       </HashRouter>
-    </StyledLayout >
+    </Layout>
   )
 }
 export default Component
