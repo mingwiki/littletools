@@ -38,4 +38,5 @@ code {
   border: 2px dashed;
   display: flex;
   flex-direction: column;
+  overflow: auto;
 }

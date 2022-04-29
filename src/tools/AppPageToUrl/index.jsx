@@ -8,6 +8,7 @@ const { Text } = Typography
 const { Content } = Layout
 const StyledInputWrapper = styled.div`
   display: flex;
+  flex-wrap: wrap;
   gap: 10px;
 `
 const StyledUrlWrapper = styled.p`
@@ -135,6 +136,7 @@ const Component = () => {
               temp[modelInput] = deferredEncodedUrl
               localStorage.setItem('encodedUrl_history', JSON.stringify(temp))
               setModelInput('')
+              notification.success({ description: '链接已存储，请查看历史记录。' })
             } else {
               notification.error({ description: '链接名称不得为空' })
             }
@@ -188,7 +190,7 @@ const Component = () => {
             ? null
             : <>
               <ParamsWrapper>
-                <div><GroupOutlined /> 页面级参数</div>
+                <div><GroupOutlined /> <Text keyboard>页面级参数</Text></div>
                 {pageCheckData.length === 0
                   ? null
                   : pageCheckData.map((val, idx) => {
@@ -202,12 +204,12 @@ const Component = () => {
                   })}
                 {pageInputQueries.map(({ key, val }, idx) => {
                   return <StyledInputWrapper key={idx}>
-                    <StyledInput placeholder="输入key，最长20位，以字母开头" value={key} maxLength="20" size="30" pattern="^[A-Za-z](\w)*" onChange={(e) => {
+                    <StyledInput placeholder="输入key，最长20位，以字母开头" value={key} maxLength="20" size="28" pattern="^[A-Za-z](\w)*" onChange={(e) => {
                       const temp = [...pageInputQueries]
                       temp[idx].key = e.target.value
                       setPageInputQueries(temp)
                     }} />
-                    <StyledInput placeholder="输入value，最长20位" value={val} maxLength="20" size="30" pattern="(\w)*" onChange={(e) => {
+                    <StyledInput placeholder="输入value，最长20位" value={val} maxLength="20" size="28" pattern="(\w)*" onChange={(e) => {
                       const temp = [...pageInputQueries]
                       temp[idx].val = e.target.value
                       setPageInputQueries(temp)
@@ -232,15 +234,15 @@ const Component = () => {
                 })}
               </ParamsWrapper>
               <ParamsWrapper>
-                <div><GlobalOutlined /> 全局级参数</div>
+                <div><GlobalOutlined /> <Text keyboard>全局级参数</Text></div>
                 {globalInputQueries.map(({ key, val }, idx) => {
                   return <StyledInputWrapper key={idx}>
-                    <StyledInput placeholder="输入key，最长20位，以字母开头" value={key} maxLength="20" size="30" pattern="^[A-Za-z](\w)*" onChange={(e) => {
+                    <StyledInput placeholder="输入key，最长20位，以字母开头" value={key} maxLength="20" size="28" pattern="^[A-Za-z](\w)*" onChange={(e) => {
                       const temp = [...globalInputQueries]
                       temp[idx].key = e.target.value
                       setGlobalInputQueries(temp)
                     }} />
-                    <StyledInput placeholder="输入value，最大长度20位" value={val} maxLength="20" size="30" pattern="(\w)*" onChange={(e) => {
+                    <StyledInput placeholder="输入value，最大长度20位" value={val} maxLength="20" size="28" pattern="(\w)*" onChange={(e) => {
                       const temp = [...globalInputQueries]
                       temp[idx].val = e.target.value
                       setGlobalInputQueries(temp)
