@@ -1,9 +1,12 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { appTitle } from '../data.js'
 import { Layout } from 'antd'
 
 const { Header, Content } = Layout
 const Component = () => {
+  useEffect(() => {
+    document.title = '欢迎使用'
+  }, [])
   return (
     <>
       <Header className="site-layout-sub-header-background" style={{ padding: 0 }} />

@@ -94,6 +94,7 @@ const Component = () => {
   const deferredEncodedUrl = useDeferredValue(encodedUrl)
   useEffect(() => {
     setIsShowDrawerQR(new Array(Object.entries(JSON.parse(localStorage.getItem('encodedUrl_history')) || {}).length).fill(false))
+    document.title = '生成小程序链接'
   }, [])
   return (
     <>
