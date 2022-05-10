@@ -303,7 +303,7 @@ const Component = () => {
               onChange={onChangeAppPage}
               size='large'
               notFoundContent='无数据'>
-              <a href='#'>点击选择</a>
+              <a href='/#'>点击选择</a>
             </Cascader>
             &nbsp;
             {text}
