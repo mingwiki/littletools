@@ -1,22 +1,22 @@
 {
   "files": {
-    "main.css": "/toolkits/static/css/main.2887d81d.css",
-    "main.js": "/toolkits/static/js/main.1732d791.js",
+    "main.css": "/toolkits/static/css/main.80cb53d1.css",
+    "main.js": "/toolkits/static/js/main.b2e3205b.js",
     "static/js/80.1fe5d62c.chunk.js": "/toolkits/static/js/80.1fe5d62c.chunk.js",
-    "static/js/22.a86a4bfe.chunk.js": "/toolkits/static/js/22.a86a4bfe.chunk.js",
+    "static/js/22.eb9e2e61.chunk.js": "/toolkits/static/js/22.eb9e2e61.chunk.js",
     "static/js/787.820b5ff2.chunk.js": "/toolkits/static/js/787.820b5ff2.chunk.js",
-    "static/js/228.380b62ce.chunk.js": "/toolkits/static/js/228.380b62ce.chunk.js",
+    "static/js/370.05778acf.chunk.js": "/toolkits/static/js/370.05778acf.chunk.js",
     "static/media/logo.svg": "/toolkits/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
     "index.html": "/toolkits/index.html",
-    "main.2887d81d.css.map": "/toolkits/static/css/main.2887d81d.css.map",
-    "main.1732d791.js.map": "/toolkits/static/js/main.1732d791.js.map",
+    "main.80cb53d1.css.map": "/toolkits/static/css/main.80cb53d1.css.map",
+    "main.b2e3205b.js.map": "/toolkits/static/js/main.b2e3205b.js.map",
     "80.1fe5d62c.chunk.js.map": "/toolkits/static/js/80.1fe5d62c.chunk.js.map",
-    "22.a86a4bfe.chunk.js.map": "/toolkits/static/js/22.a86a4bfe.chunk.js.map",
+    "22.eb9e2e61.chunk.js.map": "/toolkits/static/js/22.eb9e2e61.chunk.js.map",
     "787.820b5ff2.chunk.js.map": "/toolkits/static/js/787.820b5ff2.chunk.js.map",
-    "228.380b62ce.chunk.js.map": "/toolkits/static/js/228.380b62ce.chunk.js.map"
+    "370.05778acf.chunk.js.map": "/toolkits/static/js/370.05778acf.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.2887d81d.css",
-    "static/js/main.1732d791.js"
+    "static/css/main.80cb53d1.css",
+    "static/js/main.b2e3205b.js"
   ]
 }
