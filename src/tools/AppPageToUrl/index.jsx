@@ -12,6 +12,8 @@ import {
   Modal,
   Drawer,
   Typography,
+  Badge,
+  Card,
 } from 'antd'
 import {
   AlipayCircleOutlined,
@@ -49,9 +51,7 @@ const StyledInput = styled.input`
   }
 `
 const StyledHistoryLine = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin: 10px;
+  margin-bottom: 10px;
 `
 const cascaderData = Object.entries(miniAppPages).map((e) => {
   const app = {
@@ -119,35 +119,35 @@ const Component = () => {
     Object.keys(pageCheckQuerie).length === 0
       ? ''
       : Object.entries(pageCheckQuerie)
-          .map((e) => (e[1].length !== 0 ? `${e[0]}=${e[1]}` : ''))
-          .filter((e) => e !== '')
-          .join('&')
+        .map((e) => (e[1].length !== 0 ? `${e[0]}=${e[1]}` : ''))
+        .filter((e) => e !== '')
+        .join('&')
   const pageInputUrl =
     pageInputQueries.length === 1 &&
-    pageInputQueries[0].key === '' &&
-    pageInputQueries[0].val === ''
+      pageInputQueries[0].key === '' &&
+      pageInputQueries[0].val === ''
       ? ''
       : pageInputQueries
-          .map((e) => (e.key !== '' && e.val !== '' ? `${e.key}=${e.val}` : ''))
-          .filter((e) => e !== '')
-          .join('&')
+        .map((e) => (e.key !== '' && e.val !== '' ? `${e.key}=${e.val}` : ''))
+        .filter((e) => e !== '')
+        .join('&')
   const globalInputUrl =
     globalInputQueries.length === 1 &&
-    globalInputQueries[0].key === '' &&
-    globalInputQueries[0].val === ''
+      globalInputQueries[0].key === '' &&
+      globalInputQueries[0].val === ''
       ? ''
       : globalInputQueries
-          .map((e) => (e.key !== '' && e.val !== '' ? `${e.key}=${e.val}` : ''))
-          .filter((e) => e !== '')
-          .join('&')
+        .map((e) => (e.key !== '' && e.val !== '' ? `${e.key}=${e.val}` : ''))
+        .filter((e) => e !== '')
+        .join('&')
   const encodePage = encodeURIComponent(
     pathUrl +
-      (pageCheckUrl === '' && pageInputUrl === '' && globalInputUrl === ''
-        ? ''
-        : '?') +
-      pageCheckUrl +
-      (pageCheckUrl !== '' && pageInputUrl !== '' ? '&' : '') +
-      pageInputUrl
+    (pageCheckUrl === '' && pageInputUrl === '' && globalInputUrl === ''
+      ? ''
+      : '?') +
+    pageCheckUrl +
+    (pageCheckUrl !== '' && pageInputUrl !== '' ? '&' : '') +
+    pageInputUrl
   )
   const encodeGlobal =
     (globalInputUrl !== '' ? '&query=' : '') +
@@ -257,27 +257,42 @@ const Component = () => {
           visible={isShowDrawer}>
           {Object.entries(
             JSON.parse(localStorage.getItem('encodedUrl_history')) || {}
-          ).map((e, idx) => (
+          ).sort((a, b) => a[0] < b[0] ? -1 : 1).map((e, idx) => (
             <StyledHistoryLine key={idx}>
-              <Text strong>{e[0]}</Text>
-              <Popover
-                content={<QRCode value={e[1]} size={200} />}
-                title='请扫描二维码'
-                trigger='click'
-                visible={isShowDrawerQR[idx]}
-                onVisibleChange={() => {
-                  const temp = [...isShowDrawerQR]
-                  temp[idx] = !temp[idx]
-                  setIsShowDrawerQR(temp)
-                }}>
-                <Button
-                  type='primary'
-                  onClick={() => {
-                    notification.info({ description: '查看历史链接二维码' })
-                  }}>
-                  查看二维码
-                </Button>
-              </Popover>
+              <Badge.Ribbon text={idx + 1}>
+                <Card title={<Text strong>{e[0]}</Text>} size="small" hoverable={true} type='inner'>
+                  <Space>
+                    <Button
+                      type='dashed'
+                      shape='round'
+                      onClick={() => {
+                        navigator.clipboard.writeText(e[1])
+                        notification.success({ description: '链接已复制到剪切板' })
+                      }}>
+                      点击复制链接
+                    </Button>
+                    <Popover
+                      content={<QRCode value={e[1]} size={200} />}
+                      title='请扫描二维码'
+                      trigger='click'
+                      visible={isShowDrawerQR[idx]}
+                      onVisibleChange={() => {
+                        const temp = [...isShowDrawerQR]
+                        temp[idx] = !temp[idx]
+                        setIsShowDrawerQR(temp)
+                      }}>
+                      <Button
+                        type='dashed'
+                        shape='round'
+                        onClick={() => {
+                          notification.info({ description: '查看历史链接二维码' })
+                        }}>
+                        点击查看二维码
+                      </Button>
+                    </Popover>
+                  </Space>
+                </Card>
+              </Badge.Ribbon>
             </StyledHistoryLine>
           ))}
         </Drawer>
@@ -317,25 +332,25 @@ const Component = () => {
                 {pageCheckData.length === 0
                   ? null
                   : pageCheckData.map((val, idx) => {
-                      return (
-                        <div key={idx}>
-                          {val[0]}:{' '}
-                          <Checkbox.Group
-                            options={val[1]}
-                            value={pageCheckQuerie[val[0]]}
-                            onChange={(e) => {
-                              const temp = { ...pageCheckQuerie }
-                              e.length < 2
-                                ? (temp[val[0]] = e)
-                                : (temp[val[0]] = e.filter(
-                                    (x) => !temp[val[0]].includes(x)
-                                  ))
-                              setPageCheckQuerie(temp)
-                            }}
-                          />
-                        </div>
-                      )
-                    })}
+                    return (
+                      <div key={idx}>
+                        {val[0]}:{' '}
+                        <Checkbox.Group
+                          options={val[1]}
+                          value={pageCheckQuerie[val[0]]}
+                          onChange={(e) => {
+                            const temp = { ...pageCheckQuerie }
+                            e.length < 2
+                              ? (temp[val[0]] = e)
+                              : (temp[val[0]] = e.filter(
+                                (x) => !temp[val[0]].includes(x)
+                              ))
+                            setPageCheckQuerie(temp)
+                          }}
+                        />
+                      </div>
+                    )
+                  })}
                 {pageInputQueries.map(({ key, val }, idx) => {
                   return (
                     <StyledInputWrapper key={idx}>
