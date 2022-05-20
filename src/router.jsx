@@ -2,8 +2,8 @@ import React, { Suspense, useState, useMemo } from 'react'
 import logo from './logo.svg'
 import { HashRouter, Routes, Route, Link } from 'react-router-dom'
 import { Layout, Menu, Spin } from 'antd'
-import { sidebar, appTitle } from './tools/data.js'
 import styled from 'styled-components'
+import Index, { sidebar, appTitle, Empty, No1 } from './tools'
 
 const { Sider, Footer } = Layout
 const StyledLayout = styled(Layout)`
@@ -12,9 +12,6 @@ const StyledLayout = styled(Layout)`
 const StyledFooter = styled(Footer)`
   text-align: center;
 `
-const Welcome = React.lazy(() => import('./tools/Welcome'))
-const AppPageToUrl = React.lazy(() => import('./tools/AppPageToUrl'))
-
 const Component = () => {
   const [isCollapsed, setIsCollapsed] = useState(false)
   const toggle = () => setIsCollapsed(!isCollapsed)
@@ -36,8 +33,9 @@ const Component = () => {
         <StyledLayout>
           <Suspense fallback={<Spin size="large" style={{ position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }} />} >
             <Routes>
-              <Route path="/" element={<Welcome />} />
-              <Route path="/AppPageToUrl" element={<AppPageToUrl />} />
+              <Route path="/" element={<Index />} />
+              <Route path="01" element={<No1 />} />
+              <Route path="*" element={<Empty />} />
             </Routes>
           </Suspense>
           <StyledFooter>{appTitle} &copy; {useMemo(() => new Date().getFullYear(), [])}</StyledFooter>
