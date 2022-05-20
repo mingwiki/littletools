@@ -3,7 +3,8 @@ import logo from './logo.svg'
 import { HashRouter, Routes, Route, Link } from 'react-router-dom'
 import { Layout, Menu, Spin } from 'antd'
 import styled from 'styled-components'
-import Index, { sidebar, appTitle, Empty, No1 } from './tools'
+import Index, { Empty } from './tools'
+import { main, sidebar, appTitle } from './main'
 
 const { Sider, Footer } = Layout
 const StyledLayout = styled(Layout)`
@@ -34,7 +35,7 @@ const Component = () => {
           <Suspense fallback={<Spin size="large" style={{ position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }} />} >
             <Routes>
               <Route path="/" element={<Index />} />
-              <Route path="01" element={<No1 />} />
+              {main()}
               <Route path="*" element={<Empty />} />
             </Routes>
           </Suspense>

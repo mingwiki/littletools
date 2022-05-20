@@ -1,21 +1,18 @@
 import React, { useEffect } from 'react'
 import { Layout } from 'antd'
-import { Link } from 'react-router-dom'
-import { LinkOutlined } from '@ant-design/icons'
+import { appTitle } from '../main'
 
 export const No1 = React.lazy(() => import('./No1'))
-export const sidebar = [
-  {
-    key: '1',
-    icon: <LinkOutlined />,
-    label: <Link to='01'>生成小程序链接</Link>
-  }
-]
-export const appTitle = '小小工具箱'
+export const Empty = () => {
+  return (
+    <h1>此页面不存在，请检查网址是否正确。</h1>
+  )
+}
+
 const { Header, Content } = Layout
 const Component = () => {
   useEffect(() => {
-    document.title = '欢迎使用'
+    document.title = appTitle
   }, [])
   return (
     <>
@@ -35,8 +32,3 @@ const Component = () => {
   )
 }
 export default Component
-export const Empty = () => {
-  return (
-    <h1>此页面不存在，请检查网址是否正确。</h1>
-  )
-}
