@@ -2,7 +2,7 @@
   "name": "toolkits",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://mingwiki.gitee.io/toolkits",
+  "homepage": "https://zed.ink/toolkits",
   "dependencies": {
     "@babel/core": "^7.16.0",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.3",
@@ -63,8 +63,8 @@
     "workbox-webpack-plugin": "^6.4.1"
   },
   "scripts": {
-    "start": "NODE_ENV=development BABEL_ENV=development node scripts/start.js",
-    "build": "NODE_ENV=production BABEL_ENV=production node scripts/build.js",
+    "start": "cross-env NODE_ENV=development BABEL_ENV=development node scripts/start.js",
+    "build": "cross-env NODE_ENV=production BABEL_ENV=production node scripts/build.js",
     "test": "node scripts/test.js"
   },
   "eslintConfig": {
