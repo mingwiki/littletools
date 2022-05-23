@@ -2,11 +2,17 @@ import React from 'react';
 import { Route } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 import { LinkOutlined } from '@ant-design/icons'
+import { Login, Register } from './pages'
 import { No1 } from './tools';
+
 
 export const main = () => {
   return (
-    <Route path="01" element={<No1 />} />
+    <>
+      <Route path="login" element={<Login />} />
+      <Route path="register" element={<Register />} />
+      <Route path="01" element={<No1 />} />
+    </>
   )
 }
 export const sidebar = [
