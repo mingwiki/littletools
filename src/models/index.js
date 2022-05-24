@@ -1,14 +1,19 @@
 import AV from 'leancloud-storage'
+import UrlStore from '../stores/url'
+const {
+  splitEnterId,
+  splitSourceOrigin,
+  splitAppId,
+  splitPagePath,
+} = UrlStore
 AV.init({
   appId: 'Co2HYYsX3YsrSM8hLn35yMVq-gzGzoHsz',
   appKey: 'vpslFNPbTpcTFj4XHIGHP9eH',
   serverURL: 'https://api.naizi.fun',
 })
-const avUser = new AV.User()
-const avObj = new AV.Object('toolkits_01')
-const avQuery = new AV.Query('toolkits_01')
 const Auth = {
   register(username, password, realname) {
+    const avUser = new AV.User()
     avUser.setUsername(username)
     avUser.setPassword(password)
     avUser.set('realname', realname)
@@ -35,12 +40,15 @@ const Auth = {
   },
 }
 const Url = {
-  upload({ name, url, enterId, orderFrom }) {
+  upload({ name, url, enterId, sourceOrigin, appId, pagePath }) {
+    const avObj = new AV.Object('toolkits_01')
     return new Promise((resolve, reject) => {
       avObj.set('name', name)
       avObj.set('url', url)
       avObj.set('enterId', enterId)
-      avObj.set('orderFrom', orderFrom)
+      avObj.set('sourceOrigin', sourceOrigin)
+      avObj.set('appId', appId)
+      avObj.set('pagePath', pagePath)
       avObj.set('owner', AV.User.current())
       avObj.save().then(
         (res) => resolve(res),
@@ -48,7 +56,30 @@ const Url = {
       )
     })
   },
-  checkEnterId(enterId) {
+  uploadAll(urls) {
+    return new Promise((resolve, reject) => {
+      const objects = []
+      Object.entries(urls).map(([key, value]) => {
+        const avObj = new AV.Object('toolkits_01')
+        avObj.set('name', key)
+        avObj.set('url', value)
+        avObj.set('enterId', splitEnterId(value))
+        avObj.set('sourceOrigin', splitSourceOrigin(value))
+        avObj.set('appId', splitAppId(value))
+        avObj.set('pagePath', splitPagePath(value))
+        avObj.set('owner', AV.User.current())
+        objects.push(avObj)
+      })
+      AV.Object.saveAll(objects).then(
+        (res) => resolve(res),
+        (error) => reject(error)
+      )
+    })
+  },
+  checkEnterId(enterId, appId, pagePath) {
+    const avQuery = new AV.Query('toolkits_01')
+    avQuery.equalTo('appId', appId)
+    avQuery.equalTo('pagePath', pagePath)
     avQuery.equalTo('enterId', enterId)
     return new Promise((resolve, reject) => {
       avQuery.find().then(
@@ -57,14 +88,31 @@ const Url = {
       )
     })
   },
-  checkOrderFrom(orderFrom) {
-    avQuery.equalTo('orderFrom', orderFrom)
+  checkSourceOrigin(sourceOrigin, appId, pagePath) {
+    const avQuery = new AV.Query('toolkits_01')
+    avQuery.equalTo('appId', appId)
+    avQuery.equalTo('pagePath', pagePath)
+    avQuery.equalTo('sourceOrigin', sourceOrigin)
     return new Promise((resolve, reject) => {
       avQuery.find().then(
         (result) => resolve(result),
         (error) => reject(error)
       )
     })
+  },
+  queryAll() {
+    const avQuery = new AV.Query('toolkits_01')
+    avQuery.equalTo('owner', AV.User.current())
+    return new Promise((resolve, reject) => {
+      avQuery.find().then(
+        (result) => resolve(result),
+        (error) => reject(error)
+      )
+    })
+  },
+  delete(id) {
+    const temp = AV.Object.createWithoutData('toolkits_01', id)
+    temp.destroy()
   },
 }
 export { Auth, Url }

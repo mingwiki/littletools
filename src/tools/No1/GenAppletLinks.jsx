@@ -72,12 +72,15 @@ const Component = observer(() => {
   const { UserStore, UrlStore, DrawerStore } = useContext(context)
   const { currentUser, resetCurrentUser } = UserStore
   const {
+    appId,
+    pagePath,
     pageCheckQueries,
     pageInputQueries,
     globalInputQueries,
     linkName,
     pageCheckData,
     getEnterId,
+    getSourceOrigin,
     getEncodedUrl,
     setAppId,
     setPagePath,
@@ -87,8 +90,13 @@ const Component = observer(() => {
     setLinkName,
     setPageCheckData,
     clear,
+    splitEnterId,
+    splitSourceOrigin,
+    splitAppId,
+    splitPagePath,
   } = UrlStore
-  const { visible, setVisible } = DrawerStore
+  const { visible, setVisible, setIsSyncing, checkEnterId, uploadUrl } =
+    DrawerStore
   const deferredEncodedUrl = useDeferredValue(getEncodedUrl())
   const onChangeAppPage = (value) => {
     setText(
@@ -343,7 +351,7 @@ const Component = observer(() => {
                   pattern='.+'
                   maxLength='50'
                   autoFocus={true}
-                  style={{ width: '50%', border: '2px dotted' }}
+                  style={{ width: '25%', border: '2px dotted' }}
                   onChange={(e) => {
                     setLinkName(e.target.value)
                   }}
@@ -361,19 +369,34 @@ const Component = observer(() => {
                         description: '当前链接地址为空，请检查。',
                       })
                     } else if (linkName !== '') {
-                      const temp =
-                        JSON.parse(
-                          localStorage.getItem('encodedUrl_history')
-                        ) || {}
-                      temp[linkName] = deferredEncodedUrl
-                      localStorage.setItem(
-                        'encodedUrl_history',
-                        JSON.stringify(temp)
-                      )
-                      setLinkName('')
-                      notification.success({
-                        description: '链接已存储，请查看历史记录。',
+                      setIsSyncing(true)
+                      uploadUrl({
+                        name: linkName,
+                        url: deferredEncodedUrl,
+                        enterId: splitEnterId(deferredEncodedUrl),
+                        sourceOrigin: splitSourceOrigin(deferredEncodedUrl),
+                        appId: splitAppId(deferredEncodedUrl),
+                        pagePath: splitPagePath(deferredEncodedUrl),
                       })
+                        .then(
+                          (res) => {
+                            notification.success({
+                              description: `已上传${res?.attributes?.name}`,
+                            })
+                          },
+                          (error) => {
+                            notification.error({
+                              description: `上传失败请联系开发人员`,
+                            })
+                            notification.error({
+                              description: JSON.stringify(error),
+                            })
+                          }
+                        )
+                        .finally(() => {
+                          setIsSyncing(false)
+                          setLinkName('')
+                        })
                     } else {
                       notification.error({ description: '链接名称不得为空' })
                     }
@@ -388,11 +411,51 @@ const Component = observer(() => {
                         color: 'white',
                         backgroundColor: '#cc5de8',
                         border: 'none',
+                      }}
+                      onClick={() => {
+                        checkEnterId(getEnterId(), appId, pagePath).then(
+                          (res) => {
+                            if (res.length > 0) {
+                              res.map((item) => {
+                                notification.error({
+                                  description: `此Enter ID已存在于${item?.attributes?.name}`,
+                                })
+                              })
+                            } else {
+                              notification.success({
+                                description: `此Enter ID可用`,
+                              })
+                            }
+                          },
+                          (err) => {
+                            console.log(err)
+                            notification.error({
+                              description: JSON.stringify(err),
+                            })
+                          }
+                        )
                       }}>
-                      Enter ID查重
+                      入口ID查重
                     </Button>
                     <span>
                       (当前为<b>{getEnterId()}</b>)
+                    </span>
+                  </>
+                ) : null}
+                {getSourceOrigin() ? (
+                  <>
+                    <Button
+                      type='primary'
+                      disabled
+                      style={{
+                        color: 'white',
+                        backgroundColor: 'grey',
+                        border: 'none',
+                      }}>
+                      订单来源查重
+                    </Button>
+                    <span>
+                      (当前为<b>{getSourceOrigin()}</b>)
                     </span>
                   </>
                 ) : null}
@@ -422,7 +485,7 @@ const Component = observer(() => {
                 </Popover>
               </Space>
               {
-                '（如链接有效请务必点击存储进行上传，以便对链接在云端汇总，从而实现Enter ID查重等操作。）'
+                '（如链接有效请务必上传，以便对链接在云端汇总，从而实现Enter ID查重等操作。）'
               }
             </>
           )}

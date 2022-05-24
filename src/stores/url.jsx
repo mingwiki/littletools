@@ -107,6 +107,41 @@ class UrlStore {
   setPageCheckData = (pageCheckData) => {
     this.pageCheckData = pageCheckData
   }
+  splitEnterId = (url) => {
+    const temp = decodeURIComponent(url).split('?')
+    const query = Object.fromEntries(
+      temp[temp.length - 1]
+        .split('&query=')
+        .flatMap((e) => e.split('&'))
+        .map((e) => e.split('='))
+    )
+    return query['enterId'] || query['enter']
+  }
+  splitSourceOrigin = (url) => {
+    const temp = decodeURIComponent(url).split('?')
+    const query = Object.fromEntries(
+      temp[temp.length - 1]
+        .split('&query=')
+        .flatMap((e) => e.split('&'))
+        .map((e) => e.split('='))
+    )
+    return query['sourceOrigin']
+  }
+  splitAppId = (url) => {
+    const temp = decodeURIComponent(url).split('?')
+    const query = Object.fromEntries(
+      temp[1].split('&').map((e) => e.split('='))
+    )
+    console.log(query)
+    return query['appId']
+  }
+  splitPagePath = (url) => {
+    const temp = decodeURIComponent(url).split('?')
+    const query = Object.fromEntries(
+      temp[1].split('&').map((e) => e.split('='))
+    )
+    return query['page']
+  }
   clear = () => {
     this.appId = ''
     this.pagePath = ''
