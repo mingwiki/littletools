@@ -6,9 +6,10 @@ import context from './stores'
 
 const App = () => {
   const { UserStore } = React.useContext(context)
+  const { getCurrentUser } = UserStore
   React.useEffect(() => {
-    UserStore.getCurrentUser()
-  }, [])
+    getCurrentUser()
+  }, [UserStore])
   return <Router />
 }
 

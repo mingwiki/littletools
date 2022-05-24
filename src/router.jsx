@@ -20,26 +20,35 @@ const Component = () => {
     <HashRouter>
       <Layout>
         <Sider collapsible collapsed={isCollapsed} onCollapse={toggle}>
-          <div className="logo" style={{ textAlign: 'center' }}>
+          <div className='logo' style={{ textAlign: 'center' }}>
             <Link to='/'>
-              <img src={logo} className="App-logo" alt="logo" />
+              <img src={logo} className='App-logo' alt='logo' />
             </Link>
           </div>
-          <Menu
-            theme="dark"
-            mode="inline"
-            items={sidebar}
-          />
+          <Menu theme='dark' mode='inline' items={sidebar} />
         </Sider>
         <StyledLayout>
-          <Suspense fallback={<Spin size="large" style={{ position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }} />} >
+          <Suspense
+            fallback={
+              <Spin
+                size='large'
+                style={{
+                  position: 'fixed',
+                  top: '50%',
+                  left: '50%',
+                  transform: 'translate(-50%, -50%)',
+                }}
+              />
+            }>
             <Routes>
-              <Route path="/" element={<Index />} />
+              <Route path='/' element={<Index />} />
               {main()}
-              <Route path="*" element={<Empty />} />
+              <Route path='*' element={<Empty />} />
             </Routes>
           </Suspense>
-          <StyledFooter>{appTitle} &copy; {useMemo(() => new Date().getFullYear(), [])}</StyledFooter>
+          <StyledFooter>
+            {appTitle} &copy; {useMemo(() => new Date().getFullYear(), [])}
+          </StyledFooter>
         </StyledLayout>
       </Layout>
     </HashRouter>
