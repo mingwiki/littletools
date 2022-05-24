@@ -76,14 +76,14 @@ const Component = observer(() => {
   const [isShowDrawer, setIsShowDrawer] = useState(false)
   const [isShowDrawerQR, setIsShowDrawerQR] = useState([])
   const { UserStore, UrlStore } = useContext(context)
+  const { currentUser, resetCurrentUser } = UserStore
   const {
-    appId,
-    pagePath,
     pageCheckQueries,
     pageInputQueries,
     globalInputQueries,
     linkName,
     pageCheckData,
+    getEncodedUrl,
     setAppId,
     setPagePath,
     setPageCheckQueries,
@@ -91,7 +91,9 @@ const Component = observer(() => {
     setGlobalInputQueries,
     setLinkName,
     setPageCheckData,
+    clear,
   } = UrlStore
+  const deferredEncodedUrl = useDeferredValue(getEncodedUrl())
   const onChangeAppPage = (value) => {
     setText(
       <>
@@ -103,17 +105,21 @@ const Component = observer(() => {
     if (
       miniAppPageExtra[miniAppIds[value[0]]][miniAppPages[value[0]][value[1]]]
     ) {
-      setPageCheckData(Object.entries(
-        miniAppPageExtra[miniAppIds[value[0]]][miniAppPages[value[0]][value[1]]]
-      ).map((e) => {
-        if (typeof e[1] === 'boolean') {
-          e[1] = e[1].toString()
-        }
-        if (!Array.isArray(e[1])) {
-          e[1] = [e[1]]
-        }
-        return e
-      }))
+      setPageCheckData(
+        Object.entries(
+          miniAppPageExtra[miniAppIds[value[0]]][
+            miniAppPages[value[0]][value[1]]
+          ]
+        ).map((e) => {
+          if (typeof e[1] === 'boolean') {
+            e[1] = e[1].toString()
+          }
+          if (!Array.isArray(e[1])) {
+            e[1] = [e[1]]
+          }
+          return e
+        })
+      )
     } else {
       setPageCheckData([])
     }
@@ -122,49 +128,6 @@ const Component = observer(() => {
     placement: 'bottomRight',
     duration: 3,
   })
-  const pathUrl = `pages/${pagePath}`
-  const pageCheckUrl =
-    Object.keys(pageCheckQueries).length === 0
-      ? ''
-      : Object.entries(pageCheckQueries)
-          .map((e) => (e[1].length !== 0 ? `${e[0]}=${e[1]}` : ''))
-          .filter((e) => e !== '')
-          .join('&')
-  const pageInputUrl =
-    pageInputQueries.length === 1 &&
-    pageInputQueries[0].key === '' &&
-    pageInputQueries[0].val === ''
-      ? ''
-      : pageInputQueries
-          .map((e) => (e.key !== '' && e.val !== '' ? `${e.key}=${e.val}` : ''))
-          .filter((e) => e !== '')
-          .join('&')
-  const globalInputUrl =
-    globalInputQueries.length === 1 &&
-    globalInputQueries[0].key === '' &&
-    globalInputQueries[0].val === ''
-      ? ''
-      : globalInputQueries
-          .map((e) => (e.key !== '' && e.val !== '' ? `${e.key}=${e.val}` : ''))
-          .filter((e) => e !== '')
-          .join('&')
-  const encodePage = encodeURIComponent(
-    pathUrl +
-      (pageCheckUrl === '' && pageInputUrl === '' && globalInputUrl === ''
-        ? ''
-        : '?') +
-      pageCheckUrl +
-      (pageCheckUrl !== '' && pageInputUrl !== '' ? '&' : '') +
-      pageInputUrl
-  )
-  const encodeGlobal =
-    (globalInputUrl !== '' ? '&query=' : '') +
-    encodeURIComponent(globalInputUrl)
-  const encodedUrl =
-    pagePath === ''
-      ? ''
-      : `alipays://platformapi/startapp?appId=${appId}&page=${encodePage}${encodeGlobal}`
-  const deferredEncodedUrl = useDeferredValue(encodedUrl)
   useEffect(() => {
     setIsShowDrawerQR(
       new Array(
@@ -188,15 +151,10 @@ const Component = observer(() => {
             danger
             onClick={() => {
               setText('小程序名称和对应页面')
-              setAppId('')
-              setPagePath('')
-              setPageCheckQueries({})
-              setPageInputQueries([{ key: '', val: '' }])
-              setGlobalInputQueries([{ key: '', val: '' }])
-              setLinkName('')
               setIsShowPopover(false)
               setIsShowDrawer(false)
               setIsShowDrawerQR([])
+              clear()
               notification.warning({ description: '页面数据已全部清除' })
             }}>
             清空页面
@@ -207,18 +165,18 @@ const Component = observer(() => {
             onClick={() => {
               setIsShowDrawer(true)
             }}>
-            {UserStore?.currentUser?.attributes?.realname}
+            {currentUser?.attributes?.realname}
           </Button>,
           <Button
             key={3}
             type='primary'
             danger
-            onClick={() => UserStore.resetCurrentUser()}>
+            onClick={() => resetCurrentUser()}>
             注销
           </Button>,
         ]}>
         <Drawer
-          title={`${UserStore?.currentUser?.attributes?.realname}的存储记录`}
+          title={`${currentUser?.attributes?.realname}的存储记录`}
           placement='right'
           onClose={() => setIsShowDrawer(false)}
           visible={isShowDrawer}>
