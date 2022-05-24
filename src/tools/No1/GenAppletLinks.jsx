@@ -10,10 +10,7 @@ import {
   Checkbox,
   PageHeader,
   Layout,
-  Drawer,
   Typography,
-  Badge,
-  Card,
 } from 'antd'
 import {
   AlipayCircleOutlined,
@@ -26,6 +23,8 @@ import { miniAppIds, miniAppPages, miniAppPageExtra } from './data.js'
 import styled from 'styled-components'
 import QRCode from 'qrcode.react'
 import context from '../../stores'
+
+const Drawer = React.lazy(() => import('./Drawer'))
 const { Text } = Typography
 const { Content } = Layout
 const StyledInputWrapper = styled.div`
@@ -53,9 +52,6 @@ const StyledInput = styled.input`
     background-color: red;
   }
 `
-const StyledHistoryLine = styled.div`
-  margin-bottom: 10px;
-`
 const cascaderData = Object.entries(miniAppPages).map((e) => {
   const app = {
     value: e[0],
@@ -73,9 +69,7 @@ const cascaderData = Object.entries(miniAppPages).map((e) => {
 const Component = observer(() => {
   const [text, setText] = useState('小程序名称和对应页面')
   const [isShowPopover, setIsShowPopover] = useState(false)
-  const [isShowDrawer, setIsShowDrawer] = useState(false)
-  const [isShowDrawerQR, setIsShowDrawerQR] = useState([])
-  const { UserStore, UrlStore } = useContext(context)
+  const { UserStore, UrlStore, DrawerStore } = useContext(context)
   const { currentUser, resetCurrentUser } = UserStore
   const {
     pageCheckQueries,
@@ -94,6 +88,7 @@ const Component = observer(() => {
     setPageCheckData,
     clear,
   } = UrlStore
+  const { visible, setVisible } = DrawerStore
   const deferredEncodedUrl = useDeferredValue(getEncodedUrl())
   const onChangeAppPage = (value) => {
     setText(
@@ -130,13 +125,6 @@ const Component = observer(() => {
     duration: 3,
   })
   useEffect(() => {
-    setIsShowDrawerQR(
-      new Array(
-        Object.entries(
-          JSON.parse(localStorage.getItem('encodedUrl_history')) || {}
-        ).length
-      ).fill(false)
-    )
     document.title = '生成小程序链接'
   }, [])
   return (
@@ -153,8 +141,7 @@ const Component = observer(() => {
             onClick={() => {
               setText('小程序名称和对应页面')
               setIsShowPopover(false)
-              setIsShowDrawer(false)
-              setIsShowDrawerQR([])
+              setVisible(false)
               clear()
               notification.warning({ description: '页面数据已全部清除' })
             }}>
@@ -164,7 +151,7 @@ const Component = observer(() => {
             key={2}
             type='primary'
             onClick={() => {
-              setIsShowDrawer(true)
+              setVisible(true)
             }}>
             {currentUser?.attributes?.realname}
           </Button>,
@@ -175,64 +162,9 @@ const Component = observer(() => {
             onClick={() => resetCurrentUser()}>
             注销
           </Button>,
-        ]}>
-        <Drawer
-          title={`${currentUser?.attributes?.realname}的存储记录`}
-          placement='right'
-          onClose={() => setIsShowDrawer(false)}
-          visible={isShowDrawer}>
-          {Object.entries(
-            JSON.parse(localStorage.getItem('encodedUrl_history')) || {}
-          )
-            .sort((a, b) => (a[0] < b[0] ? -1 : 1))
-            .map((e, idx) => (
-              <StyledHistoryLine key={idx}>
-                <Badge.Ribbon text={idx + 1}>
-                  <Card
-                    title={<Text strong>{e[0]}</Text>}
-                    size='small'
-                    hoverable={true}
-                    type='inner'>
-                    <Space>
-                      <Button
-                        type='dashed'
-                        shape='round'
-                        onClick={() => {
-                          navigator.clipboard.writeText(e[1])
-                          notification.success({
-                            description: '链接已复制到剪切板',
-                          })
-                        }}>
-                        点击复制链接
-                      </Button>
-                      <Popover
-                        content={<QRCode value={e[1]} size={200} />}
-                        title='请扫描二维码'
-                        trigger='click'
-                        visible={isShowDrawerQR[idx]}
-                        onVisibleChange={() => {
-                          const temp = [...isShowDrawerQR]
-                          temp[idx] = !temp[idx]
-                          setIsShowDrawerQR(temp)
-                        }}>
-                        <Button
-                          type='dashed'
-                          shape='round'
-                          onClick={() => {
-                            notification.info({
-                              description: '查看历史链接二维码',
-                            })
-                          }}>
-                          点击查看二维码
-                        </Button>
-                      </Popover>
-                    </Space>
-                  </Card>
-                </Badge.Ribbon>
-              </StyledHistoryLine>
-            ))}
-        </Drawer>
-      </PageHeader>
+        ]}
+      />
+      {visible && <Drawer />}
       <Content className='content'>
         <div
           className='site-layout-background'
@@ -446,7 +378,7 @@ const Component = observer(() => {
                       notification.error({ description: '链接名称不得为空' })
                     }
                   }}>
-                  存储当前链接
+                  上传当前链接
                 </Button>
                 {getEnterId() ? (
                   <>
