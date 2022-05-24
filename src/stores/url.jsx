@@ -7,9 +7,6 @@ class UrlStore {
   pageInputQueries = [{ key: '', val: '' }]
   globalInputQueries = [{ key: '', val: '' }]
   linkName = ''
-  url = ''
-  enterId = ''
-  orderFrom = ''
   pageCheckData = []
   constructor() {
     makeAutoObservable(this)
@@ -69,7 +66,25 @@ class UrlStore {
   getEncodedUrl = () => {
     return this.pagePath === ''
       ? ''
-      : `alipays://platformapi/startapp?appId=${this.appId}&page=${this.getEncodePage()}${this.getEncodeGlobal()}`
+      : `alipays://platformapi/startapp?appId=${
+          this.appId
+        }&page=${this.getEncodePage()}${this.getEncodeGlobal()}`
+  }
+  getEnterId = () => {
+    return (
+      this.pageInputQueries.find(
+        (e) => e.key === 'enterId' || e.key === 'enter'
+      )?.val ||
+      this.globalInputQueries.find(
+        (e) => e.key === 'enterId' || e.key === 'enter'
+      )?.val
+    )
+  }
+  getSourceOrigin = () => {
+    return (
+      this.pageInputQueries.find((e) => e.key === 'sourceOrigin')?.val ||
+      this.globalInputQueries.find((e) => e.key === 'sourceOrigin')?.val
+    )
   }
   setAppId = (appId) => {
     this.appId = appId
@@ -92,25 +107,13 @@ class UrlStore {
   setPageCheckData = (pageCheckData) => {
     this.pageCheckData = pageCheckData
   }
-  getUrl = () => {
-    return this.urlf
-  }
-  getEnterId = () => {
-    return this.enterId
-  }
-  getOrderFrom = () => {
-    return this.orderFrom
-  }
   clear = () => {
     this.appId = ''
     this.pagePath = ''
     this.pageCheckQueries = {}
     this.pageInputQueries = [{ key: '', val: '' }]
     this.globalInputQueries = [{ key: '', val: '' }]
-    this.name = ''
-    this.url = ''
-    this.enterId = ''
-    this.orderFrom = ''
+    this.linkName = ''
     this.pageCheckData = []
   }
 }

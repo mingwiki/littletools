@@ -83,6 +83,7 @@ const Component = observer(() => {
     globalInputQueries,
     linkName,
     pageCheckData,
+    getEnterId,
     getEncodedUrl,
     setAppId,
     setPagePath,
@@ -447,17 +448,23 @@ const Component = observer(() => {
                   }}>
                   存储当前链接
                 </Button>
-                <Button
-                  type='primary'
-                  style={{
-                    color: 'white',
-                    backgroundColor: '#74b816',
-                    border: 'none',
-                  }}>
-                  Enter ID查重
-                </Button>
+                {getEnterId() ? (
+                  <>
+                    <Button
+                      type='primary'
+                      style={{
+                        color: 'white',
+                        backgroundColor: '#cc5de8',
+                        border: 'none',
+                      }}>
+                      Enter ID查重
+                    </Button>
+                    <span>
+                      (当前为<b>{getEnterId()}</b>)
+                    </span>
+                  </>
+                ) : null}
               </StyledInputWrapper>
-
               <Space>
                 <Button
                   type='primary'
