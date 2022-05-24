@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useDeferredValue } from 'react'
+import React, { useState, useEffect, useDeferredValue, useContext } from 'react'
+import { observer } from 'mobx-react'
 import {
   Cascader,
   notification,
@@ -9,7 +10,6 @@ import {
   Checkbox,
   PageHeader,
   Layout,
-  Modal,
   Drawer,
   Typography,
   Badge,
@@ -20,16 +20,19 @@ import {
   DoubleRightOutlined,
   GroupOutlined,
   GlobalOutlined,
+  EditOutlined,
 } from '@ant-design/icons'
 import { miniAppIds, miniAppPages, miniAppPageExtra } from './data.js'
 import styled from 'styled-components'
 import QRCode from 'qrcode.react'
+import context from '../../stores'
 const { Text } = Typography
 const { Content } = Layout
 const StyledInputWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
+  align-items: center;
 `
 const StyledUrlWrapper = styled.p`
   word-wrap: break-word;
@@ -67,23 +70,28 @@ const cascaderData = Object.entries(miniAppPages).map((e) => {
   }
   return app
 })
-let pageCheckData = []
-const Component = () => {
+const Component = observer(() => {
   const [text, setText] = useState('小程序名称和对应页面')
-  const [appId, setAppId] = useState('')
-  const [pagePath, setPagePath] = useState('')
-  const [pageCheckQuerie, setPageCheckQuerie] = useState({})
-  const [pageInputQueries, setPageInputQueries] = useState([
-    { key: '', val: '' },
-  ])
-  const [globalInputQueries, setGlobalInputQueries] = useState([
-    { key: '', val: '' },
-  ])
   const [isShowPopover, setIsShowPopover] = useState(false)
-  const [isShowModel, setIsShowModel] = useState(false)
-  const [modelInput, setModelInput] = useState('')
   const [isShowDrawer, setIsShowDrawer] = useState(false)
   const [isShowDrawerQR, setIsShowDrawerQR] = useState([])
+  const { UserStore, UrlStore } = useContext(context)
+  const {
+    appId,
+    pagePath,
+    pageCheckQueries,
+    pageInputQueries,
+    globalInputQueries,
+    linkName,
+    pageCheckData,
+    setAppId,
+    setPagePath,
+    setPageCheckQueries,
+    setPageInputQueries,
+    setGlobalInputQueries,
+    setLinkName,
+    setPageCheckData,
+  } = UrlStore
   const onChangeAppPage = (value) => {
     setText(
       <>
@@ -95,7 +103,7 @@ const Component = () => {
     if (
       miniAppPageExtra[miniAppIds[value[0]]][miniAppPages[value[0]][value[1]]]
     ) {
-      pageCheckData = Object.entries(
+      setPageCheckData(Object.entries(
         miniAppPageExtra[miniAppIds[value[0]]][miniAppPages[value[0]][value[1]]]
       ).map((e) => {
         if (typeof e[1] === 'boolean') {
@@ -105,9 +113,9 @@ const Component = () => {
           e[1] = [e[1]]
         }
         return e
-      })
+      }))
     } else {
-      pageCheckData = []
+      setPageCheckData([])
     }
   }
   notification.config({
@@ -116,38 +124,38 @@ const Component = () => {
   })
   const pathUrl = `pages/${pagePath}`
   const pageCheckUrl =
-    Object.keys(pageCheckQuerie).length === 0
+    Object.keys(pageCheckQueries).length === 0
       ? ''
-      : Object.entries(pageCheckQuerie)
-        .map((e) => (e[1].length !== 0 ? `${e[0]}=${e[1]}` : ''))
-        .filter((e) => e !== '')
-        .join('&')
+      : Object.entries(pageCheckQueries)
+          .map((e) => (e[1].length !== 0 ? `${e[0]}=${e[1]}` : ''))
+          .filter((e) => e !== '')
+          .join('&')
   const pageInputUrl =
     pageInputQueries.length === 1 &&
-      pageInputQueries[0].key === '' &&
-      pageInputQueries[0].val === ''
+    pageInputQueries[0].key === '' &&
+    pageInputQueries[0].val === ''
       ? ''
       : pageInputQueries
-        .map((e) => (e.key !== '' && e.val !== '' ? `${e.key}=${e.val}` : ''))
-        .filter((e) => e !== '')
-        .join('&')
+          .map((e) => (e.key !== '' && e.val !== '' ? `${e.key}=${e.val}` : ''))
+          .filter((e) => e !== '')
+          .join('&')
   const globalInputUrl =
     globalInputQueries.length === 1 &&
-      globalInputQueries[0].key === '' &&
-      globalInputQueries[0].val === ''
+    globalInputQueries[0].key === '' &&
+    globalInputQueries[0].val === ''
       ? ''
       : globalInputQueries
-        .map((e) => (e.key !== '' && e.val !== '' ? `${e.key}=${e.val}` : ''))
-        .filter((e) => e !== '')
-        .join('&')
+          .map((e) => (e.key !== '' && e.val !== '' ? `${e.key}=${e.val}` : ''))
+          .filter((e) => e !== '')
+          .join('&')
   const encodePage = encodeURIComponent(
     pathUrl +
-    (pageCheckUrl === '' && pageInputUrl === '' && globalInputUrl === ''
-      ? ''
-      : '?') +
-    pageCheckUrl +
-    (pageCheckUrl !== '' && pageInputUrl !== '' ? '&' : '') +
-    pageInputUrl
+      (pageCheckUrl === '' && pageInputUrl === '' && globalInputUrl === ''
+        ? ''
+        : '?') +
+      pageCheckUrl +
+      (pageCheckUrl !== '' && pageInputUrl !== '' ? '&' : '') +
+      pageInputUrl
   )
   const encodeGlobal =
     (globalInputUrl !== '' ? '&query=' : '') +
@@ -176,18 +184,17 @@ const Component = () => {
         subTitle='帮助运营快速生成小程序链接'
         extra={[
           <Button
-            key='3'
+            key={1}
             danger
             onClick={() => {
               setText('小程序名称和对应页面')
               setAppId('')
               setPagePath('')
-              setPageCheckQuerie({})
+              setPageCheckQueries({})
               setPageInputQueries([{ key: '', val: '' }])
               setGlobalInputQueries([{ key: '', val: '' }])
+              setLinkName('')
               setIsShowPopover(false)
-              setIsShowModel(false)
-              setModelInput('')
               setIsShowDrawer(false)
               setIsShowDrawerQR([])
               notification.warning({ description: '页面数据已全部清除' })
@@ -195,106 +202,76 @@ const Component = () => {
             清空页面
           </Button>,
           <Button
-            key='2'
-            onClick={() => {
-              if (deferredEncodedUrl !== '') {
-                setIsShowModel(true)
-              } else {
-                notification.error({
-                  description: '当前链接地址为空，请检查。',
-                })
-              }
-            }}>
-            存储链接
-          </Button>,
-          <Button
-            key='1'
+            key={2}
             type='primary'
             onClick={() => {
               setIsShowDrawer(true)
             }}>
-            历史记录
+            {UserStore?.currentUser?.attributes?.realname}
+          </Button>,
+          <Button
+            key={3}
+            type='primary'
+            danger
+            onClick={() => UserStore.resetCurrentUser()}>
+            注销
           </Button>,
         ]}>
-        <Modal
-          centered
-          visible={isShowModel}
-          onOk={() => {
-            if (modelInput !== '') {
-              const temp =
-                JSON.parse(localStorage.getItem('encodedUrl_history')) || {}
-              temp[modelInput] = deferredEncodedUrl
-              localStorage.setItem('encodedUrl_history', JSON.stringify(temp))
-              setModelInput('')
-              notification.success({
-                description: '链接已存储，请查看历史记录。',
-              })
-            } else {
-              notification.error({ description: '链接名称不得为空' })
-            }
-            setIsShowModel(false)
-          }}
-          onCancel={() => setIsShowModel(false)}
-          okText='确认'
-          cancelText='取消'>
-          <p>请输入此链接的名字(必填，最长50位。)</p>
-          <StyledInput
-            type='text'
-            placeholder='XX项目'
-            value={modelInput}
-            pattern='.+'
-            maxLength='50'
-            style={{ width: '100%' }}
-            onChange={(e) => {
-              setModelInput(e.target.value)
-            }}
-          />
-        </Modal>
         <Drawer
-          title='历史记录'
+          title={`${UserStore?.currentUser?.attributes?.realname}的存储记录`}
           placement='right'
           onClose={() => setIsShowDrawer(false)}
           visible={isShowDrawer}>
           {Object.entries(
             JSON.parse(localStorage.getItem('encodedUrl_history')) || {}
-          ).sort((a, b) => a[0] < b[0] ? -1 : 1).map((e, idx) => (
-            <StyledHistoryLine key={idx}>
-              <Badge.Ribbon text={idx + 1}>
-                <Card title={<Text strong>{e[0]}</Text>} size="small" hoverable={true} type='inner'>
-                  <Space>
-                    <Button
-                      type='dashed'
-                      shape='round'
-                      onClick={() => {
-                        navigator.clipboard.writeText(e[1])
-                        notification.success({ description: '链接已复制到剪切板' })
-                      }}>
-                      点击复制链接
-                    </Button>
-                    <Popover
-                      content={<QRCode value={e[1]} size={200} />}
-                      title='请扫描二维码'
-                      trigger='click'
-                      visible={isShowDrawerQR[idx]}
-                      onVisibleChange={() => {
-                        const temp = [...isShowDrawerQR]
-                        temp[idx] = !temp[idx]
-                        setIsShowDrawerQR(temp)
-                      }}>
+          )
+            .sort((a, b) => (a[0] < b[0] ? -1 : 1))
+            .map((e, idx) => (
+              <StyledHistoryLine key={idx}>
+                <Badge.Ribbon text={idx + 1}>
+                  <Card
+                    title={<Text strong>{e[0]}</Text>}
+                    size='small'
+                    hoverable={true}
+                    type='inner'>
+                    <Space>
                       <Button
                         type='dashed'
                         shape='round'
                         onClick={() => {
-                          notification.info({ description: '查看历史链接二维码' })
+                          navigator.clipboard.writeText(e[1])
+                          notification.success({
+                            description: '链接已复制到剪切板',
+                          })
                         }}>
-                        点击查看二维码
+                        点击复制链接
                       </Button>
-                    </Popover>
-                  </Space>
-                </Card>
-              </Badge.Ribbon>
-            </StyledHistoryLine>
-          ))}
+                      <Popover
+                        content={<QRCode value={e[1]} size={200} />}
+                        title='请扫描二维码'
+                        trigger='click'
+                        visible={isShowDrawerQR[idx]}
+                        onVisibleChange={() => {
+                          const temp = [...isShowDrawerQR]
+                          temp[idx] = !temp[idx]
+                          setIsShowDrawerQR(temp)
+                        }}>
+                        <Button
+                          type='dashed'
+                          shape='round'
+                          onClick={() => {
+                            notification.info({
+                              description: '查看历史链接二维码',
+                            })
+                          }}>
+                          点击查看二维码
+                        </Button>
+                      </Popover>
+                    </Space>
+                  </Card>
+                </Badge.Ribbon>
+              </StyledHistoryLine>
+            ))}
         </Drawer>
       </PageHeader>
       <Content className='content'>
@@ -332,25 +309,25 @@ const Component = () => {
                 {pageCheckData.length === 0
                   ? null
                   : pageCheckData.map((val, idx) => {
-                    return (
-                      <div key={idx}>
-                        {val[0]}:{' '}
-                        <Checkbox.Group
-                          options={val[1]}
-                          value={pageCheckQuerie[val[0]]}
-                          onChange={(e) => {
-                            const temp = { ...pageCheckQuerie }
-                            e.length < 2
-                              ? (temp[val[0]] = e)
-                              : (temp[val[0]] = e.filter(
-                                (x) => !temp[val[0]].includes(x)
-                              ))
-                            setPageCheckQuerie(temp)
-                          }}
-                        />
-                      </div>
-                    )
-                  })}
+                      return (
+                        <div key={idx}>
+                          {val[0]}:{' '}
+                          <Checkbox.Group
+                            options={val[1]}
+                            value={pageCheckQueries[val[0]]}
+                            onChange={(e) => {
+                              const temp = { ...pageCheckQueries }
+                              e.length < 2
+                                ? (temp[val[0]] = e)
+                                : (temp[val[0]] = e.filter(
+                                    (x) => !temp[val[0]].includes(x)
+                                  ))
+                              setPageCheckQueries(temp)
+                            }}
+                          />
+                        </div>
+                      )
+                    })}
                 {pageInputQueries.map(({ key, val }, idx) => {
                   return (
                     <StyledInputWrapper key={idx}>
@@ -466,6 +443,63 @@ const Component = () => {
                 })}
               </ParamsWrapper>
               <StyledUrlWrapper>{deferredEncodedUrl}</StyledUrlWrapper>
+              <StyledInputWrapper>
+                <EditOutlined />
+                <StyledInput
+                  type='text'
+                  placeholder='请输入一个链接名称，最长50位'
+                  value={linkName}
+                  pattern='.+'
+                  maxLength='50'
+                  autoFocus={true}
+                  style={{ width: '50%', border: '2px dotted' }}
+                  onChange={(e) => {
+                    setLinkName(e.target.value)
+                  }}
+                />
+                <Button
+                  type='primary'
+                  style={{
+                    color: 'white',
+                    backgroundColor: '#74b816',
+                    border: 'none',
+                  }}
+                  onClick={() => {
+                    if (deferredEncodedUrl === '') {
+                      notification.error({
+                        description: '当前链接地址为空，请检查。',
+                      })
+                    } else if (linkName !== '') {
+                      const temp =
+                        JSON.parse(
+                          localStorage.getItem('encodedUrl_history')
+                        ) || {}
+                      temp[linkName] = deferredEncodedUrl
+                      localStorage.setItem(
+                        'encodedUrl_history',
+                        JSON.stringify(temp)
+                      )
+                      setLinkName('')
+                      notification.success({
+                        description: '链接已存储，请查看历史记录。',
+                      })
+                    } else {
+                      notification.error({ description: '链接名称不得为空' })
+                    }
+                  }}>
+                  存储当前链接
+                </Button>
+                <Button
+                  type='primary'
+                  style={{
+                    color: 'white',
+                    backgroundColor: '#74b816',
+                    border: 'none',
+                  }}>
+                  Enter ID查重
+                </Button>
+              </StyledInputWrapper>
+
               <Space>
                 <Button
                   type='primary'
@@ -490,12 +524,15 @@ const Component = () => {
                   </Button>
                 </Popover>
               </Space>
+              {
+                '（如链接有效请务必点击存储进行上传，以便对链接在云端汇总，从而实现Enter ID查重等操作。）'
+              }
             </>
           )}
         </div>
       </Content>
     </>
   )
-}
+})
 
 export default Component

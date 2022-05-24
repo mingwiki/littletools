@@ -49,7 +49,7 @@ const Component = () => {
           autoComplete="off"
         >
           <Form.Item
-            label="真实姓名"
+            label="姓名或昵称"
             name="realname"
             hasFeedback
             rules={[
@@ -63,7 +63,7 @@ const Component = () => {
                   }
                   return Promise.reject(
                     new Error(
-                      '请输入中文姓名，不能包含特殊字符或英文，2~5位'
+                      '请输入中文字符，不能包含特殊字符或英文，2~5位'
                     )
                   )
                 },
@@ -87,7 +87,7 @@ const Component = () => {
                   }
                   return Promise.reject(
                     new Error(
-                      '请输入英文用户名，不能包含特殊字符或中文，最少1位'
+                      '请输入英文字符，不能包含特殊字符或中文，最少1位'
                     )
                   )
                 },

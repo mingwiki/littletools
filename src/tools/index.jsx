@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react'
 import { Layout } from 'antd'
 import { appTitle } from '../main'
+import context from '../stores'
+import { observer } from 'mobx-react'
 
 export const No1 = React.lazy(() => import('./No1'))
 export const Empty = () => {
@@ -10,7 +12,8 @@ export const Empty = () => {
 }
 
 const { Header, Content } = Layout
-const Component = () => {
+const Component = observer(() => {
+  const { UserStore } = React.useContext(context)
   useEffect(() => {
     document.title = appTitle
   }, [])
@@ -19,7 +22,7 @@ const Component = () => {
       <Header className="site-layout-sub-header-background" style={{ padding: 0 }} />
       <Content className="content">
         <div className="site-layout-background" style={{ padding: 24, minHeight: 360, display: 'flex', flexDirection: 'column', gap: 20 }} >
-          <div style={{ fontSize: 50 }}>欢迎使用，《{appTitle}》</div>
+          <div style={{ fontSize: 50 }}>欢迎使用，{UserStore?.currentUser?.attributes?.realname || `《${appTitle}》`}</div>
           <div>有任何建议或意见请提Issue或Pull Request</div>
           <div>仓库地址：<a href="//github.com/mingwiki/toolkits" target="_blank" rel="noreferrer">github.com/mingwiki/toolkits</a></div>
           <div>镜像地址：<a href="//gitee.com/mingwiki/toolkits" target="_blank" rel="noreferrer">gitee.com/mingwiki/toolkits</a></div>
@@ -30,5 +33,5 @@ const Component = () => {
       </Content>
     </>
   )
-}
+})
 export default Component

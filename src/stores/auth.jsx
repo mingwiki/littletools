@@ -11,16 +11,16 @@ class AuthStore {
   constructor() {
     makeAutoObservable(this)
   }
-  setUsername(username) {
+  setUsername = (username) => {
     this.values.username = username
   }
-  setPassword(password) {
+  setPassword = (password) => {
     this.values.password = password
   }
-  setRealname(realname) {
+  setRealname = (realname) => {
     this.values.realname = realname
   }
-  login() {
+  login = () => {
     return new Promise((resolve, reject) => {
       Auth.login(this.values.username, this.values.password)
         .then((user) => {
@@ -33,9 +33,13 @@ class AuthStore {
         })
     })
   }
-  register() {
+  register = () => {
     return new Promise((resolve, reject) => {
-      Auth.register(this.values.username, this.values.password, this.values.realname)
+      Auth.register(
+        this.values.username,
+        this.values.password,
+        this.values.realname
+      )
         .then((user) => {
           UserStore.getCurrentUser()
           resolve(user)
@@ -46,7 +50,7 @@ class AuthStore {
         })
     })
   }
-  logout() {
+  logout = () => {
     UserStore.resetCurrentUser()
     this.values = {
       username: '',
