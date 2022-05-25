@@ -71,6 +71,26 @@ const Url = {
       )
     })
   },
+  uploadAllbyArr(urls) {
+    return new Promise((resolve, reject) => {
+      const objects = []
+      urls.map((value) => {
+        const avObj = new AV.Object('toolkits_01')
+        avObj.set('name', value.key)
+        avObj.set('url', value.val)
+        avObj.set('enterId', splitEnterId(value.val))
+        avObj.set('sourceOrigin', splitSourceOrigin(value.val))
+        avObj.set('appId', splitAppId(value.val))
+        avObj.set('pagePath', splitPagePath(value.val))
+        avObj.set('owner', AV.User.current())
+        objects.push(avObj)
+      })
+      AV.Object.saveAll(objects).then(
+        (res) => resolve(res),
+        (error) => reject(error)
+      )
+    })
+  },
   checkEnterId(url) {
     const avQuery = new AV.Query('toolkits_01')
     avQuery.equalTo('appId', splitAppId(url))

@@ -232,7 +232,7 @@ const Component = observer(() => {
                         pattern='^[A-Za-z](\w)*'
                         onChange={(e) => {
                           const temp = [...pageInputQueries]
-                          temp[idx].key = e.target.value
+                          temp[idx].key = e.target.value.trim()
                           setPageInputQueries(temp)
                         }}
                       />
@@ -244,7 +244,7 @@ const Component = observer(() => {
                         pattern='(\w)*'
                         onChange={(e) => {
                           const temp = [...pageInputQueries]
-                          temp[idx].val = e.target.value
+                          temp[idx].val = e.target.value.trim()
                           setPageInputQueries(temp)
                         }}
                       />
@@ -291,7 +291,7 @@ const Component = observer(() => {
                         pattern='^[A-Za-z](\w)*'
                         onChange={(e) => {
                           const temp = [...globalInputQueries]
-                          temp[idx].key = e.target.value
+                          temp[idx].key = e.target.value.trim()
                           setGlobalInputQueries(temp)
                         }}
                       />
@@ -303,7 +303,7 @@ const Component = observer(() => {
                         pattern='(\w)*'
                         onChange={(e) => {
                           const temp = [...globalInputQueries]
-                          temp[idx].val = e.target.value
+                          temp[idx].val = e.target.value.trim()
                           setGlobalInputQueries(temp)
                         }}
                       />
@@ -347,7 +347,7 @@ const Component = observer(() => {
                   autoFocus={true}
                   style={{ width: '25%', border: '2px dotted' }}
                   onChange={(e) => {
-                    setLinkName(e.target.value)
+                    setLinkName(e.target.value.trim())
                   }}
                 />
                 <Button

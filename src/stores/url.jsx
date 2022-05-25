@@ -1,5 +1,6 @@
 import { makeAutoObservable } from 'mobx'
 import { Url } from '../models/index'
+import { miniAppIds, miniAppPages } from '../tools/No1/data'
 class UrlStore {
   appId = null
   pagePath = ''
@@ -86,7 +87,7 @@ class UrlStore {
     this.globalInputQueries = globalInputQueries
   }
   setLinkName = (linkName) => {
-    this.linkName = linkName.trim()
+    this.linkName = linkName
   }
   setPageCheckData = (pageCheckData) => {
     this.pageCheckData = pageCheckData
@@ -128,6 +129,20 @@ class UrlStore {
       temp[1].split('&').map((e) => e.split('='))
     )
     return query['page']
+  }
+  getPageType = (url) => {
+    return [
+      Object.entries(miniAppIds).find(
+        ([key, val]) => val === this.splitAppId(url)
+      )?.[0],
+      Object.entries(
+        miniAppPages?.[
+          Object.entries(miniAppIds).find(
+            ([key, val]) => val === this.splitAppId(url)
+          )?.[0]
+        ]
+      ).find(([key, val]) => val === this.splitPagePath(url))?.[0],
+    ]
   }
   checkEnterId = (url) => {
     return new Promise((resolve, reject) => {
@@ -183,6 +198,18 @@ class UrlStore {
   uploadAll = (urls) => {
     return new Promise((resolve, reject) => {
       Url.uploadAll(urls).then(
+        (res) => {
+          resolve(res)
+        },
+        (error) => {
+          reject(error)
+        }
+      )
+    })
+  }
+  uploadAllbyArr = (urls) => {
+    return new Promise((resolve, reject) => {
+      Url.uploadAllbyArr(urls).then(
         (res) => {
           resolve(res)
         },
