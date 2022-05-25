@@ -2,7 +2,7 @@ import { makeAutoObservable } from 'mobx'
 import { Auth } from '../models/index'
 import UserStore from './user'
 import UrlStore from './url'
-import DrawerStore from './drawer'
+import DrawerStore from './userCenter'
 
 class AuthStore {
   values = {

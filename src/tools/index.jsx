@@ -6,6 +6,7 @@ import { observer } from 'mobx-react'
 
 export const No1 = React.lazy(() => import('./No1'))
 export const No2 = React.lazy(() => import('./No2'))
+export const No3 = React.lazy(() => import('./No3'))
 export const Empty = () => {
   return <h1>此页面不存在，请检查网址是否正确。</h1>
 }

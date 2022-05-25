@@ -3,7 +3,6 @@ import React, {
   useEffect,
   useDeferredValue,
   useContext,
-  useCallback,
 } from 'react'
 import { observer } from 'mobx-react'
 import {
@@ -30,7 +29,6 @@ import styled from 'styled-components'
 import QRCode from 'qrcode.react'
 import context from '../../stores'
 
-const Drawer = React.lazy(() => import('./Drawer'))
 const { Text } = Typography
 const { Content } = Layout
 const StyledInputWrapper = styled.div`
@@ -74,9 +72,7 @@ const cascaderData = Object.entries(miniAppPages).map((e) => {
 })
 const Component = observer(() => {
   const [isShowPopover, setIsShowPopover] = useState(false)
-  const { AuthStore, UserStore, UrlStore, DrawerStore } = useContext(context)
-  const { logout } = AuthStore
-  const { currentUser } = UserStore
+  const { UrlStore } = useContext(context)
   const {
     textInfo,
     appId,
@@ -101,7 +97,6 @@ const Component = observer(() => {
     checkEnterId,
     uploadUrl,
   } = UrlStore
-  const { visible, setVisible, setIsSyncing } = DrawerStore
   const deferredEncodedUrl = useDeferredValue(getEncodedUrl())
   const onChangeAppPage = (value) => {
     setTextInfo(
@@ -109,8 +104,6 @@ const Component = observer(() => {
         {value[0]} <DoubleRightOutlined /> {value[1]}
       </>
     )
-    console.log(value)
-    console.log(textInfo)
     setAppId(miniAppIds[value[0]])
     setPagePath(miniAppPages[value[0]][value[1]])
     if (
@@ -156,26 +149,13 @@ const Component = observer(() => {
             onClick={() => {
               setTextInfo('小程序名称和对应页面')
               setIsShowPopover(false)
-              setVisible(false)
               clear()
               notification.warning({ description: '页面数据已全部清除' })
             }}>
             清空页面
           </Button>,
-          <Button
-            key={2}
-            type='primary'
-            onClick={() => {
-              setVisible(true)
-            }}>
-            {currentUser?.attributes?.realname}
-          </Button>,
-          <Button key={3} type='primary' danger onClick={() => logout()}>
-            注销
-          </Button>,
         ]}
       />
-      {visible && <Drawer />}
       <Content className='content'>
         <div
           className='site-layout-background'
@@ -372,7 +352,6 @@ const Component = observer(() => {
                         description: '当前链接地址为空，请检查。',
                       })
                     } else if (linkName !== '') {
-                      setIsSyncing(true)
                       uploadUrl({
                         name: linkName,
                         url: deferredEncodedUrl,
@@ -397,7 +376,6 @@ const Component = observer(() => {
                           }
                         )
                         .finally(() => {
-                          setIsSyncing(false)
                           setLinkName('')
                         })
                     } else {

@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react'
-import React, { useState, useContext } from 'react'
+import React, { useContext } from 'react'
 import {
   Button,
   PageHeader,
@@ -8,12 +8,11 @@ import {
   notification,
   Table,
   Divider,
-  Space
+  Space,
 } from 'antd'
 import styled from 'styled-components'
 import InputContext from './inputs'
-import context from '../../stores'
-const Drawer = React.lazy(() => import('../No1/Drawer'))
+
 const { Text } = Typography
 const { Content } = Layout
 const StyledInputWrapper = styled.div`
@@ -29,11 +28,7 @@ const StyledInput = styled.input`
 `
 const Component = observer(() => {
   const Inputs = useContext(InputContext)
-  const { AuthStore, UserStore, DrawerStore } = useContext(context)
-  const { visible, setVisible } = DrawerStore
   const { data, setData, getDataSource, clear, upload } = Inputs
-  const { logout } = AuthStore
-  const { currentUser } = UserStore
   const columns = [
     {
       title: '链接名称',
@@ -116,26 +111,13 @@ const Component = observer(() => {
             key={1}
             danger
             onClick={() => {
-              setVisible(false)
               clear()
               notification.warning({ description: '页面数据已全部清除' })
             }}>
             清空页面
           </Button>,
-          <Button
-            key={2}
-            type='primary'
-            onClick={() => {
-              setVisible(true)
-            }}>
-            {currentUser?.attributes?.realname}
-          </Button>,
-          <Button key={3} type='primary' danger onClick={() => logout()}>
-            注销
-          </Button>,
         ]}
       />
-      {visible && <Drawer />}
       <Content className='content'>
         <div
           className='site-layout-background'
@@ -232,7 +214,9 @@ const Component = observer(() => {
                   }}>
                   上传上表所有链接
                 </Button>
-                <Text>此页面不对入口ID或订单来源进行查重，请检查好后再上传。</Text>
+                <Text>
+                  此页面不对入口ID或订单来源进行查重，请检查好后再上传。
+                </Text>
               </Space>
             </div>
           )}
