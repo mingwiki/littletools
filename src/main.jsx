@@ -1,7 +1,11 @@
 import React from 'react'
 import { Route } from 'react-router-dom'
 import { Link } from 'react-router-dom'
-import { LinkOutlined, CloudUploadOutlined } from '@ant-design/icons'
+import {
+  LinkOutlined,
+  CloudUploadOutlined,
+  UserOutlined,
+} from '@ant-design/icons'
 import { Login, Register } from './pages'
 import { No1, No2, No3 } from './tools'
 
@@ -29,7 +33,7 @@ export const sidebar = [
   },
   {
     key: '3',
-    icon: <CloudUploadOutlined />,
+    icon: <UserOutlined />,
     label: <Link to='03'>个人中心</Link>,
   },
 ]
