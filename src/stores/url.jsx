@@ -1,6 +1,6 @@
 import { makeAutoObservable } from 'mobx'
 import { Url } from '../models/index'
-import { miniAppIds, miniAppPages } from '../tools/No1/data'
+import { miniAppIds, miniAppPages } from '../data'
 class UrlStore {
   textInfo = '小程序名称和对应页面'
   appId = null
@@ -187,6 +187,18 @@ class UrlStore {
   queryAll = () => {
     return new Promise((resolve, reject) => {
       Url.queryAll().then(
+        (res) => {
+          resolve(res)
+        },
+        (error) => {
+          reject(error)
+        }
+      )
+    })
+  }
+  queryAllByCondition = (appId,pagePath) => {
+    return new Promise((resolve, reject) => {
+      Url.queryAllByCondition(appId,pagePath).then(
         (res) => {
           resolve(res)
         },

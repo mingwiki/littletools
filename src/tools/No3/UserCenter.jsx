@@ -11,14 +11,26 @@ import {
   Card,
   Popover,
   Spin,
+  Cascader,
 } from 'antd'
-import { DeleteOutlined } from '@ant-design/icons'
+import { DeleteOutlined, DoubleRightOutlined } from '@ant-design/icons'
 import styled from 'styled-components'
 import QRCode from 'qrcode.react'
 import context from '../../stores'
+import {
+  cascaderData,
+  miniAppIds,
+  miniAppPages,
+  miniAppPageExtra,
+} from '../../data'
 
 const StyledHistoryLine = styled.div`
   margin-bottom: 10px;
+`
+const CardFlex = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 `
 const { Text } = Typography
 const { Content } = Layout
@@ -29,7 +41,19 @@ const Component = observer(() => {
   const { currentUser } = UserStore
   const { isSyncing, localUrls, setIsSyncing, setLocalUrls, clear } =
     UserCenterStore
-  const { queryAll, deleteUrl, uploadAll } = UrlStore
+  const {
+    textInfo,
+    appId,
+    pagePath,
+    setTextInfo,
+    setAppId,
+    setPagePath,
+    setPageCheckData,
+    queryAll,
+    queryAllByCondition,
+    deleteUrl,
+    uploadAll,
+  } = UrlStore
   const [isShowDrawerQR, setIsShowDrawerQR] = useState([])
   const [syncOldErr, setSyncOldErr] = useState(false)
   const syncOld = (urls) => {
@@ -52,7 +76,6 @@ const Component = observer(() => {
       .finally(() => {
         setIsSyncing(false)
         if (!syncOldErr) localStorage.removeItem('encodedUrl_history')
-        syncPull()
       })
   }
   const syncPull = () => {
@@ -81,6 +104,62 @@ const Component = observer(() => {
         setIsSyncing(false)
       })
   }
+  const syncPullByCondition = (appId, pagePath) => {
+    setIsSyncing(true)
+    queryAllByCondition(appId, pagePath)
+      .then(
+        (res) => {
+          setIsShowDrawerQR(new Array(Object.entries(res).length).fill(false))
+          setLocalUrls(res)
+          if (Object.entries(res).length === 0) {
+            notification.info({
+              description: `暂无数据`,
+            })
+          } else {
+            notification.success({
+              description: `同步成功`,
+            })
+          }
+        },
+        (error) => {
+          notification.error({ description: `上传失败请联系开发人员` })
+          notification.error({ description: JSON.stringify(error) })
+        }
+      )
+      .finally(() => {
+        setIsSyncing(false)
+      })
+  }
+  const onChangeAppPage = (value) => {
+    setTextInfo(
+      <>
+        {value[0]} <DoubleRightOutlined /> {value[1]}
+      </>
+    )
+    setAppId(miniAppIds[value[0]])
+    setPagePath(miniAppPages[value[0]][value[1]])
+    if (
+      miniAppPageExtra[miniAppIds[value[0]]][miniAppPages[value[0]][value[1]]]
+    ) {
+      setPageCheckData(
+        Object.entries(
+          miniAppPageExtra[miniAppIds[value[0]]][
+            miniAppPages[value[0]][value[1]]
+          ]
+        ).map((e) => {
+          if (typeof e[1] === 'boolean') {
+            e[1] = e[1].toString()
+          }
+          if (!Array.isArray(e[1])) {
+            e[1] = [e[1]]
+          }
+          return e
+        })
+      )
+    } else {
+      setPageCheckData([])
+    }
+  }
   return (
     <>
       <PageHeader
@@ -89,6 +168,20 @@ const Component = observer(() => {
         title='No. 3'
         subTitle='个人中心管理面板'
         extra={[
+          localStorage.getItem('encodedUrl_history') && (
+            <Button
+              key={0}
+              type='primary'
+              danger
+              onClick={() => {
+                syncOld(JSON.parse(localStorage.getItem('encodedUrl_history')))
+              }}>
+              上传本地存储数据
+            </Button>
+          ),
+          <Button key={1} type='primary' danger onClick={() => syncPull()}>
+            查询所有数据
+          </Button>,
           <Button key={2} type='primary'>
             {currentUser?.attributes?.realname}
           </Button>,
@@ -107,18 +200,25 @@ const Component = observer(() => {
             flexDirection: 'column',
             gap: 20,
           }}>
-          {currentUser?.attributes?.realname}的上传记录
-          <Button
-            type='link'
-            onClick={() => {
-              if (localStorage.getItem('encodedUrl_history')) {
-                syncOld(JSON.parse(localStorage.getItem('encodedUrl_history')))
-              } else {
-                syncPull()
-              }
-            }}>
-            云同步
-          </Button>
+          <Space>
+            <Cascader
+              options={cascaderData}
+              onChange={onChangeAppPage}
+              size='large'
+              notFoundContent='无数据'>
+              <a href='/#'>点击选择或切换</a>
+            </Cascader>
+            {textInfo}
+            {appId && pagePath ? (
+              <Button
+                type='primary'
+                onClick={() => {
+                  syncPullByCondition(appId, pagePath)
+                }}>
+                查询此页面对应数据
+              </Button>
+            ) : null}
+          </Space>
           {!isSyncing ? (
             localUrls?.length > 0 ? (
               localUrls
@@ -132,56 +232,61 @@ const Component = observer(() => {
                         size='small'
                         hoverable={true}
                         type='inner'>
-                        <Space>
-                          <Button
-                            type='dashed'
-                            shape='round'
-                            onClick={() => {
-                              navigator.clipboard.writeText(e?.attributes?.url)
-                              notification.success({
-                                description: '链接已复制到剪切板',
-                              })
-                            }}>
-                            点击复制链接
-                          </Button>
-                          <Popover
-                            content={
-                              <QRCode value={e?.attributes?.url} size={200} />
-                            }
-                            title='请扫描二维码'
-                            trigger='click'
-                            visible={isShowDrawerQR[idx]}
-                            onVisibleChange={() => {
-                              const temp = [...isShowDrawerQR]
-                              temp[idx] = !temp[idx]
-                              setIsShowDrawerQR(temp)
-                            }}>
+                        <CardFlex>
+                          sfsf
+                          <Space>
                             <Button
                               type='dashed'
                               shape='round'
                               onClick={() => {
-                                notification.info({
-                                  description: '查看历史链接二维码',
+                                navigator.clipboard.writeText(
+                                  e?.attributes?.url
+                                )
+                                notification.success({
+                                  description: '链接已复制到剪切板',
                                 })
                               }}>
-                              点击查看二维码
+                              点击复制链接
                             </Button>
-                          </Popover>
-                          <DeleteOutlined
-                            style={{ color: 'red' }}
-                            onClick={() => {
-                              localUrls.splice(idx, 1)
-                              setLocalUrls(localUrls)
-                              deleteUrl(e.id)
-                            }}
-                          />
-                        </Space>
+                            <Popover
+                              content={
+                                <QRCode value={e?.attributes?.url} size={200} />
+                              }
+                              title='请扫描二维码'
+                              trigger='click'
+                              visible={isShowDrawerQR[idx]}
+                              onVisibleChange={() => {
+                                const temp = [...isShowDrawerQR]
+                                temp[idx] = !temp[idx]
+                                setIsShowDrawerQR(temp)
+                              }}>
+                              <Button
+                                type='dashed'
+                                shape='round'
+                                onClick={() => {
+                                  notification.info({
+                                    description: '查看历史链接二维码',
+                                  })
+                                }}>
+                                点击查看二维码
+                              </Button>
+                            </Popover>
+                            <DeleteOutlined
+                              style={{ color: 'red' }}
+                              onClick={() => {
+                                localUrls.splice(idx, 1)
+                                setLocalUrls(localUrls)
+                                deleteUrl(e.id)
+                              }}
+                            />
+                          </Space>
+                        </CardFlex>
                       </Card>
                     </Badge.Ribbon>
                   </StyledHistoryLine>
                 ))
             ) : (
-              <div>请点击云同步或上传链接</div>
+              <div>请根据筛选条件查询所需数据</div>
             )
           ) : (
             <Spin tip='正在和云服务器同步数据' size='large' />

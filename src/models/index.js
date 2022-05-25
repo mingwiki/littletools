@@ -125,6 +125,18 @@ const Url = {
       )
     })
   },
+  queryAllByCondition(appId, pagePath) {
+    const avQuery = new AV.Query('toolkits_01')
+    avQuery.equalTo('appId', appId)
+    avQuery.equalTo('pagePath', pagePath)
+    avQuery.equalTo('owner', AV.User.current())
+    return new Promise((resolve, reject) => {
+      avQuery.find().then(
+        (result) => resolve(result),
+        (error) => reject(error)
+      )
+    })
+  },
   delete(id) {
     const temp = AV.Object.createWithoutData('toolkits_01', id)
     temp.destroy()

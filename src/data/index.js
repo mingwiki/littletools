@@ -60,3 +60,17 @@ export const miniAppPageExtra = {
   },
   2021003120640616: {},
 }
+export const cascaderData = Object.entries(miniAppPages).map((e) => {
+  const app = {
+    value: e[0],
+    label: e[0],
+    children: Object.keys(e[1]).map((e) => {
+      const page = {
+        value: e,
+        label: e,
+      }
+      return page
+    }),
+  }
+  return app
+})

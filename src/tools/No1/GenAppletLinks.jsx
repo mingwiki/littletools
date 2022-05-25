@@ -1,9 +1,4 @@
-import React, {
-  useState,
-  useEffect,
-  useDeferredValue,
-  useContext,
-} from 'react'
+import React, { useState, useEffect, useDeferredValue, useContext } from 'react'
 import { observer } from 'mobx-react'
 import {
   Cascader,
@@ -24,11 +19,15 @@ import {
   GlobalOutlined,
   EditOutlined,
 } from '@ant-design/icons'
-import { miniAppIds, miniAppPages, miniAppPageExtra } from './data.js'
 import styled from 'styled-components'
 import QRCode from 'qrcode.react'
 import context from '../../stores'
-
+import {
+  cascaderData,
+  miniAppIds,
+  miniAppPages,
+  miniAppPageExtra,
+} from '../../data'
 const { Text } = Typography
 const { Content } = Layout
 const StyledInputWrapper = styled.div`
@@ -56,20 +55,6 @@ const StyledInput = styled.input`
     background-color: red;
   }
 `
-const cascaderData = Object.entries(miniAppPages).map((e) => {
-  const app = {
-    value: e[0],
-    label: e[0],
-    children: Object.keys(e[1]).map((e) => {
-      const page = {
-        value: e,
-        label: e,
-      }
-      return page
-    }),
-  }
-  return app
-})
 const Component = observer(() => {
   const [isShowPopover, setIsShowPopover] = useState(false)
   const { UrlStore } = useContext(context)
@@ -177,7 +162,7 @@ const Component = observer(() => {
               onChange={onChangeAppPage}
               size='large'
               notFoundContent='无数据'>
-              <a href='/#'>点击选择</a>
+              <a href='/#'>点击选择或切换</a>
             </Cascader>
             &nbsp;
             {textInfo}
