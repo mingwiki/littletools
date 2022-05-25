@@ -18,5 +18,4 @@ class UserCenterStore {
     this.localUrls = []
   }
 }
-
 export default new UserCenterStore()

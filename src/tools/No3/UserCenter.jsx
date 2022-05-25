@@ -182,7 +182,11 @@ const Component = observer(() => {
           <Button key={1} type='primary' danger onClick={() => syncPull()}>
             查询所有数据
           </Button>,
-          <Button key={2} type='primary'>
+          <Button
+            key={2}
+            type='primary'
+            disabled
+            style={{ backgroundColor: '#66a80f', color: 'white' }}>
             {currentUser?.attributes?.realname}
           </Button>,
           <Button key={3} type='primary' danger onClick={() => logout()}>
@@ -206,9 +210,16 @@ const Component = observer(() => {
               onChange={onChangeAppPage}
               size='large'
               notFoundContent='无数据'>
-              <a href='/#'>点击选择或切换</a>
+              <a href='/#'>
+                <Button type='primary'>点击选择或切换</Button>
+              </a>
             </Cascader>
-            {textInfo}
+            <Button
+              type='dashed'
+              disabled
+              style={{ backgroundColor: '#ffc9c9', color: '#ff3300' }}>
+              {textInfo}
+            </Button>
             {appId && pagePath ? (
               <Button
                 type='primary'
@@ -233,7 +244,19 @@ const Component = observer(() => {
                         hoverable={true}
                         type='inner'>
                         <CardFlex>
-                          sfsf
+                          <Space>
+                            {e?.attributes?.enterId?.length > 0 && (
+                              <Text code>
+                                入口ID: {e?.attributes?.enterId.join(', ')}
+                              </Text>
+                            )}
+                            {e?.attributes?.sourceOrigin?.length > 0 && (
+                              <Text code>
+                                订单来源:{' '}
+                                {e?.attributes?.sourceOrigin.join(', ')}
+                              </Text>
+                            )}
+                          </Space>
                           <Space>
                             <Button
                               type='dashed'
@@ -286,7 +309,7 @@ const Component = observer(() => {
                   </StyledHistoryLine>
                 ))
             ) : (
-              <div>请根据筛选条件查询所需数据</div>
+              <Text strong>请根据筛选条件查询所需数据</Text>
             )
           ) : (
             <Spin tip='正在和云服务器同步数据' size='large' />

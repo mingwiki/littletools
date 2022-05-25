@@ -156,17 +156,23 @@ const Component = observer(() => {
               <AlipayCircleOutlined /> Alipay 协议
             </Radio>
           </Radio.Group>
-          <div>
+          <Space>
             <Cascader
               options={cascaderData}
               onChange={onChangeAppPage}
               size='large'
               notFoundContent='无数据'>
-              <a href='/#'>点击选择或切换</a>
+              <a href='/#'>
+                <Button type='primary'>点击选择或切换</Button>
+              </a>
             </Cascader>
-            &nbsp;
-            {textInfo}
-          </div>
+            <Button
+              type='dashed'
+              disabled
+              style={{ backgroundColor: '#ffc9c9', color: '#ff3300' }}>
+              {textInfo}
+            </Button>
+          </Space>
           {!deferredEncodedUrl ? null : (
             <>
               <ParamsWrapper>
