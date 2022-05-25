@@ -92,8 +92,6 @@ const Component = observer(() => {
     clear,
     splitEnterId,
     splitSourceOrigin,
-    splitAppId,
-    splitPagePath,
   } = UrlStore
   const { visible, setVisible, setIsSyncing, checkEnterId, uploadUrl } =
     DrawerStore
@@ -375,8 +373,8 @@ const Component = observer(() => {
                         url: deferredEncodedUrl,
                         enterId: splitEnterId(deferredEncodedUrl),
                         sourceOrigin: splitSourceOrigin(deferredEncodedUrl),
-                        appId: splitAppId(deferredEncodedUrl),
-                        pagePath: splitPagePath(deferredEncodedUrl),
+                        appId: appId,
+                        pagePath: pagePath,
                       })
                         .then(
                           (res) => {

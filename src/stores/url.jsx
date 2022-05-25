@@ -132,7 +132,6 @@ class UrlStore {
     const query = Object.fromEntries(
       temp[1].split('&').map((e) => e.split('='))
     )
-    console.log(query)
     return query['appId']
   }
   splitPagePath = (url) => {

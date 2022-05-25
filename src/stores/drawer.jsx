@@ -42,9 +42,9 @@ class DrawerStore {
       )
     })
   }
-  uploadUrl = ({ name, url, enterId, sourceOrigin }) => {
+  uploadUrl = ({ name, url, enterId, sourceOrigin, appId, pagePath }) => {
     return new Promise((resolve, reject) => {
-      Url.upload({ name, url, enterId, sourceOrigin }).then(
+      Url.upload({ name, url, enterId, sourceOrigin, appId, pagePath }).then(
         (res) => {
           resolve(res)
         },
