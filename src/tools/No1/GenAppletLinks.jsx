@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useDeferredValue, useContext } from 'react'
+import React, {
+  useState,
+  useEffect,
+  useDeferredValue,
+  useContext,
+  useCallback,
+} from 'react'
 import { observer } from 'mobx-react'
 import {
   Cascader,
@@ -67,12 +73,12 @@ const cascaderData = Object.entries(miniAppPages).map((e) => {
   return app
 })
 const Component = observer(() => {
-  const [text, setText] = useState('小程序名称和对应页面')
   const [isShowPopover, setIsShowPopover] = useState(false)
   const { AuthStore, UserStore, UrlStore, DrawerStore } = useContext(context)
   const { logout } = AuthStore
   const { currentUser } = UserStore
   const {
+    textInfo,
     appId,
     pagePath,
     pageCheckQueries,
@@ -81,6 +87,7 @@ const Component = observer(() => {
     linkName,
     pageCheckData,
     getEncodedUrl,
+    setTextInfo,
     setAppId,
     setPagePath,
     setPageCheckQueries,
@@ -97,11 +104,13 @@ const Component = observer(() => {
   const { visible, setVisible, setIsSyncing } = DrawerStore
   const deferredEncodedUrl = useDeferredValue(getEncodedUrl())
   const onChangeAppPage = (value) => {
-    setText(
+    setTextInfo(
       <>
         {value[0]} <DoubleRightOutlined /> {value[1]}
       </>
     )
+    console.log(value)
+    console.log(textInfo)
     setAppId(miniAppIds[value[0]])
     setPagePath(miniAppPages[value[0]][value[1]])
     if (
@@ -145,7 +154,7 @@ const Component = observer(() => {
             key={1}
             danger
             onClick={() => {
-              setText('小程序名称和对应页面')
+              setTextInfo('小程序名称和对应页面')
               setIsShowPopover(false)
               setVisible(false)
               clear()
@@ -191,7 +200,7 @@ const Component = observer(() => {
               <a href='/#'>点击选择</a>
             </Cascader>
             &nbsp;
-            {text}
+            {textInfo}
           </div>
           {!deferredEncodedUrl ? null : (
             <>

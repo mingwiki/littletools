@@ -2,6 +2,7 @@ import { makeAutoObservable } from 'mobx'
 import { Url } from '../models/index'
 import { miniAppIds, miniAppPages } from '../tools/No1/data'
 class UrlStore {
+  textInfo = '小程序名称和对应页面'
   appId = null
   pagePath = ''
   pageCheckQueries = {}
@@ -70,6 +71,9 @@ class UrlStore {
       : `alipays://platformapi/startapp?appId=${
           this.appId
         }&page=${this.getEncodePage()}${this.getEncodeGlobal()}`
+  }
+  setTextInfo = (textInfo) => {
+    this.textInfo = textInfo
   }
   setAppId = (appId) => {
     this.appId = appId
