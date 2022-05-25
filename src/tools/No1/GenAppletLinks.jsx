@@ -169,7 +169,7 @@ const Component = observer(() => {
             <Button
               type='dashed'
               disabled
-              style={{ backgroundColor: '#ffc9c9', color: '#ff3300' }}>
+              style={{ backgroundColor: '#ffc9c9', color: 'black' }}>
               {textInfo}
             </Button>
           </Space>

@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react'
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import {
   Button,
   PageHeader,
@@ -12,6 +12,7 @@ import {
   Popover,
   Spin,
   Cascader,
+  Empty,
 } from 'antd'
 import { DeleteOutlined, DoubleRightOutlined } from '@ant-design/icons'
 import styled from 'styled-components'
@@ -31,6 +32,11 @@ const CardFlex = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+`
+const MarginRightDiv = styled.div`
+  margin-right: 15px;
+  border: 1px ridge;
+  padding: 0 5px;
 `
 const { Text } = Typography
 const { Content } = Layout
@@ -53,6 +59,7 @@ const Component = observer(() => {
     queryAllByCondition,
     deleteUrl,
     uploadAll,
+    getPageType,
   } = UrlStore
   const [isShowDrawerQR, setIsShowDrawerQR] = useState([])
   const [syncOldErr, setSyncOldErr] = useState(false)
@@ -160,6 +167,9 @@ const Component = observer(() => {
       setPageCheckData([])
     }
   }
+  useEffect(() => {
+    document.title = '个人中心'
+  }, [])
   return (
     <>
       <PageHeader
@@ -217,7 +227,7 @@ const Component = observer(() => {
             <Button
               type='dashed'
               disabled
-              style={{ backgroundColor: '#ffc9c9', color: '#ff3300' }}>
+              style={{ backgroundColor: '#ffc9c9', color: 'black' }}>
               {textInfo}
             </Button>
             {appId && pagePath ? (
@@ -239,7 +249,14 @@ const Component = observer(() => {
                   <StyledHistoryLine key={idx}>
                     <Badge.Ribbon text={idx + 1}>
                       <Card
-                        title={<Text strong>{e?.attributes?.name}</Text>}
+                        title={
+                          <CardFlex>
+                            <Text strong>{e?.attributes?.name}</Text>
+                            <MarginRightDiv>
+                              {getPageType(e?.attributes?.url)}
+                            </MarginRightDiv>
+                          </CardFlex>
+                        }
                         size='small'
                         hoverable={true}
                         type='inner'>
@@ -309,7 +326,7 @@ const Component = observer(() => {
                   </StyledHistoryLine>
                 ))
             ) : (
-              <Text strong>请根据筛选条件查询所需数据</Text>
+              <Empty />
             )
           ) : (
             <Spin tip='正在和云服务器同步数据' size='large' />
