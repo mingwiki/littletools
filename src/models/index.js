@@ -54,7 +54,7 @@ const Url = {
   uploadAll(urls) {
     return new Promise((resolve, reject) => {
       const objects = []
-      Object.entries(urls).map(([key, value]) => {
+      Object.entries(urls).forEach(([key, value]) => {
         const avObj = new AV.Object('toolkits_01')
         avObj.set('name', key)
         avObj.set('url', value)
@@ -74,7 +74,7 @@ const Url = {
   uploadAllbyArr(urls) {
     return new Promise((resolve, reject) => {
       const objects = []
-      urls.map((value) => {
+      urls.forEach((value) => {
         const avObj = new AV.Object('toolkits_01')
         avObj.set('name', value.key)
         avObj.set('url', value.val)

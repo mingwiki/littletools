@@ -199,7 +199,7 @@ const Component = observer(() => {
                   onClick={() => {
                     upload().then(
                       (res) => {
-                        res.map((e) => {
+                        res.forEach((e) => {
                           notification.success({
                             description: `已上传${e?.attributes?.name}`,
                           })

@@ -19,7 +19,7 @@ class Inputs {
   getDataSource = () => {
     const res = []
     if (!this.data.find((e) => e.key === '' || !/^alipays?:\/\/.+/.test(e.val)))
-      this.data?.map((e, idx) => {
+      this.data?.forEach((e, idx) => {
         const obj = {}
         obj.key = idx
         obj.name = e.key

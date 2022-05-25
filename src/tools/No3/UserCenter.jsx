@@ -45,8 +45,7 @@ const Component = observer(() => {
     useContext(context)
   const { logout } = AuthStore
   const { currentUser } = UserStore
-  const { isSyncing, localUrls, setIsSyncing, setLocalUrls, clear } =
-    UserCenterStore
+  const { isSyncing, localUrls, setIsSyncing, setLocalUrls } = UserCenterStore
   const {
     textInfo,
     appId,
@@ -68,7 +67,7 @@ const Component = observer(() => {
     uploadAll(urls)
       .then(
         (res) => {
-          res.map((item) => {
+          res?.forEach((item) => {
             notification.success({
               description: `已上传${item?.attributes?.name}`,
             })

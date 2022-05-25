@@ -389,7 +389,7 @@ const Component = observer(() => {
                           (res) => {
                             if (res.length > 0) {
                               res.map((item) =>
-                                item?.attributes?.enterId?.map((e) => {
+                                item?.attributes?.enterId?.forEach((e) => {
                                   if (
                                     splitEnterId(deferredEncodedUrl).includes(e)
                                   ) {
