@@ -1,11 +1,6 @@
 import AV from 'leancloud-storage'
 import UrlStore from '../stores/url'
-const {
-  splitEnterId,
-  splitSourceOrigin,
-  splitAppId,
-  splitPagePath,
-} = UrlStore
+const { splitEnterId, splitSourceOrigin, splitAppId, splitPagePath } = UrlStore
 AV.init({
   appId: 'Co2HYYsX3YsrSM8hLn35yMVq-gzGzoHsz',
   appKey: 'vpslFNPbTpcTFj4XHIGHP9eH',
@@ -76,11 +71,11 @@ const Url = {
       )
     })
   },
-  checkEnterId(enterId, appId, pagePath) {
+  checkEnterId(url) {
     const avQuery = new AV.Query('toolkits_01')
-    avQuery.equalTo('appId', appId)
-    avQuery.equalTo('pagePath', pagePath)
-    avQuery.equalTo('enterId', enterId)
+    avQuery.equalTo('appId', splitAppId(url))
+    avQuery.equalTo('pagePath', splitPagePath(url))
+    avQuery.containedIn('enterId', splitEnterId(url))
     return new Promise((resolve, reject) => {
       avQuery.find().then(
         (result) => resolve(result),
@@ -88,11 +83,11 @@ const Url = {
       )
     })
   },
-  checkSourceOrigin(sourceOrigin, appId, pagePath) {
+  checkSourceOrigin(url) {
     const avQuery = new AV.Query('toolkits_01')
-    avQuery.equalTo('appId', appId)
-    avQuery.equalTo('pagePath', pagePath)
-    avQuery.equalTo('sourceOrigin', sourceOrigin)
+    avQuery.equalTo('appId', splitAppId(url))
+    avQuery.equalTo('pagePath', splitPagePath(url))
+    avQuery.containedIn('sourceOrigin', splitSourceOrigin(url))
     return new Promise((resolve, reject) => {
       avQuery.find().then(
         (result) => resolve(result),

@@ -17,23 +17,26 @@ const Component = () => {
     AuthStore.setUsername(values.username)
     AuthStore.login()
       .then(() => {
-        message.success('登录成功,跳转首页')
+        message.success('登录成功!')
+        window.history.back()
       })
       .catch((err) => {
         message.error('登录失败:', err)
       })
-    navigate('/')
   }
   const onFinishFailed = (errorInfo) => {
     message.error('登录失败:', errorInfo)
   }
   return (
     <>
-      <Header className="site-layout-sub-header-background" style={{ padding: 0 }} />
-      <Content className="content" style={{ alignItems: 'center' }}>
+      <Header
+        className='site-layout-sub-header-background'
+        style={{ padding: 0 }}
+      />
+      <Content className='content' style={{ alignItems: 'center' }}>
         <AbsoluteTips>欢迎使用，请先登录</AbsoluteTips>
         <Form
-          name="basic"
+          name='basic'
           labelCol={{
             span: 8,
           }}
@@ -45,43 +48,39 @@ const Component = () => {
           }}
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
-          autoComplete="off"
-        >
+          autoComplete='off'>
           <Form.Item
-            label="用户名"
-            name="username"
+            label='用户名'
+            name='username'
             rules={[
               {
                 required: true,
                 message: '请输入用户名',
               },
-            ]}
-          >
+            ]}>
             <Input />
           </Form.Item>
           <Form.Item
-            label="密码"
-            name="password"
+            label='密码'
+            name='password'
             rules={[
               {
                 required: true,
                 message: '请输入密码!',
               },
-            ]}
-          >
+            ]}>
             <Input.Password />
           </Form.Item>
           <Form.Item
             wrapperCol={{
               offset: 8,
               span: 16,
-            }}
-          >
+            }}>
             <Space>
-              <Button type="primary" htmlType="submit">
+              <Button type='primary' htmlType='submit'>
                 提交
               </Button>
-              <Button type="primary" onClick={() => navigate('/register')}>
+              <Button type='primary' onClick={() => navigate('/register')}>
                 前往注册
               </Button>
             </Space>

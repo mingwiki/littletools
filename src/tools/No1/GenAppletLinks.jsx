@@ -69,8 +69,9 @@ const cascaderData = Object.entries(miniAppPages).map((e) => {
 const Component = observer(() => {
   const [text, setText] = useState('小程序名称和对应页面')
   const [isShowPopover, setIsShowPopover] = useState(false)
-  const { UserStore, UrlStore, DrawerStore } = useContext(context)
-  const { currentUser, resetCurrentUser } = UserStore
+  const { AuthStore, UserStore, UrlStore, DrawerStore } = useContext(context)
+  const { logout } = AuthStore
+  const { currentUser } = UserStore
   const {
     appId,
     pagePath,
@@ -79,8 +80,6 @@ const Component = observer(() => {
     globalInputQueries,
     linkName,
     pageCheckData,
-    getEnterId,
-    getSourceOrigin,
     getEncodedUrl,
     setAppId,
     setPagePath,
@@ -92,9 +91,10 @@ const Component = observer(() => {
     clear,
     splitEnterId,
     splitSourceOrigin,
+    checkEnterId,
+    uploadUrl,
   } = UrlStore
-  const { visible, setVisible, setIsSyncing, checkEnterId, uploadUrl } =
-    DrawerStore
+  const { visible, setVisible, setIsSyncing } = DrawerStore
   const deferredEncodedUrl = useDeferredValue(getEncodedUrl())
   const onChangeAppPage = (value) => {
     setText(
@@ -161,11 +161,7 @@ const Component = observer(() => {
             }}>
             {currentUser?.attributes?.realname}
           </Button>,
-          <Button
-            key={3}
-            type='primary'
-            danger
-            onClick={() => resetCurrentUser()}>
+          <Button key={3} type='primary' danger onClick={() => logout()}>
             注销
           </Button>,
         ]}
@@ -401,7 +397,7 @@ const Component = observer(() => {
                   }}>
                   上传当前链接
                 </Button>
-                {getEnterId() ? (
+                {splitEnterId(deferredEncodedUrl).length > 0 ? (
                   <>
                     <Button
                       type='primary'
@@ -411,22 +407,27 @@ const Component = observer(() => {
                         border: 'none',
                       }}
                       onClick={() => {
-                        checkEnterId(getEnterId(), appId, pagePath).then(
+                        checkEnterId(deferredEncodedUrl).then(
                           (res) => {
                             if (res.length > 0) {
-                              res.map((item) => {
-                                notification.error({
-                                  description: `此Enter ID已存在于${item?.attributes?.name}`,
+                              res.map((item) =>
+                                item?.attributes?.enterId?.map((e) => {
+                                  if (
+                                    splitEnterId(deferredEncodedUrl).includes(e)
+                                  ) {
+                                    notification.error({
+                                      description: `此${e}已经存在于${item?.attributes?.name}`,
+                                    })
+                                  }
                                 })
-                              })
+                              )
                             } else {
                               notification.success({
-                                description: `此Enter ID可用`,
+                                description: `当前Enter ID可用`,
                               })
                             }
                           },
                           (err) => {
-                            console.log(err)
                             notification.error({
                               description: JSON.stringify(err),
                             })
@@ -436,11 +437,12 @@ const Component = observer(() => {
                       入口ID查重
                     </Button>
                     <span>
-                      (当前为<b>{getEnterId()}</b>)
+                      (当前为<b>{splitEnterId(deferredEncodedUrl).join(',')}</b>
+                      )
                     </span>
                   </>
                 ) : null}
-                {getSourceOrigin() ? (
+                {splitSourceOrigin(deferredEncodedUrl).length > 0 ? (
                   <>
                     <Button
                       type='primary'
@@ -453,7 +455,8 @@ const Component = observer(() => {
                       订单来源查重
                     </Button>
                     <span>
-                      (当前为<b>{getSourceOrigin()}</b>)
+                      (当前为
+                      <b>{splitSourceOrigin(deferredEncodedUrl).join(',')}</b>)
                     </span>
                   </>
                 ) : null}

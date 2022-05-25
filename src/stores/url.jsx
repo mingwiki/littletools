@@ -1,5 +1,5 @@
 import { makeAutoObservable } from 'mobx'
-
+import { Url } from '../models/index'
 class UrlStore {
   appId = null
   pagePath = ''
@@ -12,7 +12,7 @@ class UrlStore {
     makeAutoObservable(this)
   }
   getPathUrl = () => {
-    return `pages/${this.pagePath}`
+    return this.pagePath
   }
   getPageCheckUrl = () => {
     return Object.keys(this.pageCheckQueries).length === 0
@@ -70,22 +70,6 @@ class UrlStore {
           this.appId
         }&page=${this.getEncodePage()}${this.getEncodeGlobal()}`
   }
-  getEnterId = () => {
-    return (
-      this.pageInputQueries.find(
-        (e) => e.key === 'enterId' || e.key === 'enter'
-      )?.val ||
-      this.globalInputQueries.find(
-        (e) => e.key === 'enterId' || e.key === 'enter'
-      )?.val
-    )
-  }
-  getSourceOrigin = () => {
-    return (
-      this.pageInputQueries.find((e) => e.key === 'sourceOrigin')?.val ||
-      this.globalInputQueries.find((e) => e.key === 'sourceOrigin')?.val
-    )
-  }
   setAppId = (appId) => {
     this.appId = appId
   }
@@ -102,30 +86,34 @@ class UrlStore {
     this.globalInputQueries = globalInputQueries
   }
   setLinkName = (linkName) => {
-    this.linkName = linkName
+    this.linkName = linkName.trim()
   }
   setPageCheckData = (pageCheckData) => {
     this.pageCheckData = pageCheckData
   }
   splitEnterId = (url) => {
     const temp = decodeURIComponent(url).split('?')
-    const query = Object.fromEntries(
-      temp[temp.length - 1]
-        .split('&query=')
-        .flatMap((e) => e.split('&'))
-        .map((e) => e.split('='))
-    )
-    return query['enterId'] || query['enter']
+    const query = temp[temp.length - 1]
+      .split('&query=')
+      .flatMap((e) => e.split('&'))
+      .map((e) => e.split('='))
+    const res = []
+    for (let [key, val] of query) {
+      if (key === 'enter' || key === 'enterId') res.push(val)
+    }
+    return res
   }
   splitSourceOrigin = (url) => {
     const temp = decodeURIComponent(url).split('?')
-    const query = Object.fromEntries(
-      temp[temp.length - 1]
-        .split('&query=')
-        .flatMap((e) => e.split('&'))
-        .map((e) => e.split('='))
-    )
-    return query['sourceOrigin']
+    const query = temp[temp.length - 1]
+      .split('&query=')
+      .flatMap((e) => e.split('&'))
+      .map((e) => e.split('='))
+    const res = []
+    for (let [key, val] of query) {
+      if (key === 'sourceOrigin') res.push(val)
+    }
+    return res
   }
   splitAppId = (url) => {
     const temp = decodeURIComponent(url).split('?')
@@ -140,6 +128,69 @@ class UrlStore {
       temp[1].split('&').map((e) => e.split('='))
     )
     return query['page']
+  }
+  checkEnterId = (url) => {
+    return new Promise((resolve, reject) => {
+      Url.checkEnterId(url).then(
+        (res) => {
+          resolve(res)
+        },
+        (error) => {
+          reject(error)
+        }
+      )
+    })
+  }
+  checkSourceOrigin = (url) => {
+    return new Promise((resolve, reject) => {
+      Url.checkSourceOrigin(url).then(
+        (res) => {
+          resolve(res)
+        },
+        (error) => {
+          reject(error)
+        }
+      )
+    })
+  }
+  uploadUrl = ({ name, url, enterId, sourceOrigin, appId, pagePath }) => {
+    return new Promise((resolve, reject) => {
+      Url.upload({ name, url, enterId, sourceOrigin, appId, pagePath }).then(
+        (res) => {
+          resolve(res)
+        },
+        (error) => {
+          reject(error)
+        }
+      )
+    })
+  }
+  queryAll = () => {
+    return new Promise((resolve, reject) => {
+      Url.queryAll().then(
+        (res) => {
+          resolve(res)
+        },
+        (error) => {
+          reject(error)
+        }
+      )
+    })
+  }
+  deleteUrl = (id) => {
+    Url.delete(id)
+  }
+  uploadAll = (urls) => {
+    return new Promise((resolve, reject) => {
+      Url.uploadAll(urls).then(
+        (res) => {
+          resolve(res)
+        },
+        (error) => {
+          reject(error)
+        }
+      )
+    })
   }
   clear = () => {
     this.appId = ''

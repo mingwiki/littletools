@@ -9,7 +9,7 @@ const App = () => {
   const { getCurrentUser } = UserStore
   React.useEffect(() => {
     getCurrentUser()
-  }, [UserStore])
+  }, [UserStore, getCurrentUser])
   return <Router />
 }
 

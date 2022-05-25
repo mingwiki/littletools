@@ -10,7 +10,6 @@ import {
   Popover,
   Typography,
   Spin,
-  message,
 } from 'antd'
 import { DeleteOutlined } from '@ant-design/icons'
 import styled from 'styled-components'
@@ -22,7 +21,7 @@ const StyledHistoryLine = styled.div`
   margin-bottom: 10px;
 `
 const Component = observer(() => {
-  const { UserStore, DrawerStore } = useContext(context)
+  const { UserStore, DrawerStore, UrlStore } = useContext(context)
   const { currentUser } = UserStore
   const {
     visible,
@@ -31,11 +30,8 @@ const Component = observer(() => {
     setIsSyncing,
     localUrls,
     setLocalUrls,
-    uploadUrl,
-    queryAll,
-    deleteUrl,
-    uploadAll,
   } = DrawerStore
+  const { queryAll, deleteUrl, uploadAll } = UrlStore
   const [isShowDrawerQR, setIsShowDrawerQR] = useState([])
   const [syncOldErr, setSyncOldErr] = useState(false)
   const syncOld = (urls) => {
