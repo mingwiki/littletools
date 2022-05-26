@@ -238,36 +238,36 @@ const Component = observer(() => {
               </Radio.Group>
             </Space>
             <Button type='primary' danger onClick={() => syncPull()}>
-              查询所有数据
+              查询所有页面数据
             </Button>
           </StyledSpace>
-          <Space>
-            <Cascader
-              options={cascaderData}
-              onChange={onChangeAppPage}
-              size='large'
-              notFoundContent='无数据'>
-              <a href='/#'>
-                <Button type='primary'>点击选择或切换</Button>
-              </a>
-            </Cascader>
-            <Button
-              type='dashed'
-              disabled
-              style={{ backgroundColor: '#ffc9c9', color: 'black' }}>
-              {textInfo}
-            </Button>
+          <StyledSpace>
+            <Space>
+              <Cascader
+                options={cascaderData}
+                onChange={onChangeAppPage}
+                size='large'
+                notFoundContent='无数据'>
+                <a href='/#'>
+                  <Button type='primary'>点击选择或切换</Button>
+                </a>
+              </Cascader>
+              <Text
+                style={{ backgroundColor: '#ffc9c9', color: 'black', padding: '5px 10px' }}>
+                {textInfo}
+              </Text>
+            </Space>
             {appId && pagePath ? (
               <Button
                 type='primary'
-                style={{ backgroundColor: '#66a80f', color: 'white' }}
                 onClick={() => {
                   syncPullByCondition(appId, pagePath)
                 }}>
-                查询此页面对应数据
+                查询当前页面数据
               </Button>
-            ) : null}
-          </Space>
+            ) : <div>请选择页面</div>}
+          </StyledSpace>
+
           {!isSyncing ? (
             localUrls?.length > 0 ? (
               localUrls
