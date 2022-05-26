@@ -38,6 +38,7 @@ const Url = {
   upload({ name, url, enterId, sourceOrigin, appId, pagePath }) {
     const avObj = new AV.Object('toolkits_01')
     return new Promise((resolve, reject) => {
+      avObj.set('show', true)
       avObj.set('name', name)
       avObj.set('url', url)
       avObj.set('enterId', enterId)
@@ -57,6 +58,7 @@ const Url = {
       const objects = []
       Object.entries(urls).forEach(([key, value]) => {
         const avObj = new AV.Object('toolkits_01')
+        avObj.set('show', true)
         avObj.set('name', key)
         avObj.set('url', value)
         avObj.set('enterId', splitEnterId(value))
@@ -78,6 +80,7 @@ const Url = {
       const objects = []
       urls.forEach((value) => {
         const avObj = new AV.Object('toolkits_01')
+        avObj.set('show', true)
         avObj.set('name', value.key)
         avObj.set('url', value.val)
         avObj.set('enterId', splitEnterId(value.val))
@@ -98,6 +101,7 @@ const Url = {
     const avQuery = new AV.Query('toolkits_01')
     avQuery.equalTo('appId', splitAppId(url))
     avQuery.equalTo('pagePath', splitPagePath(url))
+    avQuery.equalTo('show', true)
     avQuery.containedIn('enterId', splitEnterId(url))
     return new Promise((resolve, reject) => {
       avQuery.find().then(
@@ -110,6 +114,7 @@ const Url = {
     const avQuery = new AV.Query('toolkits_01')
     avQuery.equalTo('appId', splitAppId(url))
     avQuery.equalTo('pagePath', splitPagePath(url))
+    avQuery.equalTo('show', true)
     avQuery.containedIn('sourceOrigin', splitSourceOrigin(url))
     return new Promise((resolve, reject) => {
       avQuery.find().then(
@@ -122,6 +127,7 @@ const Url = {
     const avQuery = new AV.Query('toolkits_01')
     if (!bool) {
       avQuery.equalTo('owner', AV.User.current())
+      avQuery.equalTo('show', true)
     }
     return new Promise((resolve, reject) => {
       avQuery.find().then(
@@ -134,6 +140,7 @@ const Url = {
     const avQuery = new AV.Query('toolkits_01')
     avQuery.equalTo('appId', appId)
     avQuery.equalTo('pagePath', pagePath)
+    avQuery.equalTo('show', true)
     if (!bool) {
       avQuery.equalTo('owner', AV.User.current())
     }
@@ -146,7 +153,8 @@ const Url = {
   },
   delete(id) {
     const temp = AV.Object.createWithoutData('toolkits_01', id)
-    temp.destroy()
+    temp.set('show', false)
+    temp.save()
   },
 }
 export { Auth, Url }
