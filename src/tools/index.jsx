@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { Layout } from 'antd'
-import { appTitle } from '../main'
+import { appTitle } from '../router.config'
 import context from '../stores'
 import { observer } from 'mobx-react'
 

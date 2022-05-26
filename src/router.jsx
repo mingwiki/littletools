@@ -4,7 +4,7 @@ import { HashRouter, Routes, Route, Link } from 'react-router-dom'
 import { Layout, Menu, Spin } from 'antd'
 import styled from 'styled-components'
 import Index, { Empty } from './tools'
-import { main, sidebar, appTitle } from './main'
+import { config, sidebar, appTitle } from './router.config'
 
 const { Sider, Footer } = Layout
 const StyledLayout = styled(Layout)`
@@ -42,7 +42,7 @@ const Component = () => {
             }>
             <Routes>
               <Route path='/' element={<Index />} />
-              {main()}
+              {config()}
               <Route path='*' element={<Empty />} />
             </Routes>
           </Suspense>

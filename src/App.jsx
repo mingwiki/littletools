@@ -1,8 +1,7 @@
 import React from 'react'
-import './index.css'
-import 'antd/dist/antd.min.css'
 import Router from './router'
 import context from './stores'
+import 'antd/dist/antd.min.css'
 
 const App = () => {
   const { UserStore } = React.useContext(context)
