@@ -16,6 +16,7 @@ export const miniAppPages = {
     会员账单: 'pages/billList/index',
     会员周: 'pages/memberWeek/index',
     会员任务: 'pages/task/index',
+    淘宝: 'pages/taobao/index',
   },
   存量小程序: {
     首页: 'pages/index/index',
