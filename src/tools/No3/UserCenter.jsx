@@ -345,9 +345,18 @@ const Component = observer(() => {
                             <DeleteOutlined
                               style={{ color: 'red' }}
                               onClick={() => {
-                                localUrls.splice(idx, 1)
-                                setLocalUrls(localUrls)
-                                deleteUrl(e.id)
+                                if (e?.attributes?.owner?.id === currentUser?.id) {
+                                  localUrls.splice(idx, 1)
+                                  setLocalUrls(localUrls)
+                                  deleteUrl(e.id)
+                                  notification.success({
+                                    description: '删除成功',
+                                  })
+                                } else {
+                                  notification.error({
+                                    description: '只能删除自己的历史链接',
+                                  })
+                                }
                               }}
                             />
                           </Space>
