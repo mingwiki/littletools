@@ -85,6 +85,7 @@ const Url = {
         avObj.set('appId', splitAppId(value.val))
         avObj.set('pagePath', splitPagePath(value.val))
         avObj.set('owner', AV.User.current())
+        avObj.set('user', AV.User.current()?.attributes?.realname)
         objects.push(avObj)
       })
       AV.Object.saveAll(objects).then(
