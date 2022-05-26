@@ -35,7 +35,8 @@ const CardFlex = styled.div`
   justify-content: space-between;
 `
 const MarginRightDiv = styled.div`
-  border: 1px ridge;
+  border: 1px dashed grey;
+  border-radius: 10px;
   padding: 0 5px;
 `
 const NameLabel = styled.div`
@@ -43,6 +44,13 @@ const NameLabel = styled.div`
   align-items: center;
   gap: 10px;
   margin-right: 15px;
+`
+const StyledSpace = styled.div`
+  border: 1px dashed gray;
+  padding:5px 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `
 const { Text } = Typography
 const { Content } = Layout
@@ -188,17 +196,9 @@ const Component = observer(() => {
         title='No. 3'
         subTitle='个人中心管理面板'
         extra={[
-          <Space style={{ border: '1px dashed gray', padding: '5px 10px' }}>
-            <Text strong>选择查询</Text>
-            <Radio.Group onChange={RadioChange} value={isQueryAll}>
-              <Radio value={true}>所有用户</Radio>
-              <Radio value={false}>当前用户</Radio>
-            </Radio.Group>
-          </Space>
-          ,
           localStorage.getItem('encodedUrl_history') && (
             <Button
-              key={0}
+              key={1}
               type='primary'
               danger
               onClick={() => {
@@ -207,9 +207,6 @@ const Component = observer(() => {
               上传本地存储数据
             </Button>
           ),
-          <Button key={1} type='primary' danger onClick={() => syncPull()}>
-            查询所有数据
-          </Button>,
           <Button
             key={2}
             type='primary'
@@ -232,6 +229,18 @@ const Component = observer(() => {
             flexDirection: 'column',
             gap: 20,
           }}>
+          <StyledSpace>
+            <Space>
+              <Text strong>选择查询</Text>
+              <Radio.Group onChange={RadioChange} value={isQueryAll}>
+                <Radio value={true}>所有用户</Radio>
+                <Radio value={false}>当前用户</Radio>
+              </Radio.Group>
+            </Space>
+            <Button type='primary' danger onClick={() => syncPull()}>
+              查询所有数据
+            </Button>
+          </StyledSpace>
           <Space>
             <Cascader
               options={cascaderData}
@@ -251,6 +260,7 @@ const Component = observer(() => {
             {appId && pagePath ? (
               <Button
                 type='primary'
+                style={{ backgroundColor: '#66a80f', color: 'white' }}
                 onClick={() => {
                   syncPullByCondition(appId, pagePath)
                 }}>
