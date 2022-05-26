@@ -9,10 +9,10 @@ const context = createContext({
   UrlStore,
   UserCenterStore,
 })
-window.context = {
-  AuthStore,
-  UserStore,
-  UrlStore,
-  UserCenterStore,
-}
+// window.context = {
+//   AuthStore,
+//   UserStore,
+//   UrlStore,
+//   UserCenterStore,
+// }
 export default context

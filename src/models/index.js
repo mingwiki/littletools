@@ -45,6 +45,7 @@ const Url = {
       avObj.set('appId', appId)
       avObj.set('pagePath', pagePath)
       avObj.set('owner', AV.User.current())
+      avObj.set('user', AV.User.current()?.attributes?.realname)
       avObj.save().then(
         (res) => resolve(res),
         (error) => reject(error)
@@ -63,6 +64,7 @@ const Url = {
         avObj.set('appId', splitAppId(value))
         avObj.set('pagePath', splitPagePath(value))
         avObj.set('owner', AV.User.current())
+        avObj.set('user', AV.User.current()?.attributes?.realname)
         objects.push(avObj)
       })
       AV.Object.saveAll(objects).then(
@@ -115,9 +117,11 @@ const Url = {
       )
     })
   },
-  queryAll() {
+  queryAll(bool) {
     const avQuery = new AV.Query('toolkits_01')
-    avQuery.equalTo('owner', AV.User.current())
+    if (!bool) {
+      avQuery.equalTo('owner', AV.User.current())
+    }
     return new Promise((resolve, reject) => {
       avQuery.find().then(
         (result) => resolve(result),
@@ -125,11 +129,13 @@ const Url = {
       )
     })
   },
-  queryAllByCondition(appId, pagePath) {
+  queryAllByCondition(appId, pagePath, bool) {
     const avQuery = new AV.Query('toolkits_01')
     avQuery.equalTo('appId', appId)
     avQuery.equalTo('pagePath', pagePath)
-    avQuery.equalTo('owner', AV.User.current())
+    if (!bool) {
+      avQuery.equalTo('owner', AV.User.current())
+    }
     return new Promise((resolve, reject) => {
       avQuery.find().then(
         (result) => resolve(result),

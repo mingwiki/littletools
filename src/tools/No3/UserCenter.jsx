@@ -13,6 +13,7 @@ import {
   Spin,
   Cascader,
   Empty,
+  Radio,
 } from 'antd'
 import { DeleteOutlined, DoubleRightOutlined } from '@ant-design/icons'
 import styled from 'styled-components'
@@ -34,9 +35,14 @@ const CardFlex = styled.div`
   justify-content: space-between;
 `
 const MarginRightDiv = styled.div`
-  margin-right: 15px;
   border: 1px ridge;
   padding: 0 5px;
+`
+const NameLabel = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-right: 15px;
 `
 const { Text } = Typography
 const { Content } = Layout
@@ -50,10 +56,12 @@ const Component = observer(() => {
     textInfo,
     appId,
     pagePath,
+    isQueryAll,
     setTextInfo,
     setAppId,
     setPagePath,
     setPageCheckData,
+    setIsQueryAll,
     queryAll,
     queryAllByCondition,
     deleteUrl,
@@ -150,7 +158,7 @@ const Component = observer(() => {
       setPageCheckData(
         Object.entries(
           miniAppPageExtra[miniAppIds[value[0]]][
-            miniAppPages[value[0]][value[1]]
+          miniAppPages[value[0]][value[1]]
           ]
         ).map((e) => {
           if (typeof e[1] === 'boolean') {
@@ -166,6 +174,9 @@ const Component = observer(() => {
       setPageCheckData([])
     }
   }
+  const RadioChange = (e) => {
+    setIsQueryAll(e.target.value);
+  };
   useEffect(() => {
     document.title = '个人中心'
   }, [])
@@ -177,6 +188,14 @@ const Component = observer(() => {
         title='No. 3'
         subTitle='个人中心管理面板'
         extra={[
+          <Space style={{ border: '1px dashed gray', padding: '5px 10px' }}>
+            <Text strong>选择查询</Text>
+            <Radio.Group onChange={RadioChange} value={isQueryAll}>
+              <Radio value={true}>所有用户</Radio>
+              <Radio value={false}>当前用户</Radio>
+            </Radio.Group>
+          </Space>
+          ,
           localStorage.getItem('encodedUrl_history') && (
             <Button
               key={0}
@@ -251,9 +270,12 @@ const Component = observer(() => {
                         title={
                           <CardFlex>
                             <Text strong>{e?.attributes?.name}</Text>
-                            <MarginRightDiv>
-                              {getPageType(e?.attributes?.url)}
-                            </MarginRightDiv>
+                            <NameLabel>
+                              <MarginRightDiv>{e?.attributes?.user}</MarginRightDiv>
+                              <MarginRightDiv>
+                                {getPageType(e?.attributes?.url)}
+                              </MarginRightDiv>
+                            </NameLabel>
                           </CardFlex>
                         }
                         size='small'

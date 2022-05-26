@@ -10,6 +10,7 @@ class UrlStore {
   globalInputQueries = [{ key: '', val: '' }]
   linkName = ''
   pageCheckData = []
+  isQueryAll = false
   constructor() {
     makeAutoObservable(this)
   }
@@ -20,9 +21,9 @@ class UrlStore {
     return Object.keys(this.pageCheckQueries).length === 0
       ? ''
       : Object.entries(this.pageCheckQueries)
-          .map((e) => (e[1].length !== 0 ? `${e[0]}=${e[1]}` : ''))
-          .filter((e) => e !== '')
-          .join('&')
+        .map((e) => (e[1].length !== 0 ? `${e[0]}=${e[1]}` : ''))
+        .filter((e) => e !== '')
+        .join('&')
   }
   getPageInputUrl = () => {
     return this.pageInputQueries.length === 1 &&
@@ -30,9 +31,9 @@ class UrlStore {
       this.pageInputQueries[0].val === ''
       ? ''
       : this.pageInputQueries
-          .map((e) => (e.key !== '' && e.val !== '' ? `${e.key}=${e.val}` : ''))
-          .filter((e) => e !== '')
-          .join('&')
+        .map((e) => (e.key !== '' && e.val !== '' ? `${e.key}=${e.val}` : ''))
+        .filter((e) => e !== '')
+        .join('&')
   }
   getGlobalInputUrl = () => {
     return this.globalInputQueries.length === 1 &&
@@ -40,23 +41,23 @@ class UrlStore {
       this.globalInputQueries[0].val === ''
       ? ''
       : this.globalInputQueries
-          .map((e) => (e.key !== '' && e.val !== '' ? `${e.key}=${e.val}` : ''))
-          .filter((e) => e !== '')
-          .join('&')
+        .map((e) => (e.key !== '' && e.val !== '' ? `${e.key}=${e.val}` : ''))
+        .filter((e) => e !== '')
+        .join('&')
   }
   getEncodePage = () => {
     return encodeURIComponent(
       this.getPathUrl() +
-        (this.getPageCheckUrl() === '' &&
+      (this.getPageCheckUrl() === '' &&
         this.getPageInputUrl() === '' &&
         this.getGlobalInputUrl() === ''
-          ? ''
-          : '?') +
-        this.getPageCheckUrl() +
-        (this.getPageCheckUrl() !== '' && this.getPageInputUrl() !== ''
-          ? '&'
-          : '') +
-        this.getPageInputUrl()
+        ? ''
+        : '?') +
+      this.getPageCheckUrl() +
+      (this.getPageCheckUrl() !== '' && this.getPageInputUrl() !== ''
+        ? '&'
+        : '') +
+      this.getPageInputUrl()
     )
   }
   getEncodeGlobal = () => {
@@ -68,9 +69,8 @@ class UrlStore {
   getEncodedUrl = () => {
     return this.pagePath === ''
       ? ''
-      : `alipays://platformapi/startapp?appId=${
-          this.appId
-        }&page=${this.getEncodePage()}${this.getEncodeGlobal()}`
+      : `alipays://platformapi/startapp?appId=${this.appId
+      }&page=${this.getEncodePage()}${this.getEncodeGlobal()}`
   }
   setTextInfo = (textInfo) => {
     this.textInfo = textInfo
@@ -95,6 +95,9 @@ class UrlStore {
   }
   setPageCheckData = (pageCheckData) => {
     this.pageCheckData = pageCheckData
+  }
+  setIsQueryAll = (isQueryAll) => {
+    this.isQueryAll = isQueryAll
   }
   splitEnterId = (url) => {
     const temp = decodeURIComponent(url).split('?')
@@ -141,9 +144,9 @@ class UrlStore {
       )?.[0],
       Object.entries(
         miniAppPages?.[
-          Object.entries(miniAppIds).find(
-            ([key, val]) => val === this.splitAppId(url)
-          )?.[0]
+        Object.entries(miniAppIds).find(
+          ([key, val]) => val === this.splitAppId(url)
+        )?.[0]
         ]
       ).find(([key, val]) => val === this.splitPagePath(url))?.[0],
     ]
@@ -186,7 +189,7 @@ class UrlStore {
   }
   queryAll = () => {
     return new Promise((resolve, reject) => {
-      Url.queryAll().then(
+      Url.queryAll(this.isQueryAll).then(
         (res) => {
           resolve(res)
         },
@@ -196,9 +199,9 @@ class UrlStore {
       )
     })
   }
-  queryAllByCondition = (appId,pagePath) => {
+  queryAllByCondition = (appId, pagePath) => {
     return new Promise((resolve, reject) => {
-      Url.queryAllByCondition(appId,pagePath).then(
+      Url.queryAllByCondition(appId, pagePath, this.isQueryAll).then(
         (res) => {
           resolve(res)
         },
