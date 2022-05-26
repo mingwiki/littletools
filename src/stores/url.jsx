@@ -97,7 +97,7 @@ class UrlStore {
     this.pageCheckData = pageCheckData
   }
   setIsQueryAll = (isQueryAll) => {
-    this.isQueryAll = isQueryAll
+    this.isQueryAll = isQueryAll === true ? true : false
   }
   splitEnterId = (url) => {
     const temp = decodeURIComponent(url).split('?')

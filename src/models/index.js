@@ -125,9 +125,10 @@ const Url = {
   },
   queryAll(bool) {
     const avQuery = new AV.Query('toolkits_01')
+    avQuery.equalTo('show', true)
+    avQuery.descending('createdAt')
     if (!bool) {
       avQuery.equalTo('owner', AV.User.current())
-      avQuery.equalTo('show', true)
     }
     return new Promise((resolve, reject) => {
       avQuery.find().then(
@@ -141,6 +142,7 @@ const Url = {
     avQuery.equalTo('appId', appId)
     avQuery.equalTo('pagePath', pagePath)
     avQuery.equalTo('show', true)
+    avQuery.descending('createdAt')
     if (!bool) {
       avQuery.equalTo('owner', AV.User.current())
     }

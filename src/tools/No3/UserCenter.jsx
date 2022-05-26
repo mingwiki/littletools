@@ -232,7 +232,7 @@ const Component = observer(() => {
           <StyledSpace>
             <Space>
               <Text strong>选择查询</Text>
-              <Radio.Group onChange={RadioChange} value={isQueryAll}>
+              <Radio.Group onChange={RadioChange} value={isQueryAll} defaultValue={false}>
                 <Radio value={true}>所有用户</Radio>
                 <Radio value={false}>当前用户</Radio>
               </Radio.Group>
@@ -271,8 +271,6 @@ const Component = observer(() => {
           {!isSyncing ? (
             localUrls?.length > 0 ? (
               localUrls
-                .slice()
-                .sort((a, b) => (a.name < b.name ? -1 : 1))
                 .map((e, idx) => (
                   <StyledHistoryLine key={idx}>
                     <Badge.Ribbon text={idx + 1}>
