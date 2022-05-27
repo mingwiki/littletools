@@ -229,18 +229,13 @@ const Component = observer(() => {
             flexDirection: 'column',
             gap: 20,
           }}>
-          <StyledSpace>
-            <Space>
-              <Text strong>选择查询</Text>
-              <Radio.Group onChange={RadioChange} value={isQueryAll} defaultValue={false}>
-                <Radio value={true}>所有用户</Radio>
-                <Radio value={false}>当前用户</Radio>
-              </Radio.Group>
-            </Space>
-            <Button type='primary' danger onClick={() => syncPull()}>
-              查询所有页面数据
-            </Button>
-          </StyledSpace>
+          <Space>
+            <Text strong>选择查询</Text>
+            <Radio.Group onChange={RadioChange} value={isQueryAll} defaultValue={false}>
+              <Radio value={true}>所有用户</Radio>
+              <Radio value={false}>当前用户</Radio>
+            </Radio.Group>
+          </Space>
           <StyledSpace>
             <Space>
               <Cascader
@@ -257,15 +252,22 @@ const Component = observer(() => {
                 {textInfo}
               </Text>
             </Space>
-            {appId && pagePath ? (
+            <Space>
+              <Button type='primary' danger onClick={() => syncPull()}>
+                查询所有页面数据
+              </Button>
               <Button
                 type='primary'
                 onClick={() => {
-                  syncPullByCondition(appId, pagePath)
+                  if (appId && pagePath) {
+                    syncPullByCondition(appId, pagePath)
+                  } else {
+                    notification.error({ description: '请选择页面' })
+                  }
                 }}>
                 查询当前页面数据
               </Button>
-            ) : <div>请选择页面</div>}
+            </Space>
           </StyledSpace>
 
           {!isSyncing ? (
