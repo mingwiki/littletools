@@ -2,8 +2,7 @@ import { makeAutoObservable } from 'mobx'
 import { Auth } from '../models/index'
 import UserStore from './user'
 import UrlStore from './url'
-import DrawerStore from './userCenter'
-
+import UserCenter from './userCenter'
 class AuthStore {
   values = {
     username: '',
@@ -55,7 +54,7 @@ class AuthStore {
   logout = () => {
     UserStore.resetCurrentUser()
     UrlStore.clear()
-    DrawerStore.clear()
+    UserCenter.clear()
     this.values = {
       username: '',
       password: '',
