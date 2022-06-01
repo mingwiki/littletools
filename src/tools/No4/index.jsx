@@ -6,21 +6,12 @@ import {
   Typography,
   notification,
   Space,
-  Badge,
-  Card,
-  Popover,
-  Spin,
-  Cascader,
-  Empty,
-  Radio,
-  Input,
 } from 'antd'
 import styled from 'styled-components'
 import UrlStore from '../../stores/url'
-const { splitEnterId, splitSourceOrigin, splitAppId, splitPagePath, getPageType } = UrlStore
+const {  getPageType } = UrlStore
 const { Text } = Typography
 const { Content } = Layout
-const { Search } = Input;
 
 const StyledInput = styled.input`
   &:invalid {
