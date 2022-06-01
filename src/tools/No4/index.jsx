@@ -52,10 +52,9 @@ const Component = () => {
             pattern='^https?://benefit\.jujienet\.com.+'
             style={{ width: '100%' }}
             value={url}
-            onChange={(e) => setUrl(e.target.value)}
+            onChange={(e) => setUrl(e.target.value.trim())}
           />
           <Button type='primary' onClick={() => {
-            console.log(url)
             fetch(url)
               .then((response) => response.text())
               .then((data) => {
@@ -77,7 +76,6 @@ const Component = () => {
                 },
               }).catch((e) => {
                 notification.error({ description: '查询失败' })
-                alert(JSON.stringify(e))
               })
           }}>查询</Button>
         </Space>
