@@ -5,9 +5,10 @@ import {
   LinkOutlined,
   CloudUploadOutlined,
   UserOutlined,
+  PaperClipOutlined,
 } from '@ant-design/icons'
 import { Login, Register } from './pages'
-import { No1, No2, No3 } from './tools'
+import { No1, No2, No3, No4 } from './tools'
 
 export const config = () => {
   return (
@@ -17,6 +18,7 @@ export const config = () => {
       <Route path='01' element={<No1 />} />
       <Route path='02' element={<No2 />} />
       <Route path='03' element={<No3 />} />
+      <Route path='04' element={<No4 />} />
     </>
   )
 }
@@ -35,6 +37,11 @@ export const sidebar = [
     key: '3',
     icon: <UserOutlined />,
     label: <Link to='03'>个人中心</Link>,
+  },
+  {
+    key: '4',
+    icon: <PaperClipOutlined />,
+    label: <Link to='04'>解析Page参数</Link>,
   },
 ]
 export const appTitle = '小小工具箱'
