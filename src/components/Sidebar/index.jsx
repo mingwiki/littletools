@@ -2,12 +2,23 @@ import React, { useState, useEffect, useRef, useContext } from 'react'
 import { Layout, Menu } from 'antd'
 import { observer } from 'mobx-react'
 import { Link } from 'react-router-dom'
+import styled from 'styled-components'
 import { sidebar } from '../../router.config'
 import gsap from 'gsap'
 import keqing from '../../keqing.png'
 import favicon from '../../favicon.svg'
 import context from '../../stores'
 const { Sider } = Layout
+const StyledSider = styled(Sider)`
+  background-color: #343a40;
+`
+const StyledMenu = styled(Menu)`
+  background-color: #ffffff;
+  border-radius: 6px;
+  box-shadow: 0px 10px 10px 0px rgba(0, 0, 0, 0.8);
+  border: none;
+  outline: none;
+`
 export default observer(() => {
   const [isCollapsed, setIsCollapsed] = useState(false)
   const toggle = () => setIsCollapsed(!isCollapsed)
@@ -49,12 +60,11 @@ export default observer(() => {
       .to(logoRef.current, { rotationY: '-360', duration: 1 })
   }, [currentUser])
   return (
-    <Sider
+    <StyledSider
       collapsible
       collapsed={isCollapsed}
       onCollapse={toggle}
-      ref={sidebarRef}
-      style={{ backgroundColor: '#343a40' }}>
+      ref={sidebarRef}>
       <div className='logo' style={{ textAlign: 'center' }}>
         <Link to='/'>
           <img
@@ -65,17 +75,7 @@ export default observer(() => {
           />
         </Link>
       </div>
-      <Menu
-        style={{
-          backgroundColor: '#ffffff',
-          borderRadius: '6px',
-          boxShadow: '0px 10px 10px 0px rgba(0, 0, 0, 0.8)',
-          border: 'none',
-          outline: 'none',
-        }}
-        mode='inline'
-        items={sidebar}
-      />
-    </Sider>
+      <StyledMenu mode='inline' items={sidebar} />
+    </StyledSider>
   )
 })

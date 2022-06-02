@@ -9,6 +9,11 @@ const AbsoluteTips = styled.div`
   font-size: 36px;
   margin: 50px 0;
 `
+const InnerWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+`
 const Component = () => {
   const { AuthStore } = useContext(context)
   let navigate = useNavigate()
@@ -29,12 +34,7 @@ const Component = () => {
   }
   return (
     <Wrapper>
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'flex-start',
-        }}>
+      <InnerWrapper>
         <AbsoluteTips>欢迎使用，请先登录</AbsoluteTips>
         <Form
           name='basic'
@@ -87,7 +87,7 @@ const Component = () => {
             </Space>
           </Form.Item>
         </Form>
-      </div>
+      </InnerWrapper>
     </Wrapper>
   )
 }

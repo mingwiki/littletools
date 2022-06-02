@@ -3,17 +3,21 @@ import { Button, Typography, notification, Space } from 'antd'
 import styled from 'styled-components'
 import UrlStore from '../../stores/url'
 
-const Wrapper= React.lazy(() => import('../../components/Wrapper'))
+const Wrapper = React.lazy(() => import('../../components/Wrapper'))
 const PageHeader = React.lazy(() => import('../../components/PageHeader'))
 const { getPageType } = UrlStore
 const { Text } = Typography
 
 const StyledInput = styled.input`
+  width: 100%;
   &:invalid {
     background-color: red;
   }
 `
-
+const WrapText = styled(Text)`
+  white-space: pre-wrap;
+  word-break: break-all;
+`
 const Component = () => {
   const [url, setUrl] = useState('')
   const [response, setResponse] = useState('')
@@ -38,7 +42,6 @@ const Component = () => {
           <StyledInput
             placeholder='请输入https://benefit.jujienet.com开头的网址'
             pattern='^https?://benefit\.jujienet\.com.+'
-            style={{ width: '100%' }}
             value={url}
             onChange={(e) => setUrl(e.target.value.trim())}
           />
@@ -96,9 +99,7 @@ const Component = () => {
                 复制此链接
               </Button>
             </Space>
-            <Text style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-all' }}>
-              {alipaysUrl}
-            </Text>
+            <WrapText>{alipaysUrl}</WrapText>
             <Space>
               <Text strong>{getPageType(alipaysUrl)}</Text>
               <Button
@@ -112,9 +113,7 @@ const Component = () => {
                 复制下面的page参数
               </Button>
             </Space>
-            <Text style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-all' }}>
-              {pageParms}
-            </Text>
+            <WrapText>{pageParms}</WrapText>
           </Space>
         )}
       </Wrapper>

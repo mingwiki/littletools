@@ -3,7 +3,14 @@ import { Link } from 'react-router-dom'
 import { observer } from 'mobx-react'
 import { appTitle } from '../router.config'
 import context from '../stores'
-
+import styled from 'styled-components'
+const Welcome = styled.div`
+  font-size: 50px;
+`
+const Login = styled.div`
+  display: flex;
+  font-size: 30px;
+`
 const Wrapper = React.lazy(() => import('../components/Wrapper'))
 const Component = observer(() => {
   const { UserStore } = React.useContext(context)
@@ -13,9 +20,9 @@ const Component = observer(() => {
   }, [])
   return (
     <Wrapper>
-      <div style={{ fontSize: 50 }}>
+      <Welcome>
         欢迎使用，{currentUser?.attributes?.realname || `《${appTitle}》`}
-      </div>
+      </Welcome>
       <div>有任何建议或意见请提Issue或Pull Request</div>
       <div>
         仓库地址：
@@ -63,10 +70,10 @@ export const Empty = () => {
 export const NeedLogin = () => {
   return (
     <Wrapper>
-      <div style={{ display: 'flex', fontSize: '30px' }}>
+      <Login>
         请先<Link to='/login'>登录</Link>或者
         <Link to='/register'>注册</Link>
-      </div>
+      </Login>
     </Wrapper>
   )
 }

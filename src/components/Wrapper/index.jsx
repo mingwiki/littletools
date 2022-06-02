@@ -1,9 +1,18 @@
 import React, { useEffect, useRef } from 'react'
 import { Layout } from 'antd'
 import { gsap } from 'gsap'
+import styled from 'styled-components'
 
 const { Content } = Layout
-
+const StyledContent = styled(Content)`
+  margin: 16px;
+  padding: 24px;
+  border: 2px dashed;
+  display: flex;
+  flex-direction: column;
+  gap: 20;
+  overflow: auto;
+`
 export default ({ children }) => {
   const contentRef = useRef(null)
   useEffect(() => {
@@ -20,19 +29,5 @@ export default ({ children }) => {
       duration: 1,
     })
   }, [])
-  return (
-    <Content
-      ref={contentRef}
-      style={{
-        margin: '16px',
-        padding: '24px',
-        border: '2px dashed',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 20,
-        overflow: 'auto',
-      }}>
-      {children}
-    </Content>
-  )
+  return <StyledContent ref={contentRef}>{children}</StyledContent>
 }

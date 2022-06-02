@@ -2,7 +2,6 @@ import { observer } from 'mobx-react'
 import React, { useState, useContext, useEffect } from 'react'
 import {
   Button,
-  Layout,
   Typography,
   notification,
   Space,
@@ -54,8 +53,15 @@ const StyledSpace = styled.div`
   justify-content: space-between;
   align-items: center;
 `
+const Realname = styled.div`
+  background-color: #66a80f;
+  color: white;
+  padding: 5px 10px;
+`
+const StyledDeleteOutlined = styled(DeleteOutlined)`
+  color: red;
+`
 const { Text } = Typography
-const { Content } = Layout
 const Component = observer(() => {
   const { AuthStore, UserStore, UrlStore, UserCenterStore } =
     useContext(context)
@@ -209,13 +215,7 @@ const Component = observer(() => {
               上传本地存储数据
             </Button>
           ),
-          <Button
-            key={2}
-            type='primary'
-            disabled
-            style={{ backgroundColor: '#66a80f', color: 'white' }}>
-            {currentUser?.attributes?.realname}
-          </Button>,
+          <Realname key={2}>{currentUser?.attributes?.realname}</Realname>,
           <Button key={3} type='primary' danger onClick={() => logout()}>
             注销
           </Button>,
@@ -338,8 +338,7 @@ const Component = observer(() => {
                             点击查看二维码
                           </Button>
                         </Popover>
-                        <DeleteOutlined
-                          style={{ color: 'red' }}
+                        <StyledDeleteOutlined
                           onClick={() => {
                             if (e?.attributes?.owner?.id === currentUser?.id) {
                               localUrls.splice(idx, 1)

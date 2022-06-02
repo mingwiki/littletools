@@ -3,7 +3,14 @@ import { HashRouter, Routes, Route } from 'react-router-dom'
 import { Layout, Spin } from 'antd'
 import { config } from './router.config'
 import Index, { Empty } from './tools'
+import styled from 'styled-components'
 
+const StyledSpin = styled(Spin)`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+`
 const Sidebar = React.lazy(() => import('./components/Sidebar'))
 const Component = () => {
   return (
@@ -11,18 +18,7 @@ const Component = () => {
       <Layout style={{ height: '100vh' }}>
         <Sidebar />
         <Layout>
-          <Suspense
-            fallback={
-              <Spin
-                size='large'
-                style={{
-                  position: 'fixed',
-                  top: '50%',
-                  left: '50%',
-                  transform: 'translate(-50%, -50%)',
-                }}
-              />
-            }>
+          <Suspense fallback={<StyledSpin size='large' />}>
             <Routes>
               <Route path='/' element={<Index />} />
               {config()}
