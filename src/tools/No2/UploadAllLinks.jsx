@@ -1,18 +1,11 @@
 import { observer } from 'mobx-react'
 import React, { useContext, useEffect } from 'react'
-import {
-  Button,
-  Typography,
-  notification,
-  Table,
-  Divider,
-  Space,
-} from 'antd'
+import { Button, Typography, notification, Table, Divider, Space } from 'antd'
 import styled from 'styled-components'
 import InputContext from './inputs'
-import Wrapper from '../../components/Wrapper'
-import PageHeader from '../../components/PageHeader'
 
+const Wrapper = React.lazy(() => import('../../components/Wrapper'))
+const PageHeader = React.lazy(() => import('../../components/PageHeader'))
 const { Text } = Typography
 const StyledInputWrapper = styled.div`
   display: flex;

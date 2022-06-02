@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { observer } from 'mobx-react'
 import { appTitle } from '../router.config'
 import context from '../stores'
-import { observer } from 'mobx-react'
-import Wrapper from '../components/Wrapper'
 
+const Wrapper = React.lazy(() => import('../components/Wrapper'))
 const Component = observer(() => {
   const { UserStore } = React.useContext(context)
   const { currentUser } = UserStore

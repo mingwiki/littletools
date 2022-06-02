@@ -16,7 +16,6 @@ import {
 } from 'antd'
 import { DeleteOutlined, DoubleRightOutlined } from '@ant-design/icons'
 import styled from 'styled-components'
-import QRCode from 'qrcode.react'
 import context from '../../stores'
 import {
   cascaderData,
@@ -24,8 +23,10 @@ import {
   miniAppPages,
   miniAppPageExtra,
 } from '../../data'
-import Wrapper from '../../components/Wrapper'
-import PageHeader from '../../components/PageHeader'
+
+const QRCode = React.lazy(() => import('qrcode.react'))
+const Wrapper = React.lazy(() => import('../../components/Wrapper'))
+const PageHeader = React.lazy(() => import('../../components/PageHeader'))
 
 const StyledHistoryLine = styled.div`
   margin-bottom: 10px;

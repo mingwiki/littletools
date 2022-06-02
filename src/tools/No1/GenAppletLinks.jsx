@@ -17,10 +17,7 @@ import {
   GlobalOutlined,
   EditOutlined,
 } from '@ant-design/icons'
-import Wrapper from '../../components/Wrapper'
-import PageHeader from '../../components/PageHeader'
 import styled from 'styled-components'
-import QRCode from 'qrcode.react'
 import context from '../../stores'
 import {
   cascaderData,
@@ -28,8 +25,11 @@ import {
   miniAppPages,
   miniAppPageExtra,
 } from '../../data'
-const { Text } = Typography
 
+const Wrapper = React.lazy(() => import('../../components/Wrapper'))
+const PageHeader = React.lazy(() => import('../../components/PageHeader'))
+const QRCode = React.lazy(() => import('qrcode.react'))
+const { Text } = Typography
 
 const StyledInputWrapper = styled.div`
   display: flex;

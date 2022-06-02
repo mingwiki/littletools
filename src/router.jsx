@@ -1,10 +1,10 @@
 import React, { Suspense, useState, useRef, useEffect } from 'react'
-import logo from './favicon.png'
 import { HashRouter, Routes, Route, Link } from 'react-router-dom'
 import { Layout, Menu, Spin } from 'antd'
-import Index, { Empty } from './tools'
 import { config, sidebar } from './router.config'
+import Index, { Empty } from './tools'
 import gsap from 'gsap'
+import logo from './favicon.png'
 
 const { Sider } = Layout
 

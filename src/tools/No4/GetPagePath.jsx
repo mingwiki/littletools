@@ -1,15 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import {
-  Button,
-  Typography,
-  notification,
-  Space,
-} from 'antd'
+import { Button, Typography, notification, Space } from 'antd'
 import styled from 'styled-components'
 import UrlStore from '../../stores/url'
-import Wrapper from '../../components/Wrapper'
-import PageHeader from '../../components/PageHeader'
 
+const Wrapper= React.lazy(() => import('../../components/Wrapper'))
+const PageHeader = React.lazy(() => import('../../components/PageHeader'))
 const { getPageType } = UrlStore
 const { Text } = Typography
 
@@ -50,36 +45,38 @@ const Component = () => {
           <Button
             type='primary'
             onClick={() => {
-              // if (/^https?:\/\/benefit\.jujienet\.com.+/.test(url)) {
-              fetch(url)
-                .then((response) => response.text())
-                .then(
-                  (data) => {
-                    setResponse(data)
-                    if (data !== '404') {
-                      notification.success({ description: '查询成功' })
-                    } else {
-                      notification.error({ description: '无数据' })
-                    }
-                  },
-                  {
-                    credentials: 'include',
-                    method: 'GET',
-                    mode: 'cors',
-                    cache: 'no-cache',
-                    headers: {
-                      'Content-Type': 'application/json',
-                      'Access-Control-Allow-Origin': '*',
-                      'Access-Control-Allow-Credentials': 'true',
+              if (/^https?:\/\/benefit\.jujienet\.com.+/.test(url)) {
+                fetch(url)
+                  .then((response) => response.text())
+                  .then(
+                    (data) => {
+                      setResponse(data)
+                      if (data !== '404') {
+                        notification.success({ description: '查询成功' })
+                      } else {
+                        notification.error({ description: '无数据' })
+                      }
                     },
-                  }
-                )
-                .catch((e) => {
-                  notification.error({ description: '查询失败' })
+                    {
+                      credentials: 'include',
+                      method: 'GET',
+                      mode: 'cors',
+                      cache: 'no-cache',
+                      headers: {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Credentials': 'true',
+                      },
+                    }
+                  )
+                  .catch((e) => {
+                    notification.error({ description: '查询失败' })
+                  })
+              } else {
+                notification.error({
+                  description: '请输入https://benefit.jujienet.com开头的网址',
                 })
-              // } else {
-              //   notification.error({ description: '请输入https://benefit.jujienet.com开头的网址' })
-              // }
+              }
             }}>
             查询
           </Button>
