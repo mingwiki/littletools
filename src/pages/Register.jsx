@@ -35,7 +35,7 @@ const Component = () => {
         style={{
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'center',
+          alignItems: 'flex-start',
         }}>
         <AbsoluteTips>注册页面</AbsoluteTips>
         <Form

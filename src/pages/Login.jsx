@@ -33,7 +33,7 @@ const Component = () => {
         style={{
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'center',
+          alignItems: 'flex-start',
         }}>
         <AbsoluteTips>欢迎使用，请先登录</AbsoluteTips>
         <Form

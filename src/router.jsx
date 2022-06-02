@@ -46,7 +46,7 @@ const Component = () => {
         opacity: 1,
       })
       .to(logoRef.current, { rotationY: '-360', duration: 1 })
-  },[])
+  }, [])
   return (
     <HashRouter>
       <Layout style={{ height: '100vh' }}>
@@ -54,13 +54,24 @@ const Component = () => {
           collapsible
           collapsed={isCollapsed}
           onCollapse={toggle}
-          ref={sidebarRef}>
+          ref={sidebarRef}
+          style={{ backgroundColor: '#343a40' }}>
           <div className='logo' style={{ textAlign: 'center' }}>
             <Link to='/'>
               <img src={logo} className='App-logo' alt='logo' ref={logoRef} />
             </Link>
           </div>
-          <Menu theme='dark' mode='inline' items={sidebar} />
+          <Menu
+            style={{
+              backgroundColor: '#ffffff',
+              borderRadius: '6px',
+              boxShadow: '0px 10px 10px 0px rgba(0, 0, 0, 0.8)',
+              border: 'none',
+              outline: 'none',
+            }}
+            mode='inline'
+            items={sidebar}
+          />
         </Sider>
         <Layout>
           <Suspense
