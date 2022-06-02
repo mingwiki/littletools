@@ -13,7 +13,6 @@ const Component = () => {
   const toggle = () => setIsCollapsed(!isCollapsed)
   const logoRef = useRef(null)
   const sidebarRef = useRef(null)
-  const layoutRef = useRef(null)
   useEffect(() => {
     const t = gsap.timeline()
     t.set(sidebarRef.current, {
