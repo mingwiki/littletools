@@ -23,8 +23,6 @@ export default ({ children }) => {
     }).to(contentRef.current, {
       x: '0',
       opacity: 1,
-      ease: 'ease-in-out',
-      duration: 1,
     })
   }, [])
   return <StyledContent ref={contentRef}>{children}</StyledContent>

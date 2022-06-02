@@ -24,6 +24,7 @@ export default observer(() => {
   const toggle = () => setIsCollapsed(!isCollapsed)
   const logoRef = useRef(null)
   const sidebarRef = useRef(null)
+  const menuRef = useRef(null)
   const { UserStore } = useContext(context)
   const { currentUser } = UserStore
   useEffect(() => {
@@ -32,45 +33,33 @@ export default observer(() => {
       x: '-100%',
       opacity: 0,
     })
+      .set(menuRef.current.menu.list, {
+        x: '-100%',
+        opacity: 0,
+        paddingRight: '100%',
+      })
       .to('#root', { padding: '0 5vw', duration: 1 })
       .to(sidebarRef.current, {
         x: '0',
         opacity: 1,
-        ease: 'ease-in-out',
-        duration: 1,
-      })
-      .to(logoRef.current, {
-        x: '50',
-        ease: 'ease-in-out',
-        duration: 1,
-        opacity: 0.5,
-      })
-      .to(logoRef.current, {
-        x: '-50',
-        ease: 'ease-in-out',
-        duration: 1,
-        opacity: 0,
-      })
-      .to(logoRef.current, {
-        x: '0',
-        ease: 'ease-in-out',
-        duration: 1,
-        opacity: 1,
-      })
-      .to(logoRef.current, {
-        rotationY: '-360',
-        ease: 'ease-in-out',
-        duration: 1,
-      })
-      .to('#root', {
-        backgroundColor: 'black',
-        ease: 'ease-in-out',
-        duration: 1,
       })
       .to(logoRef.current, {
         rotationY: '360',
+      })
+      .to(menuRef.current.menu.list, {
+        x: '0',
+        opacity: 1,
+      })
+      .to(menuRef.current.menu.list, {
+        paddingRight: '0',
         ease: 'ease-in-out',
         duration: 1,
+      })
+      .to(logoRef.current, {
+        rotationY: '-360',
+      })
+      .to('#root', {
+        backgroundColor: 'black',
       })
   }, [currentUser])
   return (
@@ -89,7 +78,7 @@ export default observer(() => {
           />
         </Link>
       </div>
-      <StyledMenu mode='inline' items={sidebar} />
+      <StyledMenu mode='inline' items={sidebar} ref={menuRef} />
     </StyledSider>
   )
 })

@@ -12,8 +12,6 @@ export default (props) => {
     }).to(pageHeaderRef.current, {
       y: '0',
       opacity: 1,
-      ease: 'ease-in-out',
-      duration: 1,
     })
   }, [])
   return (
