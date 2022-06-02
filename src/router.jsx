@@ -13,6 +13,7 @@ const StyledSpin = styled(Spin)`
 `
 const MainLayout = styled(Layout)`
   height: 100vh;
+  overflow: hidden;
 `
 const Sidebar = React.lazy(() => import('./components/Sidebar'))
 const Component = () => {
