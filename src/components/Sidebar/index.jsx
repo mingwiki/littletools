@@ -58,6 +58,7 @@ export default observer(() => {
         opacity: 1,
       })
       .to(logoRef.current, { rotationY: '-360', duration: 1 })
+      .to('#root', { padding: '0 5vw', duration: 1 })
   }, [currentUser])
   return (
     <StyledSider
