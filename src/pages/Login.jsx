@@ -1,9 +1,9 @@
 import React, { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Form, Input, Button, message, Space, Layout } from 'antd'
+import { Form, Input, Button, message, Space } from 'antd'
 import context from '../stores/index'
 import styled from 'styled-components'
-const { Header, Content } = Layout
+import Wrapper from '../components/Wrapper'
 
 const AbsoluteTips = styled.div`
   font-size: 36px;
@@ -28,12 +28,13 @@ const Component = () => {
     message.error('登录失败:', errorInfo)
   }
   return (
-    <>
-      <Header
-        className='site-layout-sub-header-background'
-        style={{ padding: 0 }}
-      />
-      <Content className='content' style={{ alignItems: 'center' }}>
+    <Wrapper>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}>
         <AbsoluteTips>欢迎使用，请先登录</AbsoluteTips>
         <Form
           name='basic'
@@ -86,8 +87,8 @@ const Component = () => {
             </Space>
           </Form.Item>
         </Form>
-      </Content>
-    </>
+      </div>
+    </Wrapper>
   )
 }
 

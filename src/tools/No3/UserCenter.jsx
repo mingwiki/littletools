@@ -2,7 +2,6 @@ import { observer } from 'mobx-react'
 import React, { useState, useContext, useEffect } from 'react'
 import {
   Button,
-  PageHeader,
   Layout,
   Typography,
   notification,
@@ -26,6 +25,7 @@ import {
   miniAppPageExtra,
 } from '../../data'
 import Wrapper from '../../components/Wrapper'
+import PageHeader from '../../components/PageHeader'
 
 const StyledHistoryLine = styled.div`
   margin-bottom: 10px;

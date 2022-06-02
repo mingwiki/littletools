@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import {
   Button,
-  PageHeader,
   Typography,
   notification,
   Space,
@@ -9,6 +8,8 @@ import {
 import styled from 'styled-components'
 import UrlStore from '../../stores/url'
 import Wrapper from '../../components/Wrapper'
+import PageHeader from '../../components/PageHeader'
+
 const { getPageType } = UrlStore
 const { Text } = Typography
 

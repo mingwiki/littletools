@@ -2,7 +2,6 @@ import { observer } from 'mobx-react'
 import React, { useContext, useEffect } from 'react'
 import {
   Button,
-  PageHeader,
   Typography,
   notification,
   Table,
@@ -12,6 +11,7 @@ import {
 import styled from 'styled-components'
 import InputContext from './inputs'
 import Wrapper from '../../components/Wrapper'
+import PageHeader from '../../components/PageHeader'
 
 const { Text } = Typography
 const StyledInputWrapper = styled.div`

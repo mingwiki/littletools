@@ -8,7 +8,6 @@ import {
   Popover,
   Radio,
   Checkbox,
-  PageHeader,
   Typography,
 } from 'antd'
 import {
@@ -19,6 +18,7 @@ import {
   EditOutlined,
 } from '@ant-design/icons'
 import Wrapper from '../../components/Wrapper'
+import PageHeader from '../../components/PageHeader'
 import styled from 'styled-components'
 import QRCode from 'qrcode.react'
 import context from '../../stores'
