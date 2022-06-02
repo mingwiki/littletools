@@ -20,41 +20,10 @@ const Component = observer(() => {
   }, [])
   return (
     <Wrapper>
+      <Welcome>欢迎使用，{`《${appTitle}》`}</Welcome>
       <Welcome>
-        欢迎使用，{currentUser?.attributes?.realname || `《${appTitle}》`}
+        当前用户：{currentUser ? currentUser?.attributes?.realname : '未登录'}
       </Welcome>
-      <div>有任何建议或意见请提Issue或Pull Request</div>
-      <div>
-        仓库地址：
-        <a
-          href='//github.com/mingwiki/toolkits'
-          target='_blank'
-          rel='noreferrer'>
-          github.com/mingwiki/toolkits
-        </a>
-      </div>
-      <div>
-        镜像地址：
-        <a
-          href='//gitee.com/mingwiki/toolkits'
-          target='_blank'
-          rel='noreferrer'>
-          gitee.com/mingwiki/toolkits
-        </a>
-      </div>
-      <div>
-        工具地址：
-        <a href='//mingwiki.gitee.io/toolkits' target='_blank' rel='noreferrer'>
-          mingwiki.gitee.io/toolkits
-        </a>
-      </div>
-      <div>
-        备用地址：
-        <a href='//zed.ink/toolkits' target='_blank' rel='noreferrer'>
-          zed.ink/toolkits
-        </a>
-      </div>
-      <div>邮件：mingwiki@gmail.com</div>
     </Wrapper>
   )
 })
