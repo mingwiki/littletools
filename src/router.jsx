@@ -11,11 +11,15 @@ const StyledSpin = styled(Spin)`
   left: 50%;
   transform: translate(-50%, -50%);
 `
+const MainLayout = styled(Layout)`
+  height: 100vh;
+  margin: 0 5vw;
+`
 const Sidebar = React.lazy(() => import('./components/Sidebar'))
 const Component = () => {
   return (
     <HashRouter>
-      <Layout style={{ height: '100vh' }}>
+      <MainLayout>
         <Sidebar />
         <Layout>
           <Suspense fallback={<StyledSpin size='large' />}>
@@ -26,7 +30,7 @@ const Component = () => {
             </Routes>
           </Suspense>
         </Layout>
-      </Layout>
+      </MainLayout>
     </HashRouter>
   )
 }

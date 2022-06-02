@@ -56,6 +56,9 @@ const StyledInput = styled.input`
     background-color: red;
   }
 `
+const WrapSpace = styled(Space)`
+  flex-wrap: wrap;
+`
 const Component = observer(() => {
   const [isShowPopover, setIsShowPopover] = useState(false)
   const { UrlStore } = useContext(context)
@@ -148,7 +151,7 @@ const Component = observer(() => {
             <AlipayCircleOutlined /> Alipay 协议
           </Radio>
         </Radio.Group>
-        <Space>
+        <WrapSpace>
           <Cascader
             options={cascaderData}
             onChange={onChangeAppPage}
@@ -164,7 +167,7 @@ const Component = observer(() => {
             style={{ backgroundColor: '#ffc9c9', color: 'black' }}>
             {textInfo}
           </Button>
-        </Space>
+        </WrapSpace>
         {!deferredEncodedUrl ? null : (
           <>
             <ParamsWrapper>
@@ -430,7 +433,7 @@ const Component = observer(() => {
                 </>
               ) : null}
             </StyledInputWrapper>
-            <Space>
+            <WrapSpace>
               <Button
                 type='primary'
                 onClick={() => {
@@ -453,7 +456,7 @@ const Component = observer(() => {
                   点击生成二维码
                 </Button>
               </Popover>
-            </Space>
+            </WrapSpace>
             {
               '（如链接有效请务必上传，以便对链接在云端汇总，从而实现Enter ID查重等操作。）'
             }

@@ -52,6 +52,7 @@ const StyledSpace = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
 `
 const Realname = styled.div`
   background-color: #66a80f;
@@ -60,6 +61,9 @@ const Realname = styled.div`
 `
 const StyledDeleteOutlined = styled(DeleteOutlined)`
   color: red;
+`
+const WrapSpace = styled(Space)`
+  flex-wrap: wrap;
 `
 const { Text } = Typography
 const Component = observer(() => {
@@ -222,7 +226,7 @@ const Component = observer(() => {
         ]}
       />
       <Wrapper>
-        <Space>
+        <WrapSpace>
           <Text strong>选择查询</Text>
           <Radio.Group
             onChange={RadioChange}
@@ -231,9 +235,9 @@ const Component = observer(() => {
             <Radio value={true}>所有用户</Radio>
             <Radio value={false}>当前用户</Radio>
           </Radio.Group>
-        </Space>
+        </WrapSpace>
         <StyledSpace>
-          <Space>
+          <WrapSpace>
             <Cascader
               options={cascaderData}
               onChange={onChangeAppPage}
@@ -251,8 +255,8 @@ const Component = observer(() => {
               }}>
               {textInfo}
             </Text>
-          </Space>
-          <Space>
+          </WrapSpace>
+          <WrapSpace>
             <Button type='primary' danger onClick={() => syncPull()}>
               查询所有页面数据
             </Button>
@@ -267,7 +271,7 @@ const Component = observer(() => {
               }}>
               查询当前页面数据
             </Button>
-          </Space>
+          </WrapSpace>
         </StyledSpace>
 
         {!isSyncing ? (
@@ -291,7 +295,7 @@ const Component = observer(() => {
                     hoverable={true}
                     type='inner'>
                     <CardFlex>
-                      <Space>
+                      <WrapSpace>
                         {e?.attributes?.enterId?.length > 0 && (
                           <Text code>
                             入口ID: {e?.attributes?.enterId.join(', ')}
@@ -302,8 +306,8 @@ const Component = observer(() => {
                             订单来源: {e?.attributes?.sourceOrigin.join(', ')}
                           </Text>
                         )}
-                      </Space>
-                      <Space>
+                      </WrapSpace>
+                      <WrapSpace>
                         <Button
                           type='dashed'
                           shape='round'
@@ -354,7 +358,7 @@ const Component = observer(() => {
                             }
                           }}
                         />
-                      </Space>
+                      </WrapSpace>
                     </CardFlex>
                   </Card>
                 </Badge.Ribbon>
