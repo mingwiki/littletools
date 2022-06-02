@@ -7,8 +7,13 @@ import {
   UserOutlined,
   PaperClipOutlined,
 } from '@ant-design/icons'
-import { Login, Register } from './pages'
-import { No1, No2, No3, No4 } from './tools'
+
+const Login = React.lazy(() => import('./pages/Login'))
+const Register = React.lazy(() => import('./pages/Register'))
+const No1 = React.lazy(() => import('./tools/No1'))
+const No2 = React.lazy(() => import('./tools/No2'))
+const No3 = React.lazy(() => import('./tools/No3'))
+const No4 = React.lazy(() => import('./tools/No4'))
 
 export const config = () => {
   return (

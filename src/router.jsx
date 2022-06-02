@@ -2,23 +2,17 @@ import React, { Suspense, useState, useMemo } from 'react'
 import logo from './logo.svg'
 import { HashRouter, Routes, Route, Link } from 'react-router-dom'
 import { Layout, Menu, Spin } from 'antd'
-import styled from 'styled-components'
 import Index, { Empty } from './tools'
-import { config, sidebar, appTitle } from './router.config'
+import { config, sidebar } from './router.config'
 
-const { Sider, Footer } = Layout
-const StyledLayout = styled(Layout)`
-  height: 100vh;
-`
-const StyledFooter = styled(Footer)`
-  text-align: center;
-`
+const { Sider } = Layout
+
 const Component = () => {
   const [isCollapsed, setIsCollapsed] = useState(false)
   const toggle = () => setIsCollapsed(!isCollapsed)
   return (
     <HashRouter>
-      <Layout>
+      <Layout style={{ height: '100vh' }}>
         <Sider collapsible collapsed={isCollapsed} onCollapse={toggle}>
           <div className='logo' style={{ textAlign: 'center' }}>
             <Link to='/'>
@@ -27,7 +21,7 @@ const Component = () => {
           </div>
           <Menu theme='dark' mode='inline' items={sidebar} />
         </Sider>
-        <StyledLayout>
+        <Layout>
           <Suspense
             fallback={
               <Spin
@@ -46,10 +40,7 @@ const Component = () => {
               <Route path='*' element={<Empty />} />
             </Routes>
           </Suspense>
-          <StyledFooter>
-            {appTitle} &copy; {useMemo(() => new Date().getFullYear(), [])}
-          </StyledFooter>
-        </StyledLayout>
+        </Layout>
       </Layout>
     </HashRouter>
   )

@@ -25,6 +25,7 @@ import {
   miniAppPages,
   miniAppPageExtra,
 } from '../../data'
+import Wrapper from '../../components/Wrapper'
 
 const StyledHistoryLine = styled.div`
   margin-bottom: 10px;
@@ -47,7 +48,7 @@ const NameLabel = styled.div`
 `
 const StyledSpace = styled.div`
   border: 1px dashed gray;
-  padding:5px 10px;
+  padding: 5px 10px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -166,7 +167,7 @@ const Component = observer(() => {
       setPageCheckData(
         Object.entries(
           miniAppPageExtra[miniAppIds[value[0]]][
-          miniAppPages[value[0]][value[1]]
+            miniAppPages[value[0]][value[1]]
           ]
         ).map((e) => {
           if (typeof e[1] === 'boolean') {
@@ -183,8 +184,8 @@ const Component = observer(() => {
     }
   }
   const RadioChange = (e) => {
-    setIsQueryAll(e.target.value);
-  };
+    setIsQueryAll(e.target.value)
+  }
   useEffect(() => {
     document.title = '个人中心'
   }, [])
@@ -219,160 +220,153 @@ const Component = observer(() => {
           </Button>,
         ]}
       />
-      <Content className='content'>
-        <div
-          className='site-layout-background'
-          style={{
-            padding: 24,
-            minHeight: 360,
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 20,
-          }}>
+      <Wrapper>
+        <Space>
+          <Text strong>选择查询</Text>
+          <Radio.Group
+            onChange={RadioChange}
+            value={isQueryAll}
+            defaultValue={false}>
+            <Radio value={true}>所有用户</Radio>
+            <Radio value={false}>当前用户</Radio>
+          </Radio.Group>
+        </Space>
+        <StyledSpace>
           <Space>
-            <Text strong>选择查询</Text>
-            <Radio.Group onChange={RadioChange} value={isQueryAll} defaultValue={false}>
-              <Radio value={true}>所有用户</Radio>
-              <Radio value={false}>当前用户</Radio>
-            </Radio.Group>
+            <Cascader
+              options={cascaderData}
+              onChange={onChangeAppPage}
+              size='large'
+              notFoundContent='无数据'>
+              <a href='/#'>
+                <Button type='primary'>点击选择或切换</Button>
+              </a>
+            </Cascader>
+            <Text
+              style={{
+                backgroundColor: '#ffc9c9',
+                color: 'black',
+                padding: '5px 10px',
+              }}>
+              {textInfo}
+            </Text>
           </Space>
-          <StyledSpace>
-            <Space>
-              <Cascader
-                options={cascaderData}
-                onChange={onChangeAppPage}
-                size='large'
-                notFoundContent='无数据'>
-                <a href='/#'>
-                  <Button type='primary'>点击选择或切换</Button>
-                </a>
-              </Cascader>
-              <Text
-                style={{ backgroundColor: '#ffc9c9', color: 'black', padding: '5px 10px' }}>
-                {textInfo}
-              </Text>
-            </Space>
-            <Space>
-              <Button type='primary' danger onClick={() => syncPull()}>
-                查询所有页面数据
-              </Button>
-              <Button
-                type='primary'
-                onClick={() => {
-                  if (appId && pagePath) {
-                    syncPullByCondition(appId, pagePath)
-                  } else {
-                    notification.error({ description: '请选择页面' })
-                  }
-                }}>
-                查询当前页面数据
-              </Button>
-            </Space>
-          </StyledSpace>
+          <Space>
+            <Button type='primary' danger onClick={() => syncPull()}>
+              查询所有页面数据
+            </Button>
+            <Button
+              type='primary'
+              onClick={() => {
+                if (appId && pagePath) {
+                  syncPullByCondition(appId, pagePath)
+                } else {
+                  notification.error({ description: '请选择页面' })
+                }
+              }}>
+              查询当前页面数据
+            </Button>
+          </Space>
+        </StyledSpace>
 
-          {!isSyncing ? (
-            localUrls?.length > 0 ? (
-              localUrls
-                .map((e, idx) => (
-                  <StyledHistoryLine key={idx}>
-                    <Badge.Ribbon text={idx + 1}>
-                      <Card
-                        title={
-                          <CardFlex>
-                            <Text strong>{e?.attributes?.name}</Text>
-                            <NameLabel>
-                              <MarginRightDiv>{e?.attributes?.user}</MarginRightDiv>
-                              <MarginRightDiv>
-                                {getPageType(e?.attributes?.url)}
-                              </MarginRightDiv>
-                            </NameLabel>
-                          </CardFlex>
-                        }
-                        size='small'
-                        hoverable={true}
-                        type='inner'>
-                        <CardFlex>
-                          <Space>
-                            {e?.attributes?.enterId?.length > 0 && (
-                              <Text code>
-                                入口ID: {e?.attributes?.enterId.join(', ')}
-                              </Text>
-                            )}
-                            {e?.attributes?.sourceOrigin?.length > 0 && (
-                              <Text code>
-                                订单来源:{' '}
-                                {e?.attributes?.sourceOrigin.join(', ')}
-                              </Text>
-                            )}
-                          </Space>
-                          <Space>
-                            <Button
-                              type='dashed'
-                              shape='round'
-                              onClick={() => {
-                                navigator.clipboard.writeText(
-                                  e?.attributes?.url
-                                )
-                                notification.success({
-                                  description: '链接已复制到剪切板',
-                                })
-                              }}>
-                              点击复制链接
-                            </Button>
-                            <Popover
-                              content={
-                                <QRCode value={e?.attributes?.url} size={200} />
-                              }
-                              title='请扫描二维码'
-                              trigger='click'
-                              visible={isShowDrawerQR[idx]}
-                              onVisibleChange={() => {
-                                const temp = [...isShowDrawerQR]
-                                temp[idx] = !temp[idx]
-                                setIsShowDrawerQR(temp)
-                              }}>
-                              <Button
-                                type='dashed'
-                                shape='round'
-                                onClick={() => {
-                                  notification.info({
-                                    description: '查看历史链接二维码',
-                                  })
-                                }}>
-                                点击查看二维码
-                              </Button>
-                            </Popover>
-                            <DeleteOutlined
-                              style={{ color: 'red' }}
-                              onClick={() => {
-                                if (e?.attributes?.owner?.id === currentUser?.id) {
-                                  localUrls.splice(idx, 1)
-                                  setLocalUrls(localUrls)
-                                  deleteUrl(e.id)
-                                  notification.success({
-                                    description: '删除成功',
-                                  })
-                                } else {
-                                  notification.error({
-                                    description: '只能删除自己的历史链接',
-                                  })
-                                }
-                              }}
-                            />
-                          </Space>
-                        </CardFlex>
-                      </Card>
-                    </Badge.Ribbon>
-                  </StyledHistoryLine>
-                ))
-            ) : (
-              <Empty />
-            )
+        {!isSyncing ? (
+          localUrls?.length > 0 ? (
+            localUrls.map((e, idx) => (
+              <StyledHistoryLine key={idx}>
+                <Badge.Ribbon text={idx + 1}>
+                  <Card
+                    title={
+                      <CardFlex>
+                        <Text strong>{e?.attributes?.name}</Text>
+                        <NameLabel>
+                          <MarginRightDiv>{e?.attributes?.user}</MarginRightDiv>
+                          <MarginRightDiv>
+                            {getPageType(e?.attributes?.url)}
+                          </MarginRightDiv>
+                        </NameLabel>
+                      </CardFlex>
+                    }
+                    size='small'
+                    hoverable={true}
+                    type='inner'>
+                    <CardFlex>
+                      <Space>
+                        {e?.attributes?.enterId?.length > 0 && (
+                          <Text code>
+                            入口ID: {e?.attributes?.enterId.join(', ')}
+                          </Text>
+                        )}
+                        {e?.attributes?.sourceOrigin?.length > 0 && (
+                          <Text code>
+                            订单来源: {e?.attributes?.sourceOrigin.join(', ')}
+                          </Text>
+                        )}
+                      </Space>
+                      <Space>
+                        <Button
+                          type='dashed'
+                          shape='round'
+                          onClick={() => {
+                            navigator.clipboard.writeText(e?.attributes?.url)
+                            notification.success({
+                              description: '链接已复制到剪切板',
+                            })
+                          }}>
+                          点击复制链接
+                        </Button>
+                        <Popover
+                          content={
+                            <QRCode value={e?.attributes?.url} size={200} />
+                          }
+                          title='请扫描二维码'
+                          trigger='click'
+                          visible={isShowDrawerQR[idx]}
+                          onVisibleChange={() => {
+                            const temp = [...isShowDrawerQR]
+                            temp[idx] = !temp[idx]
+                            setIsShowDrawerQR(temp)
+                          }}>
+                          <Button
+                            type='dashed'
+                            shape='round'
+                            onClick={() => {
+                              notification.info({
+                                description: '查看历史链接二维码',
+                              })
+                            }}>
+                            点击查看二维码
+                          </Button>
+                        </Popover>
+                        <DeleteOutlined
+                          style={{ color: 'red' }}
+                          onClick={() => {
+                            if (e?.attributes?.owner?.id === currentUser?.id) {
+                              localUrls.splice(idx, 1)
+                              setLocalUrls(localUrls)
+                              deleteUrl(e.id)
+                              notification.success({
+                                description: '删除成功',
+                              })
+                            } else {
+                              notification.error({
+                                description: '只能删除自己的历史链接',
+                              })
+                            }
+                          }}
+                        />
+                      </Space>
+                    </CardFlex>
+                  </Card>
+                </Badge.Ribbon>
+              </StyledHistoryLine>
+            ))
           ) : (
-            <Spin tip='正在和云服务器同步数据' size='large' />
-          )}
-        </div>
-      </Content>
+            <Empty />
+          )
+        ) : (
+          <Spin tip='正在和云服务器同步数据' size='large' />
+        )}
+      </Wrapper>
     </>
   )
 })

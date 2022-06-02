@@ -9,7 +9,6 @@ import {
   Radio,
   Checkbox,
   PageHeader,
-  Layout,
   Typography,
 } from 'antd'
 import {
@@ -19,6 +18,7 @@ import {
   GlobalOutlined,
   EditOutlined,
 } from '@ant-design/icons'
+import Wrapper from '../../components/Wrapper'
 import styled from 'styled-components'
 import QRCode from 'qrcode.react'
 import context from '../../stores'
@@ -29,7 +29,8 @@ import {
   miniAppPageExtra,
 } from '../../data'
 const { Text } = Typography
-const { Content } = Layout
+
+
 const StyledInputWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -141,335 +142,324 @@ const Component = observer(() => {
           </Button>,
         ]}
       />
-      <Content className='content'>
-        <div
-          className='site-layout-background'
-          style={{
-            padding: 24,
-            minHeight: 360,
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 20,
-          }}>
-          <Radio.Group value={'alipay'} size='large'>
-            <Radio value={'alipay'}>
-              <AlipayCircleOutlined /> Alipay 协议
-            </Radio>
-          </Radio.Group>
-          <Space>
-            <Cascader
-              options={cascaderData}
-              onChange={onChangeAppPage}
-              size='large'
-              notFoundContent='无数据'>
-              <a href='/#'>
-                <Button type='primary'>点击选择或切换</Button>
-              </a>
-            </Cascader>
-            <Button
-              type='dashed'
-              disabled
-              style={{ backgroundColor: '#ffc9c9', color: 'black' }}>
-              {textInfo}
-            </Button>
-          </Space>
-          {!deferredEncodedUrl ? null : (
-            <>
-              <ParamsWrapper>
-                <div>
-                  <GroupOutlined /> <Text keyboard>页面级参数</Text>
-                </div>
-                {pageCheckData.length === 0
-                  ? null
-                  : pageCheckData.map((val, idx) => {
-                      return (
-                        <div key={idx}>
-                          {val[0]}:{' '}
-                          <Checkbox.Group
-                            options={val[1]}
-                            value={pageCheckQueries[val[0]]}
-                            onChange={(e) => {
-                              const temp = { ...pageCheckQueries }
-                              e.length < 2
-                                ? (temp[val[0]] = e)
-                                : (temp[val[0]] = e.filter(
-                                    (x) => !temp[val[0]].includes(x)
-                                  ))
-                              setPageCheckQueries(temp)
-                            }}
-                          />
-                        </div>
-                      )
-                    })}
-                {pageInputQueries.map(({ key, val }, idx) => {
-                  return (
-                    <StyledInputWrapper key={idx}>
-                      <StyledInput
-                        placeholder='输入key，最长20位，以字母开头'
-                        value={key}
-                        maxLength='20'
-                        size='28'
-                        pattern='^[A-Za-z](\w)*'
-                        onChange={(e) => {
-                          const temp = [...pageInputQueries]
-                          temp[idx].key = e.target.value.trim()
-                          setPageInputQueries(temp)
-                        }}
-                      />
-                      <StyledInput
-                        placeholder='输入value，最长20位'
-                        value={val}
-                        maxLength='20'
-                        size='28'
-                        pattern='(\w)*'
-                        onChange={(e) => {
-                          const temp = [...pageInputQueries]
-                          temp[idx].val = e.target.value.trim()
-                          setPageInputQueries(temp)
-                        }}
-                      />
-                      <Button
-                        type='primary'
-                        onClick={() => {
-                          let temp = [...pageInputQueries]
-                          if (pageInputQueries.length !== 1) {
-                            temp.splice(idx, 1)
-                          } else {
-                            temp = [{ key: '', val: '' }]
-                          }
-                          setPageInputQueries(temp)
-                        }}>
-                        -
-                      </Button>
-                      {idx === pageInputQueries.length - 1 ? (
-                        <Button
-                          type='primary'
-                          onClick={() => {
-                            const temp = [...pageInputQueries]
-                            temp.push({ key: '', val: '' })
-                            setPageInputQueries(temp)
-                          }}>
-                          +
-                        </Button>
-                      ) : null}
-                    </StyledInputWrapper>
-                  )
-                })}
-              </ParamsWrapper>
-              <ParamsWrapper>
-                <div>
-                  <GlobalOutlined /> <Text keyboard>全局级参数</Text>
-                </div>
-                {globalInputQueries.map(({ key, val }, idx) => {
-                  return (
-                    <StyledInputWrapper key={idx}>
-                      <StyledInput
-                        placeholder='输入key，最长20位，以字母开头'
-                        value={key}
-                        maxLength='20'
-                        size='28'
-                        pattern='^[A-Za-z](\w)*'
-                        onChange={(e) => {
-                          const temp = [...globalInputQueries]
-                          temp[idx].key = e.target.value.trim()
-                          setGlobalInputQueries(temp)
-                        }}
-                      />
-                      <StyledInput
-                        placeholder='输入value，最大长度20位'
-                        value={val}
-                        maxLength='20'
-                        size='28'
-                        pattern='(\w)*'
-                        onChange={(e) => {
-                          const temp = [...globalInputQueries]
-                          temp[idx].val = e.target.value.trim()
-                          setGlobalInputQueries(temp)
-                        }}
-                      />
-                      <Button
-                        type='primary'
-                        onClick={() => {
-                          let temp = [...globalInputQueries]
-                          if (globalInputQueries.length !== 1) {
-                            temp.splice(idx, 1)
-                          } else {
-                            temp = [{ key: '', val: '' }]
-                          }
-                          setGlobalInputQueries(temp)
-                        }}>
-                        -
-                      </Button>
-                      {idx === globalInputQueries.length - 1 ? (
-                        <Button
-                          type='primary'
-                          onClick={() => {
-                            const temp = [...globalInputQueries]
-                            temp.push({ key: '', val: '' })
-                            setGlobalInputQueries(temp)
-                          }}>
-                          +
-                        </Button>
-                      ) : null}
-                    </StyledInputWrapper>
-                  )
-                })}
-              </ParamsWrapper>
-              <StyledUrlWrapper>{deferredEncodedUrl}</StyledUrlWrapper>
-              <StyledInputWrapper>
-                <EditOutlined />
-                <StyledInput
-                  type='text'
-                  placeholder='请输入一个链接名称，最长50位'
-                  value={linkName}
-                  pattern='.+'
-                  maxLength='50'
-                  autoFocus={true}
-                  style={{ width: '25%', border: '2px dotted' }}
-                  onChange={(e) => {
-                    setLinkName(e.target.value.trim())
-                  }}
-                />
-                <Button
-                  type='primary'
-                  style={{
-                    color: 'white',
-                    backgroundColor: '#74b816',
-                    border: 'none',
-                  }}
-                  onClick={() => {
-                    if (deferredEncodedUrl === '') {
-                      notification.error({
-                        description: '当前链接地址为空，请检查。',
-                      })
-                    } else if (linkName !== '') {
-                      uploadUrl({
-                        name: linkName,
-                        url: deferredEncodedUrl,
-                        enterId: splitEnterId(deferredEncodedUrl),
-                        sourceOrigin: splitSourceOrigin(deferredEncodedUrl),
-                        appId: appId,
-                        pagePath: pagePath,
-                      })
-                        .then(
-                          (res) => {
-                            notification.success({
-                              description: `已上传${res?.attributes?.name}`,
-                            })
-                          },
-                          (error) => {
-                            notification.error({
-                              description: `上传失败请联系开发人员`,
-                            })
-                            notification.error({
-                              description: JSON.stringify(error),
-                            })
-                          }
-                        )
-                        .finally(() => {
-                          setLinkName('')
-                        })
-                    } else {
-                      notification.error({ description: '链接名称不得为空' })
-                    }
-                  }}>
-                  上传当前链接
-                </Button>
-                {splitEnterId(deferredEncodedUrl).length > 0 ? (
-                  <>
-                    <Button
-                      type='primary'
-                      style={{
-                        color: 'white',
-                        backgroundColor: '#cc5de8',
-                        border: 'none',
+      <Wrapper>
+        <Radio.Group value={'alipay'} size='large'>
+          <Radio value={'alipay'}>
+            <AlipayCircleOutlined /> Alipay 协议
+          </Radio>
+        </Radio.Group>
+        <Space>
+          <Cascader
+            options={cascaderData}
+            onChange={onChangeAppPage}
+            size='large'
+            notFoundContent='无数据'>
+            <a href='/#'>
+              <Button type='primary'>点击选择或切换</Button>
+            </a>
+          </Cascader>
+          <Button
+            type='dashed'
+            disabled
+            style={{ backgroundColor: '#ffc9c9', color: 'black' }}>
+            {textInfo}
+          </Button>
+        </Space>
+        {!deferredEncodedUrl ? null : (
+          <>
+            <ParamsWrapper>
+              <div>
+                <GroupOutlined /> <Text keyboard>页面级参数</Text>
+              </div>
+              {pageCheckData.length === 0
+                ? null
+                : pageCheckData.map((val, idx) => {
+                    return (
+                      <div key={idx}>
+                        {val[0]}:{' '}
+                        <Checkbox.Group
+                          options={val[1]}
+                          value={pageCheckQueries[val[0]]}
+                          onChange={(e) => {
+                            const temp = { ...pageCheckQueries }
+                            e.length < 2
+                              ? (temp[val[0]] = e)
+                              : (temp[val[0]] = e.filter(
+                                  (x) => !temp[val[0]].includes(x)
+                                ))
+                            setPageCheckQueries(temp)
+                          }}
+                        />
+                      </div>
+                    )
+                  })}
+              {pageInputQueries.map(({ key, val }, idx) => {
+                return (
+                  <StyledInputWrapper key={idx}>
+                    <StyledInput
+                      placeholder='输入key，最长20位，以字母开头'
+                      value={key}
+                      maxLength='20'
+                      size='28'
+                      pattern='^[A-Za-z](\w)*'
+                      onChange={(e) => {
+                        const temp = [...pageInputQueries]
+                        temp[idx].key = e.target.value.trim()
+                        setPageInputQueries(temp)
                       }}
-                      onClick={() => {
-                        checkEnterId(deferredEncodedUrl).then(
-                          (res) => {
-                            if (res.length > 0) {
-                              res.map((item) =>
-                                item?.attributes?.enterId?.forEach((e) => {
-                                  if (
-                                    splitEnterId(deferredEncodedUrl).includes(e)
-                                  ) {
-                                    notification.error({
-                                      description: `此${e}已经存在于${item?.attributes?.name}`,
-                                    })
-                                  }
-                                })
-                              )
-                            } else {
-                              notification.success({
-                                description: `当前Enter ID可用`,
-                              })
-                            }
-                          },
-                          (err) => {
-                            notification.error({
-                              description: JSON.stringify(err),
-                            })
-                          }
-                        )
-                      }}>
-                      入口ID查重
-                    </Button>
-                    <span>
-                      (当前为<b>{splitEnterId(deferredEncodedUrl).join(',')}</b>
-                      )
-                    </span>
-                  </>
-                ) : null}
-                {splitSourceOrigin(deferredEncodedUrl).length > 0 ? (
-                  <>
+                    />
+                    <StyledInput
+                      placeholder='输入value，最长20位'
+                      value={val}
+                      maxLength='20'
+                      size='28'
+                      pattern='(\w)*'
+                      onChange={(e) => {
+                        const temp = [...pageInputQueries]
+                        temp[idx].val = e.target.value.trim()
+                        setPageInputQueries(temp)
+                      }}
+                    />
                     <Button
                       type='primary'
-                      disabled
-                      style={{
-                        color: 'white',
-                        backgroundColor: 'grey',
-                        border: 'none',
+                      onClick={() => {
+                        let temp = [...pageInputQueries]
+                        if (pageInputQueries.length !== 1) {
+                          temp.splice(idx, 1)
+                        } else {
+                          temp = [{ key: '', val: '' }]
+                        }
+                        setPageInputQueries(temp)
                       }}>
-                      订单来源查重
+                      -
                     </Button>
-                    <span>
-                      (当前为
-                      <b>{splitSourceOrigin(deferredEncodedUrl).join(',')}</b>)
-                    </span>
-                  </>
-                ) : null}
-              </StyledInputWrapper>
-              <Space>
-                <Button
-                  type='primary'
-                  onClick={() => {
-                    navigator.clipboard.writeText(deferredEncodedUrl)
-                    notification.success({ description: '链接已复制到剪切板' })
-                  }}>
-                  点击复制链接
-                </Button>
-                <Popover
-                  content={<QRCode value={deferredEncodedUrl} size={200} />}
-                  title='请扫描二维码'
-                  trigger='click'
-                  visible={isShowPopover}
-                  onVisibleChange={() => setIsShowPopover(!isShowPopover)}>
+                    {idx === pageInputQueries.length - 1 ? (
+                      <Button
+                        type='primary'
+                        onClick={() => {
+                          const temp = [...pageInputQueries]
+                          temp.push({ key: '', val: '' })
+                          setPageInputQueries(temp)
+                        }}>
+                        +
+                      </Button>
+                    ) : null}
+                  </StyledInputWrapper>
+                )
+              })}
+            </ParamsWrapper>
+            <ParamsWrapper>
+              <div>
+                <GlobalOutlined /> <Text keyboard>全局级参数</Text>
+              </div>
+              {globalInputQueries.map(({ key, val }, idx) => {
+                return (
+                  <StyledInputWrapper key={idx}>
+                    <StyledInput
+                      placeholder='输入key，最长20位，以字母开头'
+                      value={key}
+                      maxLength='20'
+                      size='28'
+                      pattern='^[A-Za-z](\w)*'
+                      onChange={(e) => {
+                        const temp = [...globalInputQueries]
+                        temp[idx].key = e.target.value.trim()
+                        setGlobalInputQueries(temp)
+                      }}
+                    />
+                    <StyledInput
+                      placeholder='输入value，最大长度20位'
+                      value={val}
+                      maxLength='20'
+                      size='28'
+                      pattern='(\w)*'
+                      onChange={(e) => {
+                        const temp = [...globalInputQueries]
+                        temp[idx].val = e.target.value.trim()
+                        setGlobalInputQueries(temp)
+                      }}
+                    />
+                    <Button
+                      type='primary'
+                      onClick={() => {
+                        let temp = [...globalInputQueries]
+                        if (globalInputQueries.length !== 1) {
+                          temp.splice(idx, 1)
+                        } else {
+                          temp = [{ key: '', val: '' }]
+                        }
+                        setGlobalInputQueries(temp)
+                      }}>
+                      -
+                    </Button>
+                    {idx === globalInputQueries.length - 1 ? (
+                      <Button
+                        type='primary'
+                        onClick={() => {
+                          const temp = [...globalInputQueries]
+                          temp.push({ key: '', val: '' })
+                          setGlobalInputQueries(temp)
+                        }}>
+                        +
+                      </Button>
+                    ) : null}
+                  </StyledInputWrapper>
+                )
+              })}
+            </ParamsWrapper>
+            <StyledUrlWrapper>{deferredEncodedUrl}</StyledUrlWrapper>
+            <StyledInputWrapper>
+              <EditOutlined />
+              <StyledInput
+                type='text'
+                placeholder='请输入一个链接名称，最长50位'
+                value={linkName}
+                pattern='.+'
+                maxLength='50'
+                autoFocus={true}
+                style={{ width: '25%', border: '2px dotted' }}
+                onChange={(e) => {
+                  setLinkName(e.target.value.trim())
+                }}
+              />
+              <Button
+                type='primary'
+                style={{
+                  color: 'white',
+                  backgroundColor: '#74b816',
+                  border: 'none',
+                }}
+                onClick={() => {
+                  if (deferredEncodedUrl === '') {
+                    notification.error({
+                      description: '当前链接地址为空，请检查。',
+                    })
+                  } else if (linkName !== '') {
+                    uploadUrl({
+                      name: linkName,
+                      url: deferredEncodedUrl,
+                      enterId: splitEnterId(deferredEncodedUrl),
+                      sourceOrigin: splitSourceOrigin(deferredEncodedUrl),
+                      appId: appId,
+                      pagePath: pagePath,
+                    })
+                      .then(
+                        (res) => {
+                          notification.success({
+                            description: `已上传${res?.attributes?.name}`,
+                          })
+                        },
+                        (error) => {
+                          notification.error({
+                            description: `上传失败请联系开发人员`,
+                          })
+                          notification.error({
+                            description: JSON.stringify(error),
+                          })
+                        }
+                      )
+                      .finally(() => {
+                        setLinkName('')
+                      })
+                  } else {
+                    notification.error({ description: '链接名称不得为空' })
+                  }
+                }}>
+                上传当前链接
+              </Button>
+              {splitEnterId(deferredEncodedUrl).length > 0 ? (
+                <>
                   <Button
                     type='primary'
+                    style={{
+                      color: 'white',
+                      backgroundColor: '#cc5de8',
+                      border: 'none',
+                    }}
                     onClick={() => {
-                      notification.success({ description: '二维码已生成' })
+                      checkEnterId(deferredEncodedUrl).then(
+                        (res) => {
+                          if (res.length > 0) {
+                            res.map((item) =>
+                              item?.attributes?.enterId?.forEach((e) => {
+                                if (
+                                  splitEnterId(deferredEncodedUrl).includes(e)
+                                ) {
+                                  notification.error({
+                                    description: `此${e}已经存在于${item?.attributes?.name}`,
+                                  })
+                                }
+                              })
+                            )
+                          } else {
+                            notification.success({
+                              description: `当前Enter ID可用`,
+                            })
+                          }
+                        },
+                        (err) => {
+                          notification.error({
+                            description: JSON.stringify(err),
+                          })
+                        }
+                      )
                     }}>
-                    点击生成二维码
+                    入口ID查重
                   </Button>
-                </Popover>
-              </Space>
-              {
-                '（如链接有效请务必上传，以便对链接在云端汇总，从而实现Enter ID查重等操作。）'
-              }
-            </>
-          )}
-        </div>
-      </Content>
+                  <span>
+                    (当前为<b>{splitEnterId(deferredEncodedUrl).join(',')}</b>)
+                  </span>
+                </>
+              ) : null}
+              {splitSourceOrigin(deferredEncodedUrl).length > 0 ? (
+                <>
+                  <Button
+                    type='primary'
+                    disabled
+                    style={{
+                      color: 'white',
+                      backgroundColor: 'grey',
+                      border: 'none',
+                    }}>
+                    订单来源查重
+                  </Button>
+                  <span>
+                    (当前为
+                    <b>{splitSourceOrigin(deferredEncodedUrl).join(',')}</b>)
+                  </span>
+                </>
+              ) : null}
+            </StyledInputWrapper>
+            <Space>
+              <Button
+                type='primary'
+                onClick={() => {
+                  navigator.clipboard.writeText(deferredEncodedUrl)
+                  notification.success({ description: '链接已复制到剪切板' })
+                }}>
+                点击复制链接
+              </Button>
+              <Popover
+                content={<QRCode value={deferredEncodedUrl} size={200} />}
+                title='请扫描二维码'
+                trigger='click'
+                visible={isShowPopover}
+                onVisibleChange={() => setIsShowPopover(!isShowPopover)}>
+                <Button
+                  type='primary'
+                  onClick={() => {
+                    notification.success({ description: '二维码已生成' })
+                  }}>
+                  点击生成二维码
+                </Button>
+              </Popover>
+            </Space>
+            {
+              '（如链接有效请务必上传，以便对链接在云端汇总，从而实现Enter ID查重等操作。）'
+            }
+          </>
+        )}
+      </Wrapper>
     </>
   )
 })

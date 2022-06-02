@@ -3,7 +3,6 @@ import React, { useContext, useEffect } from 'react'
 import {
   Button,
   PageHeader,
-  Layout,
   Typography,
   notification,
   Table,
@@ -12,9 +11,9 @@ import {
 } from 'antd'
 import styled from 'styled-components'
 import InputContext from './inputs'
+import Wrapper from '../../components/Wrapper'
 
 const { Text } = Typography
-const { Content } = Layout
 const StyledInputWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -121,110 +120,100 @@ const Component = observer(() => {
           </Button>,
         ]}
       />
-      <Content className='content'>
-        <div
-          className='site-layout-background'
-          style={{
-            padding: 24,
-            minHeight: 360,
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 20,
-          }}>
-          {data?.map(({ key, val }, idx) => {
-            return (
-              <StyledInputWrapper key={idx}>
-                <StyledInput
-                  placeholder='输入链接名称，最长50位'
-                  value={key}
-                  maxLength='50'
-                  size='28'
-                  pattern='.+'
-                  onChange={(e) => {
-                    const temp = [...data]
-                    temp[idx].key = e.target.value.trim()
-                    setData(temp)
-                  }}
-                />
-                <StyledInput
-                  placeholder='输入链接地址'
-                  value={val}
-                  size='28'
-                  pattern='^alipays?://.+'
-                  onChange={(e) => {
-                    const temp = [...data]
-                    temp[idx].val = e.target.value.trim()
-                    setData(temp)
-                  }}
-                />
-                <Button
-                  type='primary'
-                  onClick={() => {
-                    let temp = [...data]
-                    if (data.length !== 1) {
-                      temp.splice(idx, 1)
-                    } else {
-                      temp = [{ key: '', val: '' }]
-                    }
-                    setData(temp)
-                  }}>
-                  -
-                </Button>
-                {idx === data.length - 1 ? (
-                  <Button
-                    type='primary'
-                    onClick={() => {
-                      const temp = [...data]
-                      temp.push({ key: '', val: '' })
-                      setData(temp)
-                    }}>
-                    +
-                  </Button>
-                ) : null}
-              </StyledInputWrapper>
-            )
-          })}
-          {!data.find((e) => e.key === '' || e.val === '') && (
-            <div>
-              <Divider dashed>上传预览</Divider>
-              <Table
-                dataSource={getDataSource()}
-                columns={columns}
-                pagination={false}
+      <Wrapper>
+        {data?.map(({ key, val }, idx) => {
+          return (
+            <StyledInputWrapper key={idx}>
+              <StyledInput
+                placeholder='输入链接名称，最长50位'
+                value={key}
+                maxLength='50'
+                size='28'
+                pattern='.+'
+                onChange={(e) => {
+                  const temp = [...data]
+                  temp[idx].key = e.target.value.trim()
+                  setData(temp)
+                }}
               />
-              <Divider dashed />
-              <Space>
+              <StyledInput
+                placeholder='输入链接地址'
+                value={val}
+                size='28'
+                pattern='^alipays?://.+'
+                onChange={(e) => {
+                  const temp = [...data]
+                  temp[idx].val = e.target.value.trim()
+                  setData(temp)
+                }}
+              />
+              <Button
+                type='primary'
+                onClick={() => {
+                  let temp = [...data]
+                  if (data.length !== 1) {
+                    temp.splice(idx, 1)
+                  } else {
+                    temp = [{ key: '', val: '' }]
+                  }
+                  setData(temp)
+                }}>
+                -
+              </Button>
+              {idx === data.length - 1 ? (
                 <Button
                   type='primary'
                   onClick={() => {
-                    upload().then(
-                      (res) => {
-                        res.forEach((e) => {
-                          notification.success({
-                            description: `已上传${e?.attributes?.name}`,
-                          })
-                        })
-                      },
-                      (error) => {
-                        notification.error({
-                          description: `上传失败请联系开发人员`,
-                        })
-                        notification.error({
-                          description: JSON.stringify(error),
-                        })
-                      }
-                    )
+                    const temp = [...data]
+                    temp.push({ key: '', val: '' })
+                    setData(temp)
                   }}>
-                  上传上表所有链接
+                  +
                 </Button>
-                <Text>
-                  此页面不对入口ID或订单来源进行查重，请检查好后再上传。
-                </Text>
-              </Space>
-            </div>
-          )}
-        </div>
-      </Content>
+              ) : null}
+            </StyledInputWrapper>
+          )
+        })}
+        {!data.find((e) => e.key === '' || e.val === '') && (
+          <div>
+            <Divider dashed>上传预览</Divider>
+            <Table
+              dataSource={getDataSource()}
+              columns={columns}
+              pagination={false}
+            />
+            <Divider dashed />
+            <Space>
+              <Button
+                type='primary'
+                onClick={() => {
+                  upload().then(
+                    (res) => {
+                      res.forEach((e) => {
+                        notification.success({
+                          description: `已上传${e?.attributes?.name}`,
+                        })
+                      })
+                    },
+                    (error) => {
+                      notification.error({
+                        description: `上传失败请联系开发人员`,
+                      })
+                      notification.error({
+                        description: JSON.stringify(error),
+                      })
+                    }
+                  )
+                }}>
+                上传上表所有链接
+              </Button>
+              <Text>
+                此页面不对入口ID或订单来源进行查重，请检查好后再上传。
+              </Text>
+            </Space>
+          </div>
+        )}
+      </Wrapper>
     </>
   )
 })
