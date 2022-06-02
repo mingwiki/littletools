@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react'
-import { HashRouter, Routes, Route, Link } from 'react-router-dom'
+import { HashRouter, Routes, Route } from 'react-router-dom'
 import { Layout, Spin } from 'antd'
 import { config } from './router.config'
 import Index, { Empty } from './tools'
