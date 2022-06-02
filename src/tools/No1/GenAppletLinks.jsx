@@ -52,6 +52,8 @@ const ParamsWrapper = styled.div`
   border: 1px solid;
 `
 const StyledInput = styled.input`
+  min-width: 30%;
+  max-width: 100%;
   &:invalid {
     background-color: red;
   }
@@ -320,7 +322,6 @@ const Component = observer(() => {
                 pattern='.+'
                 maxLength='50'
                 autoFocus={true}
-                style={{ width: '25%', border: '2px dotted' }}
                 onChange={(e) => {
                   setLinkName(e.target.value.trim())
                 }}

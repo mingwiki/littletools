@@ -10,7 +10,7 @@ const StyledContent = styled(Content)`
   border: 2px dashed;
   display: flex;
   flex-direction: column;
-  gap: 20;
+  gap: 10px;
   overflow: auto;
 `
 export default ({ children }) => {

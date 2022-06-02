@@ -27,9 +27,6 @@ const QRCode = React.lazy(() => import('qrcode.react'))
 const Wrapper = React.lazy(() => import('../../components/Wrapper'))
 const PageHeader = React.lazy(() => import('../../components/PageHeader'))
 
-const StyledHistoryLine = styled.div`
-  margin-bottom: 10px;
-`
 const CardFlex = styled.div`
   display: flex;
   align-items: center;
@@ -277,7 +274,7 @@ const Component = observer(() => {
         {!isSyncing ? (
           localUrls?.length > 0 ? (
             localUrls.map((e, idx) => (
-              <StyledHistoryLine key={idx}>
+              <div key={idx}>
                 <Badge.Ribbon text={idx + 1}>
                   <Card
                     title={
@@ -362,7 +359,7 @@ const Component = observer(() => {
                     </CardFlex>
                   </Card>
                 </Badge.Ribbon>
-              </StyledHistoryLine>
+              </div>
             ))
           ) : (
             <Empty />
