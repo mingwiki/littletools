@@ -41,7 +41,7 @@ const NameLabel = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-right: 15px;
+  margin-right: 35px;
 `
 const StyledSpace = styled.div`
   border: 1px dashed gray;
