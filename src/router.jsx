@@ -21,7 +21,7 @@ const Component = () => {
     <HashRouter>
       <MainLayout>
         <Sidebar />
-        <Layout>
+        <MainLayout>
           <Suspense fallback={<StyledSpin size='large' />}>
             <Routes>
               <Route path='/' element={<Index />} />
@@ -29,7 +29,7 @@ const Component = () => {
               <Route path='*' element={<Empty />} />
             </Routes>
           </Suspense>
-        </Layout>
+        </MainLayout>
       </MainLayout>
     </HashRouter>
   )

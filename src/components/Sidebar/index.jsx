@@ -30,9 +30,9 @@ export default observer(() => {
     const t = gsap.timeline()
     t.set(sidebarRef.current, {
       x: '-100%',
-      ease: 'ease-in-out',
-      duration: 1,
+      opacity: 0,
     })
+      .to('#root', { padding: '0 5vw', duration: 1 })
       .to(sidebarRef.current, {
         x: '0',
         opacity: 1,
@@ -57,8 +57,21 @@ export default observer(() => {
         duration: 1,
         opacity: 1,
       })
-      .to(logoRef.current, { rotationY: '-360', duration: 1 })
-      .to('#root', { padding: '0 5vw', duration: 1 })
+      .to(logoRef.current, {
+        rotationY: '-360',
+        ease: 'ease-in-out',
+        duration: 1,
+      })
+      .to('#root', {
+        backgroundColor: 'black',
+        ease: 'ease-in-out',
+        duration: 1,
+      })
+      .to(logoRef.current, {
+        rotationY: '360',
+        ease: 'ease-in-out',
+        duration: 1,
+      })
   }, [currentUser])
   return (
     <StyledSider

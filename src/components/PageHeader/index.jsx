@@ -9,15 +9,13 @@ export default (props) => {
     t.set(pageHeaderRef.current, {
       y: '-100%',
       opacity: 0,
-      ease: 'ease-in-out',
-      duration: 1,
     }).to(pageHeaderRef.current, {
       y: '0',
       opacity: 1,
       ease: 'ease-in-out',
       duration: 1,
     })
-  },[])
+  }, [])
   return (
     <div ref={pageHeaderRef}>
       <PageHeader {...props} />

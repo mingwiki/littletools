@@ -18,10 +18,8 @@ export default ({ children }) => {
   useEffect(() => {
     const t = gsap.timeline()
     t.set(contentRef.current, {
-      x: '100%',
+      x: '-100%',
       opacity: 0,
-      ease: 'ease-in-out',
-      duration: 1,
     }).to(contentRef.current, {
       x: '0',
       opacity: 1,

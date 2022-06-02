@@ -17,10 +17,10 @@ code {
   width: 64px;
 }
 
-#root{
-  background-color: black;
+#root {
+  background-color: #505F4E;
 }
 
-.ant-layout-sider-trigger{
+.ant-layout-sider-trigger {
   background: #343a40 !important;
 }
