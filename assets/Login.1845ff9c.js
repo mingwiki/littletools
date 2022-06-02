@@ -1,0 +1,8 @@
+import{s as n,r as p,c,W as d,a as e,j as t,X as a}from"./index.abe404c2.js";import F from"./index.85874256.js";import{F as s}from"./index.7c5b09ce.js";import{I as i}from"./index.72e217d1.js";import{S as h,B as o}from"./index.e0741709.js";import"./index.2d9ac2c0.js";import"./col.c66e84d8.js";import"./responsiveObserve.5e05f819.js";import"./index.f633c333.js";import"./SearchOutlined.df73f75f.js";const f=n.div`
+  font-size: 36px;
+  margin: 50px 0;
+`,C=n.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+`,S=()=>{const{AuthStore:u}=p.exports.useContext(c);let m=d();return e(F,{children:t(C,{children:[e(f,{children:"\u6B22\u8FCE\u4F7F\u7528\uFF0C\u8BF7\u5148\u767B\u5F55"}),t(s,{name:"basic",labelCol:{span:8},wrapperCol:{span:16},initialValues:{remember:!0},onFinish:r=>{u.setPassword(r.password),u.setUsername(r.username),u.login().then(()=>{a.success("\u767B\u5F55\u6210\u529F!"),window.history.back()}).catch(l=>{a.error("\u767B\u5F55\u5931\u8D25:",l)})},onFinishFailed:r=>{a.error("\u767B\u5F55\u5931\u8D25:",r)},autoComplete:"off",children:[e(s.Item,{label:"\u7528\u6237\u540D",name:"username",rules:[{required:!0,message:"\u8BF7\u8F93\u5165\u7528\u6237\u540D"}],children:e(i,{})}),e(s.Item,{label:"\u5BC6\u7801",name:"password",rules:[{required:!0,message:"\u8BF7\u8F93\u5165\u5BC6\u7801!"}],children:e(i.Password,{})}),e(s.Item,{wrapperCol:{offset:8,span:16},children:t(h,{children:[e(o,{type:"primary",htmlType:"submit",children:"\u63D0\u4EA4"}),e(o,{type:"primary",onClick:()=>m("/register"),children:"\u524D\u5F80\u6CE8\u518C"})]})})]})]})})};export{S as default};
