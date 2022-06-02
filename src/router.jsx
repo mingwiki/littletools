@@ -1,77 +1,15 @@
-import React, { Suspense, useState, useRef, useEffect } from 'react'
+import React, { Suspense } from 'react'
 import { HashRouter, Routes, Route, Link } from 'react-router-dom'
-import { Layout, Menu, Spin } from 'antd'
-import { config, sidebar } from './router.config'
+import { Layout, Spin } from 'antd'
+import { config } from './router.config'
 import Index, { Empty } from './tools'
-import gsap from 'gsap'
-import logo from './favicon.png'
 
-const { Sider } = Layout
-
+const Sidebar = React.lazy(() => import('./components/Sidebar'))
 const Component = () => {
-  const [isCollapsed, setIsCollapsed] = useState(false)
-  const toggle = () => setIsCollapsed(!isCollapsed)
-  const logoRef = useRef(null)
-  const sidebarRef = useRef(null)
-  useEffect(() => {
-    const t = gsap.timeline()
-    t.set(sidebarRef.current, {
-      x: '-100%',
-      ease: 'ease-in-out',
-      duration: 1,
-    })
-      .to(sidebarRef.current, {
-        x: '0',
-        opacity: 1,
-        ease: 'ease-in-out',
-        duration: 1,
-      })
-      .to(logoRef.current, {
-        x: '50',
-        ease: 'ease-in-out',
-        duration: 1,
-        opacity: 0.5,
-      })
-      .to(logoRef.current, {
-        x: '-50',
-        ease: 'ease-in-out',
-        duration: 1,
-        opacity: 0,
-      })
-      .to(logoRef.current, {
-        x: '0',
-        ease: 'ease-in-out',
-        duration: 1,
-        opacity: 1,
-      })
-      .to(logoRef.current, { rotationY: '-360', duration: 1 })
-  }, [])
   return (
     <HashRouter>
       <Layout style={{ height: '100vh' }}>
-        <Sider
-          collapsible
-          collapsed={isCollapsed}
-          onCollapse={toggle}
-          ref={sidebarRef}
-          style={{ backgroundColor: '#343a40' }}>
-          <div className='logo' style={{ textAlign: 'center' }}>
-            <Link to='/'>
-              <img src={logo} className='App-logo' alt='logo' ref={logoRef} />
-            </Link>
-          </div>
-          <Menu
-            style={{
-              backgroundColor: '#ffffff',
-              borderRadius: '6px',
-              boxShadow: '0px 10px 10px 0px rgba(0, 0, 0, 0.8)',
-              border: 'none',
-              outline: 'none',
-            }}
-            mode='inline'
-            items={sidebar}
-          />
-        </Sider>
+        <Sidebar />
         <Layout>
           <Suspense
             fallback={
