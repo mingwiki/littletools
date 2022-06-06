@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useRef, useContext } from 'react'
+import React, { useState, useContext, forwardRef } from 'react'
 import { Layout, Menu } from 'antd'
 import { observer } from 'mobx-react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { data } from './data'
-import gsap from 'gsap'
+
 import keqing from '../../keqing.png'
 import favicon from '../../favicon.svg'
 import context from '../../stores'
@@ -19,49 +19,12 @@ const StyledMenu = styled(Menu)`
   border: none;
   outline: none;
 `
-export default observer(() => {
+const Component = forwardRef((props, ref) => {
   const [isCollapsed, setIsCollapsed] = useState(false)
   const toggle = () => setIsCollapsed(!isCollapsed)
-  const logoRef = useRef(null)
-  const sidebarRef = useRef(null)
-  const menuRef = useRef(null)
   const { UserStore } = useContext(context)
   const { currentUser } = UserStore
-  useEffect(() => {
-    const t = gsap.timeline()
-    t.set(sidebarRef.current, {
-      x: '-100%',
-      opacity: 0,
-    })
-      .set(menuRef.current.menu.list, {
-        x: '-100%',
-        opacity: 0,
-        paddingRight: '100%',
-      })
-      .to('#root', { padding: '0 5vw', duration: 1 })
-      .to(sidebarRef.current, {
-        x: '0',
-        opacity: 1,
-      })
-      .to(logoRef.current, {
-        rotationY: '360',
-      })
-      .to(menuRef.current.menu.list, {
-        x: '0',
-        opacity: 1,
-      })
-      .to(menuRef.current.menu.list, {
-        paddingRight: '0',
-        ease: 'ease-in-out',
-        duration: 1,
-      })
-      .to(logoRef.current, {
-        rotationY: '-360',
-      })
-      .to('#root', {
-        backgroundColor: 'black',
-      })
-  }, [currentUser])
+  const { sidebarRef, logoRef, menuRef } = ref
   return (
     <StyledSider
       collapsible
@@ -82,3 +45,4 @@ export default observer(() => {
     </StyledSider>
   )
 })
+export default observer(Component)

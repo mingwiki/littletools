@@ -1,34 +1,87 @@
-import React, { useEffect, lazy, useContext } from 'react'
+import React, { useEffect, lazy, useContext, createRef, useRef } from 'react'
 import { HashRouter } from 'react-router-dom'
 import { observer } from 'mobx-react'
 import 'antd/dist/antd.min.css'
-import { Layout, PageHeader } from 'antd'
+import { Layout } from 'antd'
 import context from './stores'
 import Routers from './router.config'
 import styled from 'styled-components'
-
+import gsap from 'gsap'
 const MainLayout = styled(Layout)`
   height: 100vh;
   overflow: hidden;
 `
 const Sidebar = lazy(() => import('./components/Sidebar'))
 const Wrapper = lazy(() => import('./components/Wrapper'))
+const PageHeader = lazy(() => import('./components/PageHeader'))
 const App = () => {
   const { UserStore, HeaderStore } = useContext(context)
-  const { getCurrentUser } = UserStore
+  const { currentUser, getCurrentUser } = UserStore
   const { headers } = HeaderStore
+  const ref = {
+    logoRef: createRef(null),
+    sidebarRef: createRef(null),
+    menuRef: createRef(null),
+    headerRef: createRef(null),
+    contentRef: createRef(null),
+  }
+  const { logoRef, sidebarRef, menuRef, contentRef, headerRef } = ref
   useEffect(() => {
     getCurrentUser()
-  }, [UserStore, getCurrentUser])
+    const t = gsap.timeline()
+    t.set(sidebarRef.current, {
+      y: '-100%',
+      opacity: 0,
+    })
+      .set(menuRef.current.menu.list, {
+        x: '-100%',
+        opacity: 0,
+        paddingRight: '100%',
+      })
+      .set(headerRef.current, { x: '-100%', opacity: 0 })
+      .set(contentRef.current, {
+        x: '-100%',
+        opacity: 0,
+      })
+      .to('#root', { padding: '0 5vw', duration: 1 })
+      .to(sidebarRef.current, {
+        y: '0',
+        opacity: 1,
+      })
+      .to(logoRef.current, {
+        rotationY: '360',
+      })
+      .to(menuRef.current.menu.list, {
+        x: '0',
+        opacity: 1,
+      })
+      .to(menuRef.current.menu.list, {
+        paddingRight: '0',
+        ease: 'ease-in-out',
+        duration: 1,
+      })
+      .to(headerRef.current, {
+        x: '0',
+        opacity: 1,
+      })
+      .to(contentRef.current, {
+        x: '0',
+        opacity: 1,
+      })
+      .to(logoRef.current, {
+        rotationY: '-360',
+      })
+      .to('#root', {
+        backgroundColor: 'black',
+      })
+  }, [currentUser, getCurrentUser])
   return (
     <HashRouter>
       <MainLayout>
-        <Sidebar />
+        <Sidebar ref={ref} />
         <MainLayout>
-          {Object.keys(headers)?.length > 0 ? (
-            <PageHeader {...headers} />
-          ) : null}
-          <Wrapper>
+          <PageHeader {...headers} ref={ref} />
+          <Wrapper ref={ref}>
             <Routers />
           </Wrapper>
         </MainLayout>

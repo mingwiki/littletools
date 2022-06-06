@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom'
 import { Form, Input, Button, message, Space } from 'antd'
 import context from '../stores/index'
 import styled from 'styled-components'
-import Wrapper from '../components/Wrapper'
 
 const AbsoluteTips = styled.div`
   font-size: 36px;

@@ -1,6 +1,5 @@
-import React, { useEffect, useRef } from 'react'
+import React, { forwardRef } from 'react'
 import { Layout } from 'antd'
-import { gsap } from 'gsap'
 import styled from 'styled-components'
 
 const { Content } = Layout
@@ -13,17 +12,10 @@ const StyledContent = styled(Content)`
   gap: 10px;
   overflow: auto;
 `
-export default ({ children }) => {
-  const contentRef = useRef(null)
-  useEffect(() => {
-    const t = gsap.timeline()
-    t.set(contentRef.current, {
-      x: '-100%',
-      opacity: 0,
-    }).to(contentRef.current, {
-      x: '0',
-      opacity: 1,
-    })
-  }, [])
+const Component = forwardRef((props, ref) => {
+  const { children } = props
+  const { contentRef } = ref
   return <StyledContent ref={contentRef}>{children}</StyledContent>
-}
+})
+
+export default Component

@@ -1,18 +1,18 @@
-import React, { Suspense } from 'react'
+import React, { Suspense, useContext, lazy, useEffect, useRef } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import { Spin } from 'antd'
 import styled from 'styled-components'
 import context from './stores'
 import { observer } from 'mobx-react'
-const Index = React.lazy(() => import('./pages/index'))
-const Login = React.lazy(() => import('./pages/Login'))
-const Register = React.lazy(() => import('./pages/Register'))
-const Empty = React.lazy(() => import('./pages/Empty'))
-const LoginRequired = React.lazy(() => import('./pages/LoginRequired'))
-const No1 = React.lazy(() => import('./tools/GenAppletLinks'))
-const No2 = React.lazy(() => import('./tools/UploadAllLinks'))
-const No3 = React.lazy(() => import('./tools/UserCenter'))
-const No4 = React.lazy(() => import('./tools/GetPagePath'))
+const Index = lazy(() => import('./pages/index'))
+const Login = lazy(() => import('./pages/Login'))
+const Register = lazy(() => import('./pages/Register'))
+const Empty = lazy(() => import('./pages/Empty'))
+const LoginRequired = lazy(() => import('./pages/LoginRequired'))
+const No1 = lazy(() => import('./tools/GenAppletLinks'))
+const No2 = lazy(() => import('./tools/UploadAllLinks'))
+const No3 = lazy(() => import('./tools/UserCenter'))
+const No4 = lazy(() => import('./tools/GetPagePath'))
 
 const StyledSpin = styled(Spin)`
   position: fixed;
@@ -20,8 +20,8 @@ const StyledSpin = styled(Spin)`
   left: 50%;
   transform: translate(-50%, -50%);
 `
-const Component = observer(() => {
-  const { UserStore } = React.useContext(context)
+const Component = () => {
+  const { UserStore } = useContext(context)
   const { currentUser } = UserStore
   return (
     <Suspense fallback={<StyledSpin size='large' />}>
@@ -30,18 +30,20 @@ const Component = observer(() => {
         <Route path='login' element={<Login />} />
         <Route path='register' element={<Register />} />
         {currentUser ? (
-          <>
-            <Route path='01' element={<No1 />} />
-            <Route path='02' element={<No2 />} />
-            <Route path='03' element={<No3 />} />
-            <Route path='04' element={<No4 />} />
-            <Route path='*' element={<Empty />} />
-          </>
+          [
+            { path: '01', element: <No1 /> },
+            { path: '02', element: <No2 /> },
+            { path: '03', element: <No3 /> },
+            { path: '04', element: <No4 /> },
+            { path: '*', element: <Empty /> },
+          ].map((item) => (
+            <Route key={item.path} path={item.path} element={item.element} />
+          ))
         ) : (
           <Route path='*' element={<LoginRequired />} />
         )}
       </Routes>
     </Suspense>
   )
-})
-export default Component
+}
+export default observer(Component)
