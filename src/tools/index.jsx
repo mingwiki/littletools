@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 import { observer } from 'mobx-react'
 import styled from 'styled-components'
 import context from '../stores'
-import { appTitle } from '../const.data'
 const Welcome = styled.div`
   font-size: 50px;
 `
@@ -46,3 +45,4 @@ export const NeedLogin = () => {
     </Wrapper>
   )
 }
+export const appTitle = '小小工具箱'

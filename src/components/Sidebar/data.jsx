@@ -5,7 +5,7 @@ import {
   PaperClipOutlined,
 } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
-export const sidebar = [
+export const data = [
   {
     key: '1',
     icon: <LinkOutlined />,
@@ -27,4 +27,3 @@ export const sidebar = [
     label: <Link to='04'>解析Page参数</Link>,
   },
 ]
-export const appTitle = '小小工具箱'

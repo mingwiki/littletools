@@ -3,7 +3,7 @@ import { Layout, Menu } from 'antd'
 import { observer } from 'mobx-react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { sidebar } from '../../const.data'
+import { data } from './data'
 import gsap from 'gsap'
 import keqing from '../../keqing.png'
 import favicon from '../../favicon.svg'
@@ -78,7 +78,7 @@ export default observer(() => {
           />
         </Link>
       </div>
-      <StyledMenu mode='inline' items={sidebar} ref={menuRef} />
+      <StyledMenu mode='inline' items={data} ref={menuRef} />
     </StyledSider>
   )
 })
