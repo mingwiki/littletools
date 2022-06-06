@@ -3,6 +3,7 @@ import { Button, Typography, notification, Space } from 'antd'
 import styled from 'styled-components'
 import UrlStore from '../../stores/url'
 import context from '../../stores'
+import Container from '../../components/Container'
 const { getPageType } = UrlStore
 const { Text } = Typography
 
@@ -36,7 +37,7 @@ const Component = () => {
     ?.filter((e) => /^alipays/i.test(e))?.[0]
   const pageParms = alipaysUrl?.split('&page=')[1]?.split('&query=')[0]
   return (
-    <>
+    <Container>
       <Space direction='vertical'>
         <StyledInput
           placeholder='请输入https://benefit.jujienet.com开头的网址'
@@ -115,7 +116,7 @@ const Component = () => {
           <WrapText>{pageParms}</WrapText>
         </Space>
       )}
-    </>
+    </Container>
   )
 }
 

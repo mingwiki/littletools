@@ -3,14 +3,16 @@ import { Layout, Menu } from 'antd'
 import { observer } from 'mobx-react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { data } from './data'
-
 import keqing from '../../keqing.png'
 import favicon from '../../favicon.svg'
 import context from '../../stores'
+import { data } from './data'
 const { Sider } = Layout
 const StyledSider = styled(Sider)`
   background-color: #343a40;
+`
+const StyledLogo = styled.div`
+  text-align: center;
 `
 const StyledMenu = styled(Menu)`
   background-color: #ffffff;
@@ -31,7 +33,7 @@ const Component = forwardRef((props, ref) => {
       collapsed={isCollapsed}
       onCollapse={toggle}
       ref={sidebarRef}>
-      <div className='logo' style={{ textAlign: 'center' }}>
+      <StyledLogo className='logo'>
         <Link to='/'>
           <img
             src={currentUser ? keqing : favicon}
@@ -40,7 +42,7 @@ const Component = forwardRef((props, ref) => {
             ref={logoRef}
           />
         </Link>
-      </div>
+      </StyledLogo>
       <StyledMenu mode='inline' items={data} ref={menuRef} />
     </StyledSider>
   )

@@ -12,8 +12,8 @@ const MainLayout = styled(Layout)`
   overflow: hidden;
 `
 const Sidebar = lazy(() => import('./components/Sidebar'))
-const Wrapper = lazy(() => import('./components/Wrapper'))
 const PageHeader = lazy(() => import('./components/PageHeader'))
+const Wrapper = lazy(() => import('./components/Wrapper'))
 const App = () => {
   const { UserStore, HeaderStore } = useContext(context)
   const { currentUser, getCurrentUser } = UserStore
@@ -48,9 +48,6 @@ const App = () => {
         y: '0',
         opacity: 1,
       })
-      .to(logoRef.current, {
-        rotationY: '360',
-      })
       .to(menuRef.current.menu.list, {
         x: '0',
         opacity: 1,
@@ -59,6 +56,9 @@ const App = () => {
         paddingRight: '0',
         ease: 'ease-in-out',
         duration: 1,
+      })
+      .to(logoRef.current, {
+        rotationY: '360',
       })
       .to(headerRef.current, {
         x: '0',
@@ -79,12 +79,12 @@ const App = () => {
     <HashRouter>
       <MainLayout>
         <Sidebar ref={ref} />
-        <MainLayout>
+        <Layout>
           <PageHeader {...headers} ref={ref} />
           <Wrapper ref={ref}>
             <Routers />
           </Wrapper>
-        </MainLayout>
+        </Layout>
       </MainLayout>
     </HashRouter>
   )

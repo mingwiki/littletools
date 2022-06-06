@@ -4,7 +4,7 @@ import { Button, Typography, notification, Table, Divider, Space } from 'antd'
 import styled from 'styled-components'
 import InputContext from './inputs'
 import context from '../../stores'
-
+import Container from '../../components/Container'
 const { Text } = Typography
 const StyledInputWrapper = styled.div`
   display: flex;
@@ -113,7 +113,7 @@ const Component = observer(() => {
     })
   }, [])
   return (
-    <>
+    <Container>
       {data?.map(({ key, val }, idx) => {
         return (
           <StyledInputWrapper key={idx}>
@@ -204,7 +204,7 @@ const Component = observer(() => {
           </Space>
         </div>
       )}
-    </>
+    </Container>
   )
 })
 export default Component

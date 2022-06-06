@@ -25,7 +25,7 @@ import {
   miniAppPages,
   miniAppPageExtra,
 } from '../../data'
-
+import Container from '../../components/Container'
 const QRCode = React.lazy(() => import('qrcode.react'))
 const { Text } = Typography
 
@@ -145,7 +145,7 @@ const Component = observer(() => {
     })
   }, [])
   return (
-    <>
+    <Container>
       <Radio.Group value={'alipay'} size='large'>
         <Radio value={'alipay'}>
           <AlipayCircleOutlined /> Alipay 协议
@@ -461,7 +461,7 @@ const Component = observer(() => {
           }
         </>
       )}
-    </>
+    </Container>
   )
 })
 
