@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { Button, Typography, notification, Space } from 'antd'
 import styled from 'styled-components'
 import UrlStore from '../../stores/url'
-
-const Wrapper = React.lazy(() => import('../../components/Wrapper'))
-const PageHeader = React.lazy(() => import('../../components/PageHeader'))
+import context from '../../stores'
 const { getPageType } = UrlStore
 const { Text } = Typography
 
@@ -21,8 +19,17 @@ const WrapText = styled(Text)`
 const Component = () => {
   const [url, setUrl] = useState('')
   const [response, setResponse] = useState('')
+  const { HeaderStore } = useContext(context)
+  const { setHeaders } = HeaderStore
   useEffect(() => {
     document.title = '解析Page参数'
+    setHeaders({
+      ghost: false,
+      onBack: () => window?.history.back(),
+      title: 'No. 4',
+      subTitle: '截取重定向中的page参数, 并且decode。',
+      extra: [],
+    })
   }, [])
   const alipaysUrl = decodeURIComponent(response || '')
     ?.split("'")
@@ -30,93 +37,84 @@ const Component = () => {
   const pageParms = alipaysUrl?.split('&page=')[1]?.split('&query=')[0]
   return (
     <>
-      <PageHeader
-        ghost={false}
-        onBack={() => window.history.back()}
-        title='No. 4'
-        subTitle='截取重定向中的page参数, 并且decode。'
-        extra={[]}
-      />
-      <Wrapper>
-        <Space direction='vertical'>
-          <StyledInput
-            placeholder='请输入https://benefit.jujienet.com开头的网址'
-            pattern='^https?://benefit\.jujienet\.com.+'
-            value={url}
-            onChange={(e) => setUrl(e.target.value.trim())}
-          />
-          <Button
-            type='primary'
-            onClick={() => {
-              if (/^https?:\/\/benefit\.jujienet\.com.+/.test(url)) {
-                fetch(url)
-                  .then((response) => response.text())
-                  .then(
-                    (data) => {
-                      setResponse(data)
-                      if (data !== '404') {
-                        notification.success({ description: '查询成功' })
-                      } else {
-                        notification.error({ description: '无数据' })
-                      }
-                    },
-                    {
-                      credentials: 'include',
-                      method: 'GET',
-                      mode: 'cors',
-                      cache: 'no-cache',
-                      headers: {
-                        'Content-Type': 'application/json',
-                        'Access-Control-Allow-Origin': '*',
-                        'Access-Control-Allow-Credentials': 'true',
-                      },
+      <Space direction='vertical'>
+        <StyledInput
+          placeholder='请输入https://benefit.jujienet.com开头的网址'
+          pattern='^https?://benefit\.jujienet\.com.+'
+          value={url}
+          onChange={(e) => setUrl(e.target.value.trim())}
+        />
+        <Button
+          type='primary'
+          onClick={() => {
+            if (/^https?:\/\/benefit\.jujienet\.com.+/.test(url)) {
+              fetch(url)
+                .then((response) => response.text())
+                .then(
+                  (data) => {
+                    setResponse(data)
+                    if (data !== '404') {
+                      notification.success({ description: '查询成功' })
+                    } else {
+                      notification.error({ description: '无数据' })
                     }
-                  )
-                  .catch((e) => {
-                    notification.error({ description: '查询失败' })
-                  })
-              } else {
-                notification.error({
-                  description: '请输入https://benefit.jujienet.com开头的网址',
+                  },
+                  {
+                    credentials: 'include',
+                    method: 'GET',
+                    mode: 'cors',
+                    cache: 'no-cache',
+                    headers: {
+                      'Content-Type': 'application/json',
+                      'Access-Control-Allow-Origin': '*',
+                      'Access-Control-Allow-Credentials': 'true',
+                    },
+                  }
+                )
+                .catch((e) => {
+                  notification.error({ description: '查询失败' })
                 })
-              }
-            }}>
-            查询
-          </Button>
-        </Space>
-        {pageParms && (
-          <Space direction='vertical'>
-            <Space>
-              <Text strong>Alipay链接</Text>
-              <Button
-                type='dashed'
-                onClick={() => {
-                  navigator.clipboard.writeText(alipaysUrl)
-                  notification.success({
-                    description: 'Alipay链接已复制到剪贴板',
-                  })
-                }}>
-                复制此链接
-              </Button>
-            </Space>
-            <WrapText>{alipaysUrl}</WrapText>
-            <Space>
-              <Text strong>{getPageType(alipaysUrl)}</Text>
-              <Button
-                type='primary'
-                onClick={() => {
-                  navigator.clipboard.writeText(pageParms)
-                  notification.success({
-                    description: 'page参数已复制到剪贴板',
-                  })
-                }}>
-                复制下面的page参数
-              </Button>
-            </Space>
-            <WrapText>{pageParms}</WrapText>
+            } else {
+              notification.error({
+                description: '请输入https://benefit.jujienet.com开头的网址',
+              })
+            }
+          }}>
+          查询
+        </Button>
+      </Space>
+      {pageParms && (
+        <Space direction='vertical'>
+          <Space>
+            <Text strong>Alipay链接</Text>
+            <Button
+              type='dashed'
+              onClick={() => {
+                navigator.clipboard.writeText(alipaysUrl)
+                notification.success({
+                  description: 'Alipay链接已复制到剪贴板',
+                })
+              }}>
+              复制此链接
+            </Button>
           </Space>
-        )}
-      </Wrapper>
+          <WrapText>{alipaysUrl}</WrapText>
+          <Space>
+            <Text strong>{getPageType(alipaysUrl)}</Text>
+            <Button
+              type='primary'
+              onClick={() => {
+                navigator.clipboard.writeText(pageParms)
+                notification.success({
+                  description: 'page参数已复制到剪贴板',
+                })
+              }}>
+              复制下面的page参数
+            </Button>
+          </Space>
+          <WrapText>{pageParms}</WrapText>
+        </Space>
+      )}
     </>
   )
 }

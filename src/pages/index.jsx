@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useContext } from 'react'
 import { observer } from 'mobx-react'
 import styled from 'styled-components'
 import context from '../stores'
@@ -6,10 +6,18 @@ const Welcome = styled.div`
   font-size: 50px;
 `
 const Component = observer(() => {
-  const { UserStore } = React.useContext(context)
+  const { UserStore, HeaderStore } = useContext(context)
   const { currentUser } = UserStore
+  const { setHeaders } = HeaderStore
   useEffect(() => {
     document.title = appTitle
+    setHeaders({
+      ghost: false,
+      onBack: () => window?.history.back(),
+      title: '',
+      subTitle: '',
+      extra: [],
+    })
   }, [])
   return (
     <>

@@ -3,9 +3,8 @@ import React, { useContext, useEffect } from 'react'
 import { Button, Typography, notification, Table, Divider, Space } from 'antd'
 import styled from 'styled-components'
 import InputContext from './inputs'
+import context from '../../stores'
 
-const Wrapper = React.lazy(() => import('../../components/Wrapper'))
-const PageHeader = React.lazy(() => import('../../components/PageHeader'))
 const { Text } = Typography
 const StyledInputWrapper = styled.div`
   display: flex;
@@ -20,6 +19,8 @@ const StyledInput = styled.input`
 `
 const Component = observer(() => {
   const Inputs = useContext(InputContext)
+  const { HeaderStore } = useContext(context)
+  const { setHeaders } = HeaderStore
   const { data, setData, getDataSource, clear, upload } = Inputs
   const columns = [
     {
@@ -93,120 +94,116 @@ const Component = observer(() => {
   ]
   useEffect(() => {
     document.title = '批量上传小程序链接'
+    setHeaders({
+      ghost: false,
+      onBack: () => window?.history.back(),
+      title: 'No. 2',
+      subTitle: '帮助运营快速上传现有的小程序链接',
+      extra: [
+        <Button
+          key={1}
+          danger
+          onClick={() => {
+            clear()
+            notification.warning({ description: '页面数据已全部清除' })
+          }}>
+          清空页面
+        </Button>,
+      ],
+    })
   }, [])
   return (
     <>
-      <PageHeader
-        ghost={false}
-        onBack={() => window.history.back()}
-        title='No. 2'
-        subTitle='帮助运营快速上传现有的小程序链接'
-        extra={[
-          <Button
-            key={1}
-            danger
-            onClick={() => {
-              clear()
-              notification.warning({ description: '页面数据已全部清除' })
-            }}>
-            清空页面
-          </Button>,
-        ]}
-      />
-      <Wrapper>
-        {data?.map(({ key, val }, idx) => {
-          return (
-            <StyledInputWrapper key={idx}>
-              <StyledInput
-                placeholder='输入链接名称，最长50位'
-                value={key}
-                maxLength='50'
-                size='28'
-                pattern='.+'
-                onChange={(e) => {
-                  const temp = [...data]
-                  temp[idx].key = e.target.value.trim()
-                  setData(temp)
-                }}
-              />
-              <StyledInput
-                placeholder='输入链接地址'
-                value={val}
-                size='28'
-                pattern='^alipays?://.+'
-                onChange={(e) => {
-                  const temp = [...data]
-                  temp[idx].val = e.target.value.trim()
-                  setData(temp)
-                }}
-              />
-              <Button
-                type='primary'
-                onClick={() => {
-                  let temp = [...data]
-                  if (data.length !== 1) {
-                    temp.splice(idx, 1)
-                  } else {
-                    temp = [{ key: '', val: '' }]
-                  }
-                  setData(temp)
-                }}>
-                -
-              </Button>
-              {idx === data.length - 1 ? (
-                <Button
-                  type='primary'
-                  onClick={() => {
-                    const temp = [...data]
-                    temp.push({ key: '', val: '' })
-                    setData(temp)
-                  }}>
-                  +
-                </Button>
-              ) : null}
-            </StyledInputWrapper>
-          )
-        })}
-        {!data.find((e) => e.key === '' || e.val === '') && (
-          <div>
-            <Divider dashed>上传预览</Divider>
-            <Table
-              dataSource={getDataSource()}
-              columns={columns}
-              pagination={false}
+      {data?.map(({ key, val }, idx) => {
+        return (
+          <StyledInputWrapper key={idx}>
+            <StyledInput
+              placeholder='输入链接名称，最长50位'
+              value={key}
+              maxLength='50'
+              size='28'
+              pattern='.+'
+              onChange={(e) => {
+                const temp = [...data]
+                temp[idx].key = e.target.value.trim()
+                setData(temp)
+              }}
             />
-            <Divider dashed />
-            <Space>
+            <StyledInput
+              placeholder='输入链接地址'
+              value={val}
+              size='28'
+              pattern='^alipays?://.+'
+              onChange={(e) => {
+                const temp = [...data]
+                temp[idx].val = e.target.value.trim()
+                setData(temp)
+              }}
+            />
+            <Button
+              type='primary'
+              onClick={() => {
+                let temp = [...data]
+                if (data.length !== 1) {
+                  temp.splice(idx, 1)
+                } else {
+                  temp = [{ key: '', val: '' }]
+                }
+                setData(temp)
+              }}>
+              -
+            </Button>
+            {idx === data.length - 1 ? (
               <Button
                 type='primary'
                 onClick={() => {
-                  upload().then(
-                    (res) => {
-                      res.forEach((e) => {
-                        notification.success({
-                          description: `已上传${e?.attributes?.name}`,
-                        })
-                      })
-                    },
-                    (error) => {
-                      notification.error({
-                        description: `上传失败请联系开发人员`,
-                      })
-                      notification.error({
-                        description: JSON.stringify(error),
-                      })
-                    }
-                  )
+                  const temp = [...data]
+                  temp.push({ key: '', val: '' })
+                  setData(temp)
                 }}>
-                上传上表所有链接
+                +
               </Button>
-              <Text>
-                此页面不对入口ID或订单来源进行查重，请检查好后再上传。
-              </Text>
-            </Space>
-          </div>
-        )}
-      </Wrapper>
+            ) : null}
+          </StyledInputWrapper>
+        )
+      })}
+      {!data.find((e) => e.key === '' || e.val === '') && (
+        <div>
+          <Divider dashed>上传预览</Divider>
+          <Table
+            dataSource={getDataSource()}
+            columns={columns}
+            pagination={false}
+          />
+          <Divider dashed />
+          <Space>
+            <Button
+              type='primary'
+              onClick={() => {
+                upload().then(
+                  (res) => {
+                    res.forEach((e) => {
+                      notification.success({
+                        description: `已上传${e?.attributes?.name}`,
+                      })
+                    })
+                  },
+                  (error) => {
+                    notification.error({
+                      description: `上传失败请联系开发人员`,
+                    })
+                    notification.error({
+                      description: JSON.stringify(error),
+                    })
+                  }
+                )
+              }}>
+              上传上表所有链接
+            </Button>
+            <Text>此页面不对入口ID或订单来源进行查重，请检查好后再上传。</Text>
+          </Space>
+        </div>
+      )}
     </>
   )
 })
