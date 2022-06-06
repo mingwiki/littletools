@@ -1,0 +1,3 @@
+import{s as i,o as l,r as s,c as F,a as t}from"./index.c324590b.js";import{C as d}from"./index.618bd646.js";const u=i.div`
+  font-size: 50px;
+`,x=l(()=>{var o;const{UserStore:a,HeaderStore:n}=s.exports.useContext(F),{currentUser:e}=a,{setHeaders:c}=n;return s.exports.useEffect(()=>{document.title=r,c({ghost:!1,onBack:()=>window==null?void 0:window.history.back(),title:"",subTitle:"",extra:[]})},[]),t(d,{children:[t(u,{children:["\u6B22\u8FCE\u4F7F\u7528\uFF0C",`\u300A${r}\u300B`]}),t(u,{children:["\u5F53\u524D\u7528\u6237\uFF1A",e?(o=e==null?void 0:e.attributes)==null?void 0:o.realname:"\u672A\u767B\u5F55"]})]})}),r="\u5C0F\u5C0F\u5DE5\u5177\u7BB1";export{r as appTitle,x as default};
