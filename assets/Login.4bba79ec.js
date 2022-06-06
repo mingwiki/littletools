@@ -1,0 +1,8 @@
+import{s as l,r as o,c as f,a1 as B,a as u,j as e,a2 as a}from"./index.5afb13c9.js";import{F as s}from"./index.d3bc2697.js";import{I as i}from"./index.ca40bcbc.js";import{S as C,B as n}from"./index.db7983e2.js";import"./TextArea.82cddf50.js";import"./index.4acd617b.js";import"./col.b86520e1.js";import"./responsiveObserve.19fd40a8.js";import"./SearchOutlined.e79333ba.js";const x=l.div`
+  font-size: 36px;
+  margin: 50px 0;
+`,b=l.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`,v=()=>{const{AuthStore:t,HeaderStore:m}=o.exports.useContext(f);let p=B();const c=r=>{t.setPassword(r.password),t.setUsername(r.username),t.login().then(()=>{a.success("\u767B\u5F55\u6210\u529F!"),window.history.back()}).catch(h=>{a.error("\u767B\u5F55\u5931\u8D25:",h)})},d=r=>{a.error("\u767B\u5F55\u5931\u8D25:",r)},{setHeaders:F}=m;return o.exports.useEffect(()=>{F({ghost:!1,onBack:()=>window==null?void 0:window.history.back(),title:"",subTitle:"",extra:[]})},[]),u(b,{children:[e(x,{children:"\u6B22\u8FCE\u4F7F\u7528\uFF0C\u8BF7\u5148\u767B\u5F55"}),u(s,{name:"basic",labelCol:{span:8},wrapperCol:{span:16},initialValues:{remember:!0},onFinish:c,onFinishFailed:d,autoComplete:"off",children:[e(s.Item,{label:"\u7528\u6237\u540D",name:"username",rules:[{required:!0,message:"\u8BF7\u8F93\u5165\u7528\u6237\u540D"}],children:e(i,{})}),e(s.Item,{label:"\u5BC6\u7801",name:"password",rules:[{required:!0,message:"\u8BF7\u8F93\u5165\u5BC6\u7801!"}],children:e(i.Password,{})}),e(s.Item,{wrapperCol:{offset:8,span:16},children:u(C,{children:[e(n,{type:"primary",htmlType:"submit",children:"\u63D0\u4EA4"}),e(n,{type:"primary",onClick:()=>p("/register"),children:"\u524D\u5F80\u6CE8\u518C"})]})})]})]})};export{v as default};
