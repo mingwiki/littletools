@@ -2,13 +2,14 @@ import React, { Suspense } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import { Spin } from 'antd'
 import styled from 'styled-components'
-import Index, { Empty } from './tools'
+const Index = React.lazy(() => import('./pages/index'))
 const Login = React.lazy(() => import('./pages/Login'))
 const Register = React.lazy(() => import('./pages/Register'))
-const No1 = React.lazy(() => import('./tools/No1'))
-const No2 = React.lazy(() => import('./tools/No2'))
-const No3 = React.lazy(() => import('./tools/No3'))
-const No4 = React.lazy(() => import('./tools/No4'))
+const Empty = React.lazy(() => import('./pages/Empty'))
+const No1 = React.lazy(() => import('./tools/GenAppletLinks'))
+const No2 = React.lazy(() => import('./tools/UploadAllLinks'))
+const No3 = React.lazy(() => import('./tools/UserCenter'))
+const No4 = React.lazy(() => import('./tools/GetPagePath'))
 
 const StyledSpin = styled(Spin)`
   position: fixed;

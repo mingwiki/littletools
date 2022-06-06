@@ -11,6 +11,8 @@ const MainLayout = styled(Layout)`
   overflow: hidden;
 `
 const Sidebar = React.lazy(() => import('./components/Sidebar'))
+const PageHeader = React.lazy(() => import('./components/PageHeader'))
+const Wrapper = React.lazy(() => import('./components/Wrapper'))
 const App = () => {
   const { UserStore } = React.useContext(context)
   const { getCurrentUser } = UserStore
@@ -21,7 +23,10 @@ const App = () => {
     <HashRouter>
       <MainLayout>
         <Sidebar />
-        <MainLayout>{config()}</MainLayout>
+        <MainLayout>
+          <PageHeader />
+          <Wrapper>{config()}</Wrapper>
+        </MainLayout>
       </MainLayout>
     </HashRouter>
   )
