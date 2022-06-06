@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { observer } from 'mobx-react'
-import { appTitle } from '../router.config'
-import context from '../stores'
 import styled from 'styled-components'
+import context from '../stores'
+import { appTitle } from '../const.data'
 const Welcome = styled.div`
   font-size: 50px;
 `
