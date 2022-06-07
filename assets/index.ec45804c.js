@@ -1,0 +1,3 @@
+import{s as i,o as l,r as o,c as F,a as t,a1 as d}from"./index.051566e0.js";const u=i.div`
+  font-size: 50px;
+`,x=l(()=>{var s;const{UserStore:r,HeaderStore:n}=o.exports.useContext(F),{currentUser:e}=r,{setHeaders:c}=n;return o.exports.useEffect(()=>{document.title=a,c({ghost:!1,onBack:()=>window==null?void 0:window.history.back(),title:"",subTitle:"",extra:[]})},[]),t(d,{children:[t(u,{children:["\u6B22\u8FCE\u4F7F\u7528\uFF0C",`\u300A${a}\u300B`]}),t(u,{children:["\u5F53\u524D\u7528\u6237\uFF1A",e?(s=e==null?void 0:e.attributes)==null?void 0:s.realname:"\u672A\u767B\u5F55"]})]})}),a="\u5C0F\u5C0F\u5DE5\u5177\u7BB1";export{a as appTitle,x as default};
