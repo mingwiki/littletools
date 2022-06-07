@@ -22,7 +22,6 @@ import {
   miniAppPages,
   miniAppPageExtra,
 } from '../../data'
-import Container from '../../components/Container'
 
 const QRCode = React.lazy(() => import('qrcode.react'))
 
@@ -221,7 +220,7 @@ const Component = observer(() => {
     })
   }, [])
   return (
-    <Container>
+    <>
       <WrapSpace>
         <Text strong>选择查询</Text>
         <Radio.Group
@@ -366,7 +365,7 @@ const Component = observer(() => {
       ) : (
         <Spin tip='正在和云服务器同步数据' size='large' />
       )}
-    </Container>
+    </>
   )
 })
 export default Component

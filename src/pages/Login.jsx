@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { Form, Input, Button, message, Space } from 'antd'
 import context from '../stores/index'
 import styled from 'styled-components'
-import Container from '../components/Container'
+
 const AbsoluteTips = styled.div`
   font-size: 36px;
   margin: 50px 0;
@@ -42,7 +42,7 @@ const Component = () => {
     })
   }, [])
   return (
-    <Container>
+    <>
       <InnerWrapper>
         <AbsoluteTips>欢迎使用，请先登录</AbsoluteTips>
         <Form
@@ -97,7 +97,7 @@ const Component = () => {
           </Form.Item>
         </Form>
       </InnerWrapper>
-    </Container>
+    </>
   )
 }
 
