@@ -26,6 +26,7 @@ const Component = observer(() => {
       <Welcome>
         当前用户：{currentUser ? currentUser?.attributes?.realname : '未登录'}
       </Welcome>
+      <Welcome>后台服务器挂了，暂时取消所有登录功能。</Welcome>
     </>
   )
 })

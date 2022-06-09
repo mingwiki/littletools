@@ -5,7 +5,8 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   base: './',
-  // server: {
+  server: {
+    port: 3001,
   //   proxy: {
   //     "/benefit": {
   //       target: "https://benefit.jujienet.com",
@@ -13,5 +14,5 @@ export default defineConfig({
   //       // rewrite: (path) => path.replace(/^\/benefit/, ""),
   //     },
   //   },
-  // },
+  },
 })
