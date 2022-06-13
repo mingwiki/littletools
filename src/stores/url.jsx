@@ -200,20 +200,8 @@ class UrlStore {
       )
     })
   }
-  queryAllByCondition = (appId, pagePath) => {
-    return new Promise((resolve, reject) => {
-      Url.queryAllByCondition(appId, pagePath, this.isQueryAll).then(
-        (res) => {
-          resolve(res)
-        },
-        (error) => {
-          reject(error)
-        }
-      )
-    })
-  }
-  deleteUrl = (id) => {
-    Url.delete(id)
+  deleteUrl = (id, currentUser) => {
+    Url.delete(id, currentUser)
   }
   uploadAll = (urls) => {
     return new Promise((resolve, reject) => {

@@ -78,7 +78,6 @@ const Component = observer(() => {
     setPageCheckData,
     setIsQueryAll,
     queryAll,
-    queryAllByCondition,
     deleteUrl,
     uploadAll,
     getPageType,
@@ -221,16 +220,21 @@ const Component = observer(() => {
   }, [])
   return (
     <>
-      <WrapSpace>
-        <Text strong>选择查询</Text>
-        <Radio.Group
-          onChange={RadioChange}
-          value={isQueryAll}
-          defaultValue={false}>
-          <Radio value={true}>所有用户</Radio>
-          <Radio value={false}>当前用户</Radio>
-        </Radio.Group>
-      </WrapSpace>
+      <StyledSpace>
+        <WrapSpace>
+          <Text strong>选择查询</Text>
+          <Radio.Group
+            onChange={RadioChange}
+            value={isQueryAll}
+            defaultValue={false}>
+            <Radio value={true}>所有用户</Radio>
+            <Radio value={false}>当前用户</Radio>
+          </Radio.Group>
+        </WrapSpace>
+        <Button type='primary' danger onClick={() => syncPull()}>
+          查询所有页面数据
+        </Button>
+      </StyledSpace>
       <StyledSpace>
         <WrapSpace>
           <Cascader
@@ -252,9 +256,6 @@ const Component = observer(() => {
           </Text>
         </WrapSpace>
         <WrapSpace>
-          <Button type='primary' danger onClick={() => syncPull()}>
-            查询所有页面数据
-          </Button>
           <Button
             type='primary'
             onClick={() => {
@@ -331,10 +332,10 @@ const Component = observer(() => {
                       </Popover>
                       <StyledDeleteOutlined
                         onClick={() => {
-                          if (e?.owner?.id === currentUser?.id) {
+                          if (e?.username === currentUser) {
                             localUrls.splice(idx, 1)
                             setLocalUrls(localUrls)
-                            deleteUrl(e.id)
+                            deleteUrl(e.id, currentUser)
                             notification.success({
                               description: '删除成功',
                             })

@@ -126,18 +126,6 @@ const Url = {
     // })
   },
   queryAll(appId, pagePath, bool) {
-    // const avQuery = new AV.Query('toolkits_01')
-    // avQuery.equalTo('show', true)
-    // avQuery.descending('createdAt')
-    // if (!bool) {
-    //   avQuery.equalTo('owner', AV.User.current())
-    // }
-    // return new Promise((resolve, reject) => {
-    //   avQuery.find().then(
-    //     (result) => resolve(result),
-    //     (error) => reject(error)
-    //   )
-    // })
     return new Promise((resolve, reject) => {
       fetch(`${API}/links/query`, {
         method: 'POST',
@@ -165,26 +153,29 @@ const Url = {
         })
     })
   },
-  queryAllByCondition(appId, pagePath, bool) {
-    // const avQuery = new AV.Query('toolkits_01')
-    // avQuery.equalTo('appId', appId)
-    // avQuery.equalTo('pagePath', pagePath)
-    // avQuery.equalTo('show', true)
-    // avQuery.descending('createdAt')
-    // if (!bool) {
-    //   avQuery.equalTo('owner', AV.User.current())
-    // }
-    // return new Promise((resolve, reject) => {
-    //   avQuery.find().then(
-    //     (result) => resolve(result),
-    //     (error) => reject(error)
-    //   )
-    // })
-  },
-  delete(id) {
-    // const temp = AV.Object.createWithoutData('toolkits_01', id)
-    // temp.set('show', false)
-    // temp.save()
+  delete(id, currentUser) {
+    return new Promise((resolve, reject) => {
+      fetch(`${API}/links/delete`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          filter: {},
+          isOwner: currentUser,
+          deleteId: id,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data)
+          resolve(data)
+        })
+        .catch((error) => {
+          console.log(error)
+          reject(error)
+        })
+    })
   },
 }
 export { Auth, Url }
