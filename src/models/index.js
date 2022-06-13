@@ -197,7 +197,7 @@ const Url = {
             isShow: 1,
             [appId ? 'appId' : null]: appId,
             [pagePath ? 'pagePath' : null]: pagePath,
-            // [bool ? null: true]: currentUser.username,
+            // [bool ? null: 'username']: currentUser.username,
           },
           data: {
             orderBy: 'create_time DESC',
