@@ -217,7 +217,7 @@ const Component = () => {
         </Button>,
       ],
     })
-  }, [])
+  }, [currentUser])
   return (
     <>
       <StyledSpace>
