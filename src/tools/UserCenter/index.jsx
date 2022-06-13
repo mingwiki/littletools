@@ -61,7 +61,7 @@ const WrapSpace = styled(Space)`
   flex-wrap: wrap;
 `
 const { Text } = Typography
-const Component = observer(() => {
+const Component = () => {
   const { AuthStore, UserStore, UrlStore, UserCenterStore, HeaderStore } =
     useContext(context)
   const { logout } = AuthStore
@@ -211,7 +211,7 @@ const Component = observer(() => {
             上传本地存储数据
           </Button>
         ),
-        <Realname key={2}>{currentUser.nickname}</Realname>,
+        <Realname key={2}>{currentUser?.nickname}</Realname>,
         <Button key={3} type='primary' danger onClick={() => logout()}>
           注销
         </Button>,
@@ -360,5 +360,5 @@ const Component = observer(() => {
       )}
     </>
   )
-})
-export default Component
+}
+export default observer(Component)

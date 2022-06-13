@@ -63,16 +63,14 @@ const Auth = {
     // AV.User.logOut()
   },
   getCurrentUser() {
-    const result = async () => {
-      let currentUser = await fetch(`${API}/users/query`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }).then((res) => res.json())
-      return currentUser[0]
-    }
-    return result()
+    return fetch(`${API}/users/query`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => res[0])
   },
 }
 const Url = {
@@ -91,8 +89,8 @@ const Url = {
             sourceOrigin,
             appId,
             pagePath,
-            username: currentUser.username,
-            nickname: currentUser.nickname,
+            username: currentUser?.username,
+            nickname: currentUser?.nickname,
           },
         }),
       })
@@ -206,7 +204,7 @@ const Url = {
             isShow: 1,
             [appId ? 'appId' : null]: appId,
             [pagePath ? 'pagePath' : null]: pagePath,
-            // [bool ? null: 'username']: currentUser.username,
+            [bool ? null : 'username']: currentUser?.username,
           },
           data: {
             orderBy: 'create_time DESC',
@@ -233,7 +231,7 @@ const Url = {
         },
         body: JSON.stringify({
           filter: {
-            username: currentUser.username,
+            username: currentUser?.username,
             id: id,
           },
         }),
