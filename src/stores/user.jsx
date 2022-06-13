@@ -6,8 +6,8 @@ class UserStore {
   constructor() {
     makeAutoObservable(this)
   }
-  getCurrentUser = async () => {
-    this.currentUser = await Auth.getCurrentUser()
+  getCurrentUser = () => {
+    Auth.getCurrentUser().then((res) => (this.currentUser = res))
   }
   resetCurrentUser = () => {
     this.currentUser = null
