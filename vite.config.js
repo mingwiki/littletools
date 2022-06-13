@@ -6,14 +6,14 @@ export default defineConfig({
   plugins: [react()],
   base: './',
   server: {
-    host: '172.16.57.114',
+    // host: '172.16.57.114',
     port: 3001,
-    //   proxy: {
-    //     "/benefit": {
-    //       target: "https://benefit.jujienet.com",
-    //       changeOrigin: true,
-    //       // rewrite: (path) => path.replace(/^\/benefit/, ""),
-    //     },
-    //   },
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3000/api',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ''),
+      },
+    },
   },
 })

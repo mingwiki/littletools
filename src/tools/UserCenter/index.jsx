@@ -332,10 +332,10 @@ const Component = observer(() => {
                       </Popover>
                       <StyledDeleteOutlined
                         onClick={() => {
-                          if (e?.username === currentUser) {
+                          if (e?.username === currentUser.username) {
                             localUrls.splice(idx, 1)
                             setLocalUrls(localUrls)
-                            deleteUrl(e.id, currentUser)
+                            deleteUrl(e.id)
                             notification.success({
                               description: '删除成功',
                             })

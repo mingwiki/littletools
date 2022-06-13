@@ -212,9 +212,9 @@ const Component = observer(() => {
                     }}
                   />
                   <StyledInput
-                    placeholder='输入value，最长20位'
+                    placeholder='输入value，最长50位'
                     value={val}
-                    maxLength='20'
+                    maxLength='50'
                     size='28'
                     pattern='(\w)*'
                     onChange={(e) => {
@@ -271,9 +271,9 @@ const Component = observer(() => {
                     }}
                   />
                   <StyledInput
-                    placeholder='输入value，最大长度20位'
+                    placeholder='输入value，最大长度50位'
                     value={val}
-                    maxLength='20'
+                    maxLength='50'
                     size='28'
                     pattern='(\w)*'
                     onChange={(e) => {

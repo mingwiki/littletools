@@ -200,8 +200,8 @@ class UrlStore {
       )
     })
   }
-  deleteUrl = (id, currentUser) => {
-    Url.delete(id, currentUser)
+  deleteUrl = (id) => {
+    Url.delete(id)
   }
   uploadAll = (urls) => {
     return new Promise((resolve, reject) => {

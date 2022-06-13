@@ -6,38 +6,97 @@ const { splitEnterId, splitSourceOrigin, splitAppId, splitPagePath } = UrlStore
 //   appKey: 'vpslFNPbTpcTFj4XHIGHP9eH',
 //   serverURL: 'https://api.naizi.fun',
 // })
-const API = 'http://localhost:3000/api'
+const API = window.location.origin + '/api'
 const Auth = {
   register(username, password, realname) {
-    // const avUser = new AV.User()
-    // avUser.setUsername(username)
-    // avUser.setPassword(password)
-    // avUser.set('realname', realname)
-    // return new Promise((resolve, reject) => {
-    //   avUser.signUp().then(
-    //     (res) => resolve(res),
-    //     (error) => reject(error)
-    //   )
-    // })
+    return new Promise((resolve, reject) => {
+      fetch(`${API}/users/register`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          filter: {
+            username,
+            password,
+            nickname: realname,
+          },
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data)
+          resolve(data)
+        })
+        .catch((error) => {
+          console.log(error)
+          reject(error)
+        })
+    })
   },
   login(username, password) {
-    // return new Promise((resolve, reject) => {
-    //   AV.User.logIn(username, password).then(
-    //     (res) => resolve(res),
-    //     (error) => reject(error)
-    //   )
-    // })
+    return new Promise((resolve, reject) => {
+      fetch(`${API}/users/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          filter: {
+            username,
+            password,
+          },
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data)
+          resolve(data)
+        })
+        .catch((error) => {
+          console.log(error)
+          reject(error)
+        })
+    })
   },
   logout() {
     // AV.User.logOut()
   },
   getCurrentUser() {
-    // return AV.User.current()
+    // fetch(`${API}/user/current`)
   },
 }
 const Url = {
   upload({ name, url, enterId, sourceOrigin, appId, pagePath }) {
-    fetch(`${API}`)
+    return new Promise((resolve, reject) => {
+      fetch(`${API}/links/upload`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          data: {
+            linkName: name,
+            url,
+            enterId,
+            sourceOrigin,
+            appId,
+            pagePath,
+            username: currentUser.username,
+            nickname: currentUser.nickname,
+          },
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data)
+          resolve(data)
+        })
+        .catch((error) => {
+          console.log(error)
+          reject(error)
+        })
+    })
     // const avObj = new AV.Object('toolkits_01')
     // return new Promise((resolve, reject) => {
     //   avObj.set('show', true)
@@ -132,14 +191,17 @@ const Url = {
         headers: {
           'Content-Type': 'application/json',
         },
+        // mode: 'cors',
         body: JSON.stringify({
           filter: {
             isShow: 1,
             [appId ? 'appId' : null]: appId,
             [pagePath ? 'pagePath' : null]: pagePath,
+            // [bool ? null: true]: currentUser.username,
           },
-          isOwner: bool ? currentUser : null,
-          orderBy: 'create_time DESC',
+          data: {
+            orderBy: 'create_time DESC',
+          },
         }),
       })
         .then((res) => res.json())
@@ -153,7 +215,7 @@ const Url = {
         })
     })
   },
-  delete(id, currentUser) {
+  delete(id) {
     return new Promise((resolve, reject) => {
       fetch(`${API}/links/delete`, {
         method: 'POST',
@@ -161,9 +223,10 @@ const Url = {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          filter: {},
-          isOwner: currentUser,
-          deleteId: id,
+          filter: {
+            username: currentUser.username,
+            id: id,
+          },
         }),
       })
         .then((res) => res.json())
