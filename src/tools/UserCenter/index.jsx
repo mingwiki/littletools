@@ -126,7 +126,7 @@ const Component = observer(() => {
           }
         },
         (error) => {
-          notification.error({ description: `上传失败请联系开发人员` })
+          notification.error({ description: `拉取失败请联系开发人员` })
           notification.error({ description: JSON.stringify(error) })
         }
       )
@@ -136,7 +136,7 @@ const Component = observer(() => {
   }
   const syncPullByCondition = (appId, pagePath) => {
     setIsSyncing(true)
-    queryAllByCondition(appId, pagePath)
+    queryAll(appId, pagePath)
       .then(
         (res) => {
           setIsShowDrawerQR(new Array(Object.entries(res).length).fill(false))

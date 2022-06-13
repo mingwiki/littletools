@@ -125,7 +125,7 @@ const Url = {
     //   )
     // })
   },
-  queryAll(bool) {
+  queryAll(appId, pagePath, bool) {
     // const avQuery = new AV.Query('toolkits_01')
     // avQuery.equalTo('show', true)
     // avQuery.descending('createdAt')
@@ -139,15 +139,19 @@ const Url = {
     //   )
     // })
     return new Promise((resolve, reject) => {
-      fetch(`${API}/links/queryAll`, {
+      fetch(`${API}/links/query`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           filter: {
-            isShow: bool ? 1 : 0,
+            isShow: 1,
+            [appId ? 'appId' : null]: appId,
+            [pagePath ? 'pagePath' : null]: pagePath,
           },
+          isOwner: bool ? currentUser : null,
+          orderBy: 'create_time DESC',
         }),
       })
         .then((res) => res.json())
@@ -155,7 +159,10 @@ const Url = {
           console.log(data)
           resolve(data)
         })
-        .catch((error) => reject(error))
+        .catch((error) => {
+          console.log(error)
+          reject(error)
+        })
     })
   },
   queryAllByCondition(appId, pagePath, bool) {
