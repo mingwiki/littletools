@@ -74,7 +74,7 @@ const App = () => {
       .to('#root', {
         backgroundColor: 'black',
       })
-  }, [currentUser, getCurrentUser])
+  }, [])
   return (
     <HashRouter>
       <MainLayout>

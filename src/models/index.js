@@ -63,7 +63,16 @@ const Auth = {
     // AV.User.logOut()
   },
   getCurrentUser() {
-    // fetch(`${API}/user/current`)
+    const result = async () => {
+      let currentUser = await fetch(`${API}/users/query`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }).then((res) => res.json())
+      return currentUser[0]
+    }
+    return result()
   },
 }
 const Url = {
