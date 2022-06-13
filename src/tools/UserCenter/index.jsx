@@ -93,7 +93,7 @@ const Component = observer(() => {
         (res) => {
           res?.forEach((item) => {
             notification.success({
-              description: `已上传${item?.attributes?.name}`,
+              description: `已上传${item?.linkName}`,
             })
           })
         },
@@ -212,7 +212,7 @@ const Component = observer(() => {
             上传本地存储数据
           </Button>
         ),
-        <Realname key={2}>{currentUser?.attributes?.realname}</Realname>,
+        <Realname key={2}>{currentUser?.nickname}</Realname>,
         <Button key={3} type='primary' danger onClick={() => logout()}>
           注销
         </Button>,
@@ -277,12 +277,10 @@ const Component = observer(() => {
                 <Card
                   title={
                     <CardFlex>
-                      <Text strong>{e?.attributes?.name}</Text>
+                      <Text strong>{e?.linkName}</Text>
                       <NameLabel>
-                        <MarginRightDiv>{e?.attributes?.user}</MarginRightDiv>
-                        <MarginRightDiv>
-                          {getPageType(e?.attributes?.url)}
-                        </MarginRightDiv>
+                        <MarginRightDiv>{e?.nickname}</MarginRightDiv>
+                        <MarginRightDiv>{getPageType(e?.url)}</MarginRightDiv>
                       </NameLabel>
                     </CardFlex>
                   }
@@ -291,15 +289,11 @@ const Component = observer(() => {
                   type='inner'>
                   <CardFlex>
                     <WrapSpace>
-                      {e?.attributes?.enterId?.length > 0 && (
-                        <Text code>
-                          入口ID: {e?.attributes?.enterId.join(', ')}
-                        </Text>
+                      {e?.enterId?.length > 0 && (
+                        <Text code>入口ID: {e?.enterId}</Text>
                       )}
-                      {e?.attributes?.sourceOrigin?.length > 0 && (
-                        <Text code>
-                          订单来源: {e?.attributes?.sourceOrigin.join(', ')}
-                        </Text>
+                      {e?.sourceOrigin?.length > 0 && (
+                        <Text code>订单来源: {e?.sourceOrigin}</Text>
                       )}
                     </WrapSpace>
                     <WrapSpace>
@@ -307,7 +301,7 @@ const Component = observer(() => {
                         type='dashed'
                         shape='round'
                         onClick={() => {
-                          navigator.clipboard.writeText(e?.attributes?.url)
+                          navigator.clipboard.writeText(e?.url)
                           notification.success({
                             description: '链接已复制到剪切板',
                           })
@@ -315,9 +309,7 @@ const Component = observer(() => {
                         点击复制链接
                       </Button>
                       <Popover
-                        content={
-                          <QRCode value={e?.attributes?.url} size={200} />
-                        }
+                        content={<QRCode value={e?.url} size={200} />}
                         title='请扫描二维码'
                         trigger='click'
                         visible={isShowDrawerQR[idx]}
@@ -339,7 +331,7 @@ const Component = observer(() => {
                       </Popover>
                       <StyledDeleteOutlined
                         onClick={() => {
-                          if (e?.attributes?.owner?.id === currentUser?.id) {
+                          if (e?.owner?.id === currentUser?.id) {
                             localUrls.splice(idx, 1)
                             setLocalUrls(localUrls)
                             deleteUrl(e.id)
