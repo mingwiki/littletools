@@ -3,6 +3,7 @@ import { Button, Typography, notification, Space } from 'antd'
 import styled from 'styled-components'
 import UrlStore from '../../stores/url'
 import context from '../../stores'
+import { copyToClipboard } from '../../utils'
 const { getPageType } = UrlStore
 const { Text } = Typography
 
@@ -86,10 +87,11 @@ const Component = () => {
             <Button
               type='dashed'
               onClick={() => {
-                navigator.clipboard.writeText(alipaysUrl)
-                notification.success({
-                  description: 'Alipay链接已复制到剪贴板',
-                })
+                copyToClipboard(alipaysUrl).then(
+                  () =>
+                    notification.success({ description: '链接已复制到剪切板' }),
+                  () => notification.error({ description: '链接复制失败' })
+                )
               }}>
               复制此链接
             </Button>
@@ -100,10 +102,13 @@ const Component = () => {
             <Button
               type='primary'
               onClick={() => {
-                navigator.clipboard.writeText(pageParms)
-                notification.success({
-                  description: 'page参数已复制到剪贴板',
-                })
+                copyToClipboard(pageParms).then(
+                  () =>
+                    notification.success({
+                      description: 'page参数已复制到剪贴板',
+                    }),
+                  () => notification.error({ description: '链接复制失败' })
+                )
               }}>
               复制下面的page参数
             </Button>

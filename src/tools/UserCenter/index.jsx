@@ -23,6 +23,7 @@ import {
   miniAppPages,
   miniAppPageExtra,
 } from '../../data'
+import { copyToClipboard } from '../../utils'
 
 const QRCode = React.lazy(() => import('qrcode.react'))
 
@@ -266,10 +267,16 @@ const Component = () => {
                         type='dashed'
                         shape='round'
                         onClick={() => {
-                          navigator.clipboard.writeText(e?.url)
-                          notification.success({
-                            description: '链接已复制到剪切板',
-                          })
+                          copyToClipboard(e?.url).then(
+                            () =>
+                              notification.success({
+                                description: '链接已复制到剪贴板',
+                              }),
+                            () =>
+                              notification.error({
+                                description: '链接复制失败',
+                              })
+                          )
                         }}>
                         点击复制链接
                       </Button>
