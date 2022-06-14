@@ -104,55 +104,6 @@ const Url = {
         })
     })
   },
-  uploadAll(urls) {
-    return new Promise((resolve, reject) => {
-      fetch(`${API}/links/upload`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          data: {
-            linkName: name,
-            url,
-            enterId,
-            sourceOrigin,
-            appId,
-            pagePath,
-          },
-        }),
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          console.log(data)
-          resolve(data)
-        })
-        .catch((error) => {
-          console.log(error)
-          reject(error)
-        })
-    })
-    // return new Promise((resolve, reject) => {
-    //   const objects = []
-    //   Object.entries(urls).forEach(([key, value]) => {
-    //     const avObj = new AV.Object('toolkits_01')
-    //     avObj.set('show', true)
-    //     avObj.set('name', key)
-    //     avObj.set('url', value)
-    //     avObj.set('enterId', splitEnterId(value))
-    //     avObj.set('sourceOrigin', splitSourceOrigin(value))
-    //     avObj.set('appId', splitAppId(value))
-    //     avObj.set('pagePath', splitPagePath(value))
-    //     avObj.set('owner', AV.User.current())
-    //     avObj.set('user', AV.User.current()?.attributes?.realname)
-    //     objects.push(avObj)
-    //   })
-    //   AV.Object.saveAll(objects).then(
-    //     (res) => resolve(res),
-    //     (error) => reject(error)
-    //   )
-    // })
-  },
   uploadAllbyArr(urls) {
     // return new Promise((resolve, reject) => {
     //   const objects = []

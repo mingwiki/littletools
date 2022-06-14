@@ -203,18 +203,6 @@ class UrlStore {
   deleteUrl = (id) => {
     Url.delete(id)
   }
-  uploadAll = (urls) => {
-    return new Promise((resolve, reject) => {
-      Url.uploadAll(urls).then(
-        (res) => {
-          resolve(res)
-        },
-        (error) => {
-          reject(error)
-        }
-      )
-    })
-  }
   uploadAllbyArr = (urls) => {
     return new Promise((resolve, reject) => {
       Url.uploadAllbyArr(urls).then(

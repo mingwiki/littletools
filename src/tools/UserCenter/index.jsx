@@ -79,34 +79,10 @@ const Component = () => {
     setIsQueryAll,
     queryAll,
     deleteUrl,
-    uploadAll,
     getPageType,
   } = UrlStore
   const { setHeaders } = HeaderStore
   const [isShowDrawerQR, setIsShowDrawerQR] = useState([])
-  const [syncOldErr, setSyncOldErr] = useState(false)
-  const syncOld = (urls) => {
-    setIsSyncing(true)
-    uploadAll(urls)
-      .then(
-        (res) => {
-          res?.forEach((item) => {
-            notification.success({
-              description: `已上传${item?.linkName}`,
-            })
-          })
-        },
-        (error) => {
-          setSyncOldErr(true)
-          notification.error({ description: `上传失败请联系开发人员` })
-          notification.error({ description: JSON.stringify(error) })
-        }
-      )
-      .finally(() => {
-        setIsSyncing(false)
-        if (!syncOldErr) localStorage.removeItem('encodedUrl_history')
-      })
-  }
   const syncPull = () => {
     setIsSyncing(true)
     queryAll()
@@ -200,17 +176,6 @@ const Component = () => {
       title: 'No. 3',
       subTitle: '个人中心管理面板',
       extra: [
-        localStorage.getItem('encodedUrl_history') && (
-          <Button
-            key={1}
-            type='primary'
-            danger
-            onClick={() => {
-              syncOld(JSON.parse(localStorage.getItem('encodedUrl_history')))
-            }}>
-            上传本地存储数据
-          </Button>
-        ),
         <Realname key={2}>{currentUser?.nickname}</Realname>,
         <Button key={3} type='primary' danger onClick={() => logout()}>
           注销
