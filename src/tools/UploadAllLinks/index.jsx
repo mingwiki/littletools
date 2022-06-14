@@ -182,10 +182,9 @@ const Component = observer(() => {
               onClick={() => {
                 upload().then(
                   (res) => {
-                    res.forEach((e) => {
-                      notification.success({
-                        description: `已上传${e?.attributes?.name}`,
-                      })
+                    console.log(res)
+                    notification.success({
+                      description: `已上传`,
                     })
                   },
                   (error) => {

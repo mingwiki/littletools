@@ -105,6 +105,36 @@ const Url = {
     })
   },
   uploadAllbyArr(urls) {
+    const data = urls.map((url) => {
+      return {
+        linkName: url.key,
+        url: url.val,
+        enterId: splitEnterId(url.val),
+        sourceOrigin: splitSourceOrigin(url.val),
+        appId: splitAppId(url.val),
+        pagePath: splitPagePath(url.val),
+      }
+    })
+    return new Promise((resolve, reject) => {
+      fetch(`${API}/links/upload`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          data,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data)
+          resolve(data)
+        })
+        .catch((error) => {
+          console.log(error)
+          reject(error)
+        })
+    })
     // return new Promise((resolve, reject) => {
     //   const objects = []
     //   urls.forEach((value) => {
