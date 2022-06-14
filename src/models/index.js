@@ -90,8 +90,6 @@ const Url = {
             sourceOrigin,
             appId,
             pagePath,
-            // username: sessionToken?.username,
-            // nickname: sessionToken?.nickname,
           },
         }),
       })

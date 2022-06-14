@@ -348,7 +348,7 @@ const Component = observer(() => {
                     .then(
                       (res) => {
                         notification.success({
-                          description: `已上传${res?.attributes?.name}`,
+                          description: `已上传${linkName}`,
                         })
                       },
                       (error) => {
