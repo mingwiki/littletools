@@ -16,7 +16,7 @@ const PageHeader = lazy(() => import('./components/PageHeader'))
 const Wrapper = lazy(() => import('./components/Wrapper'))
 const App = () => {
   const { UserStore, HeaderStore } = useContext(context)
-  const { currentUser, getCurrentUser } = UserStore
+  const { getCurrentUser } = UserStore
   const { headers } = HeaderStore
   const ref = {
     logoRef: createRef(null),
@@ -25,7 +25,7 @@ const App = () => {
     headerRef: createRef(null),
     contentRef: createRef(null),
   }
-  const { logoRef, sidebarRef, menuRef, contentRef, headerRef } = ref
+  const { sidebarRef, menuRef, contentRef, headerRef } = ref
   useEffect(() => {
     getCurrentUser()
     const t = gsap.timeline()
@@ -57,9 +57,6 @@ const App = () => {
         ease: 'ease-in-out',
         duration: 1,
       })
-      .to(logoRef.current, {
-        rotationY: '360',
-      })
       .to(headerRef.current, {
         x: '0',
         opacity: 1,
@@ -67,9 +64,6 @@ const App = () => {
       .to(contentRef.current, {
         x: '0',
         opacity: 1,
-      })
-      .to(logoRef.current, {
-        rotationY: '-360',
       })
       .to('#root', {
         backgroundColor: 'black',

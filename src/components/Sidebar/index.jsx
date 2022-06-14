@@ -26,7 +26,7 @@ const Component = forwardRef((props, ref) => {
   const toggle = () => setIsCollapsed(!isCollapsed)
   const { UserStore } = useContext(context)
   const { currentUser } = UserStore
-  const { sidebarRef, logoRef, menuRef } = ref
+  const { sidebarRef, menuRef } = ref
   return (
     <StyledSider
       collapsible
@@ -39,7 +39,6 @@ const Component = forwardRef((props, ref) => {
             src={currentUser ? keqing : favicon}
             className='App-logo'
             alt='logo'
-            ref={logoRef}
           />
         </Link>
       </StyledLogo>
