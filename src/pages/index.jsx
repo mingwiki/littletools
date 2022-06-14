@@ -33,7 +33,7 @@ const Component = observer(() => {
         <a href='http://172.16.57.114:3001/'>点击跳转</a>
       </h1>
       <h1>原有账户名不变，默认登录密码为123。现有账户名如下:</h1>
-      <img src={acct} alt='accounts' />
+      <img src={acct} alt='accounts' width='600px' />
     </>
   )
 })
