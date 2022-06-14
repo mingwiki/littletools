@@ -51,6 +51,19 @@ class AuthStore {
         })
     })
   }
+  changePassword = () => {
+    return new Promise((resolve, reject) => {
+      Auth.changePassword(this.values.username, this.values.password)
+        .then((user) => {
+          UserStore.getCurrentUser()
+          resolve(user)
+        })
+        .catch((error) => {
+          UserStore.resetCurrentUser()
+          reject(error)
+        })
+    })
+  }
   logout = () => {
     UserStore.resetCurrentUser()
     UrlStore.clear()

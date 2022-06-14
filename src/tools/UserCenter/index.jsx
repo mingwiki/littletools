@@ -1,5 +1,6 @@
 import { observer } from 'mobx-react'
 import React, { useState, useContext, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import {
   Button,
   Typography,
@@ -49,11 +50,6 @@ const StyledSpace = styled.div`
   align-items: center;
   flex-wrap: wrap;
 `
-const Realname = styled.div`
-  background-color: #66a80f;
-  color: white;
-  padding: 5px 10px;
-`
 const StyledDeleteOutlined = styled(DeleteOutlined)`
   color: red;
 `
@@ -81,6 +77,7 @@ const Component = () => {
     deleteUrl,
     getPageType,
   } = UrlStore
+  const navigate = useNavigate()
   const { setHeaders } = HeaderStore
   const [isShowDrawerQR, setIsShowDrawerQR] = useState([])
   const syncPull = () => {
@@ -176,13 +173,15 @@ const Component = () => {
       title: 'No. 3',
       subTitle: '个人中心管理面板',
       extra: [
-        <Realname key={2}>{currentUser?.nickname}</Realname>,
+        <Button key={2} onClick={() => navigate('/changePassword')}>
+          修改密码
+        </Button>,
         <Button key={3} type='primary' danger onClick={() => logout()}>
           注销
         </Button>,
       ],
     })
-  }, [currentUser])
+  }, [])
   return (
     <>
       <StyledSpace>

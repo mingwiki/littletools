@@ -28,6 +28,31 @@ const Auth = {
         })
     })
   },
+  changePassword(username, password) {
+    return new Promise((resolve, reject) => {
+      fetch(`${API}/users/changePassword`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          filter: {
+            username,
+            password,
+          },
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data)
+          resolve(data)
+        })
+        .catch((error) => {
+          console.log(error)
+          reject(error)
+        })
+    })
+  },
   login(username, password) {
     return new Promise((resolve, reject) => {
       fetch(`${API}/users/login`, {
@@ -135,52 +160,66 @@ const Url = {
           reject(error)
         })
     })
-    // return new Promise((resolve, reject) => {
-    //   const objects = []
-    //   urls.forEach((value) => {
-    //     const avObj = new AV.Object('toolkits_01')
-    //     avObj.set('show', true)
-    //     avObj.set('name', value.key)
-    //     avObj.set('url', value.val)
-    //     avObj.set('enterId', splitEnterId(value.val))
-    //     avObj.set('sourceOrigin', splitSourceOrigin(value.val))
-    //     avObj.set('appId', splitAppId(value.val))
-    //     avObj.set('pagePath', splitPagePath(value.val))
-    //     avObj.set('owner', AV.User.current())
-    //     avObj.set('user', AV.User.current()?.attributes?.realname)
-    //     objects.push(avObj)
-    //   })
-    //   AV.Object.saveAll(objects).then(
-    //     (res) => resolve(res),
-    //     (error) => reject(error)
-    //   )
-    // })
   },
   checkEnterId(url) {
-    // const avQuery = new AV.Query('toolkits_01')
-    // avQuery.equalTo('appId', splitAppId(url))
-    // avQuery.equalTo('pagePath', splitPagePath(url))
-    // avQuery.equalTo('show', true)
-    // avQuery.containedIn('enterId', splitEnterId(url))
-    // return new Promise((resolve, reject) => {
-    //   avQuery.find().then(
-    //     (result) => resolve(result),
-    //     (error) => reject(error)
-    //   )
-    // })
+    return new Promise((resolve, reject) => {
+      fetch(`${API}/links/query`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          filter: {
+            appId: splitAppId(url),
+            pagePath: splitPagePath(url),
+            enterId: splitEnterId(url),
+          },
+          data: {
+            orderBy: 'create_time DESC',
+          },
+          type: true,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data)
+          resolve(data)
+        })
+        .catch((error) => {
+          console.log(error)
+          reject(error)
+        })
+    })
   },
   checkSourceOrigin(url) {
-    // const avQuery = new AV.Query('toolkits_01')
-    // avQuery.equalTo('appId', splitAppId(url))
-    // avQuery.equalTo('pagePath', splitPagePath(url))
-    // avQuery.equalTo('show', true)
-    // avQuery.containedIn('sourceOrigin', splitSourceOrigin(url))
-    // return new Promise((resolve, reject) => {
-    //   avQuery.find().then(
-    //     (result) => resolve(result),
-    //     (error) => reject(error)
-    //   )
-    // })
+    return new Promise((resolve, reject) => {
+      fetch(`${API}/links/query`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          filter: {
+            appId: splitAppId(url),
+            pagePath: splitPagePath(url),
+            sourceOrigin: splitSourceOrigin(url),
+          },
+          data: {
+            orderBy: 'create_time DESC',
+          },
+          type: true,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data)
+          resolve(data)
+        })
+        .catch((error) => {
+          console.log(error)
+          reject(error)
+        })
+    })
   },
   queryAll(appId, pagePath, bool) {
     return new Promise((resolve, reject) => {
@@ -191,7 +230,6 @@ const Url = {
         },
         body: JSON.stringify({
           filter: {
-            isShow: 1,
             [appId ? 'appId' : null]: appId,
             [pagePath ? 'pagePath' : null]: pagePath,
           },

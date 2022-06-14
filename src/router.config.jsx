@@ -7,6 +7,7 @@ import { observer } from 'mobx-react'
 const Index = lazy(() => import('./pages/index'))
 const Login = lazy(() => import('./pages/Login'))
 const Register = lazy(() => import('./pages/Register'))
+const ChangePassword = lazy(() => import('./pages/ChangePassword'))
 const Empty = lazy(() => import('./pages/Empty'))
 const LoginRequired = lazy(() => import('./pages/LoginRequired'))
 const No1 = lazy(() => import('./tools/GenAppletLinks'))
@@ -29,6 +30,7 @@ const Component = () => {
         <Route path='/' element={<Index />} />
         <Route path='login' element={<Login />} />
         <Route path='register' element={<Register />} />
+        <Route path='changePassword' element={<ChangePassword />} />
         {currentUser ? (
           [
             { path: '01', element: <No1 /> },
