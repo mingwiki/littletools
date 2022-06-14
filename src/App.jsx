@@ -38,9 +38,8 @@ const App = () => {
         opacity: 0,
         paddingRight: '100%',
       })
-      .set(headerRef.current, { x: '-100%', opacity: 0 })
+      .set(headerRef.current, { y: '-100%', opacity: 0 })
       .set(contentRef.current, {
-        x: '-100%',
         opacity: 0,
       })
       .to('#root', { padding: '0 5vw', duration: 1 })
@@ -58,11 +57,10 @@ const App = () => {
         duration: 1,
       })
       .to(headerRef.current, {
-        x: '0',
+        y: '0',
         opacity: 1,
       })
       .to(contentRef.current, {
-        x: '0',
         opacity: 1,
       })
       .to('#root', {
