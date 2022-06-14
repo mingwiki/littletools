@@ -1,11 +1,5 @@
-// import AV from 'leancloud-storage'
 import UrlStore from '../stores/url'
 const { splitEnterId, splitSourceOrigin, splitAppId, splitPagePath } = UrlStore
-// AV.init({
-//   appId: 'Co2HYYsX3YsrSM8hLn35yMVq-gzGzoHsz',
-//   appKey: 'vpslFNPbTpcTFj4XHIGHP9eH',
-//   serverURL: 'https://api.naizi.fun',
-// })
 const API = window.location.origin + '/api'
 const Auth = {
   register(username, password, realname) {
@@ -60,7 +54,14 @@ const Auth = {
     })
   },
   logout() {
-    // AV.User.logOut()
+    fetch(`${API}/users/logout`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => res[0])
   },
   getCurrentUser() {
     return fetch(`${API}/users/query`, {
@@ -89,8 +90,8 @@ const Url = {
             sourceOrigin,
             appId,
             pagePath,
-            username: currentUser?.username,
-            nickname: currentUser?.nickname,
+            // username: sessionToken?.username,
+            // nickname: sessionToken?.nickname,
           },
         }),
       })
@@ -198,17 +199,16 @@ const Url = {
         headers: {
           'Content-Type': 'application/json',
         },
-        // mode: 'cors',
         body: JSON.stringify({
           filter: {
             isShow: 1,
             [appId ? 'appId' : null]: appId,
             [pagePath ? 'pagePath' : null]: pagePath,
-            [bool ? null : 'username']: currentUser?.username,
           },
           data: {
             orderBy: 'create_time DESC',
           },
+          type: bool,
         }),
       })
         .then((res) => res.json())
@@ -231,7 +231,6 @@ const Url = {
         },
         body: JSON.stringify({
           filter: {
-            username: currentUser?.username,
             id: id,
           },
         }),
