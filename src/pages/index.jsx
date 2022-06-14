@@ -2,6 +2,7 @@ import React, { useEffect, useContext } from 'react'
 import { observer } from 'mobx-react'
 import styled from 'styled-components'
 import context from '../stores'
+import acct from '../20220614152412.png'
 
 const Welcome = styled.div`
   font-size: 50px;
@@ -24,9 +25,11 @@ const Component = observer(() => {
     <>
       <Welcome>欢迎使用，{`《${appTitle}》`}</Welcome>
       <Welcome>
-        当前用户：{currentUser ? currentUser?.attributes?.realname : '未登录'}
+        当前用户：{currentUser ? currentUser.nickname : '未登录'}
       </Welcome>
-      <Welcome>后台服务器挂了，暂时取消所有登录功能。</Welcome>
+      <h1>原有服务器挂了，先已改有公司测试服务器。</h1>
+      <h1>原有账户名不变，默认登录密码为123。</h1>
+      <img src={acct} alt='accounts' />
     </>
   )
 })

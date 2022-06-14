@@ -376,16 +376,11 @@ const Component = observer(() => {
                   onClick={() => {
                     checkEnterId(deferredEncodedUrl).then(
                       (res) => {
+                        console.log(res)
                         if (res.length > 0) {
                           res.map((item) =>
-                            item?.attributes?.enterId?.forEach((e) => {
-                              if (
-                                splitEnterId(deferredEncodedUrl).includes(e)
-                              ) {
-                                notification.error({
-                                  description: `此${e}已经存在于${item?.attributes?.name}`,
-                                })
-                              }
+                            notification.error({
+                              description: `此${item.enterId}已经存在于${item.linkName}由${item.nickname}上传`,
                             })
                           )
                         } else {

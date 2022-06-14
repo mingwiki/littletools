@@ -23,7 +23,7 @@ const Component = () => {
     AuthStore.register()
       .then(() => {
         message.success('注册成功')
-        window.history.back()
+        navigate('/')
       })
       .catch((err) => {
         message.error('注册失败,请重试:', err)
@@ -59,7 +59,7 @@ const Component = () => {
           }}
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
-          autoComplete='off'>
+          autoComplete='on'>
           <Form.Item
             label='姓名或昵称'
             name='realname'

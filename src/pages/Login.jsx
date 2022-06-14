@@ -22,7 +22,7 @@ const Component = () => {
     AuthStore.login()
       .then(() => {
         message.success('登录成功!')
-        window.history.back()
+        navigate('/')
       })
       .catch((err) => {
         message.error('登录失败:', err)
@@ -58,7 +58,7 @@ const Component = () => {
           }}
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
-          autoComplete='off'>
+          autoComplete='on'>
           <Form.Item
             label='用户名'
             name='username'
@@ -91,7 +91,10 @@ const Component = () => {
                 提交
               </Button>
               <Button type='primary' onClick={() => navigate('/register')}>
-                前往注册
+                注册
+              </Button>
+              <Button type='primary' onClick={() => navigate('/changePassword')}>
+                修改密码
               </Button>
             </Space>
           </Form.Item>
