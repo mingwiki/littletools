@@ -75,7 +75,36 @@ const Auth = {
   },
 }
 const Url = {
-  upload({ name, url, enterId, sourceOrigin, appId, pagePath }) {
+  upload({ name, url }) {
+    return new Promise((resolve, reject) => {
+      fetch(`${API}/links/upload`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          data: {
+            linkName: name,
+            url,
+            enterId: splitEnterId(url),
+            sourceOrigin: splitSourceOrigin(url),
+            appId: splitAppId(url),
+            pagePath: splitPagePath(url),
+          },
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data)
+          resolve(data)
+        })
+        .catch((error) => {
+          console.log(error)
+          reject(error)
+        })
+    })
+  },
+  uploadAll(urls) {
     return new Promise((resolve, reject) => {
       fetch(`${API}/links/upload`, {
         method: 'POST',
@@ -103,24 +132,6 @@ const Url = {
           reject(error)
         })
     })
-    // const avObj = new AV.Object('toolkits_01')
-    // return new Promise((resolve, reject) => {
-    //   avObj.set('show', true)
-    //   avObj.set('name', name)
-    //   avObj.set('url', url)
-    //   avObj.set('enterId', enterId)
-    //   avObj.set('sourceOrigin', sourceOrigin)
-    //   avObj.set('appId', appId)
-    //   avObj.set('pagePath', pagePath)
-    //   avObj.set('owner', AV.User.current())
-    //   avObj.set('user', AV.User.current()?.attributes?.realname)
-    //   avObj.save().then(
-    //     (res) => resolve(res),
-    //     (error) => reject(error)
-    //   )
-    // })
-  },
-  uploadAll(urls) {
     // return new Promise((resolve, reject) => {
     //   const objects = []
     //   Object.entries(urls).forEach(([key, value]) => {

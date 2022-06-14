@@ -64,8 +64,6 @@ const Component = observer(() => {
   const { UrlStore, HeaderStore } = useContext(context)
   const {
     textInfo,
-    appId,
-    pagePath,
     pageCheckQueries,
     pageInputQueries,
     globalInputQueries,
@@ -340,13 +338,10 @@ const Component = observer(() => {
                   uploadUrl({
                     name: linkName,
                     url: deferredEncodedUrl,
-                    enterId: splitEnterId(deferredEncodedUrl),
-                    sourceOrigin: splitSourceOrigin(deferredEncodedUrl),
-                    appId: appId,
-                    pagePath: pagePath,
                   })
                     .then(
                       (res) => {
+                        console.log(res)
                         notification.success({
                           description: `已上传${linkName}`,
                         })

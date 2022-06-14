@@ -176,9 +176,9 @@ class UrlStore {
       )
     })
   }
-  uploadUrl = ({ name, url, enterId, sourceOrigin, appId, pagePath }) => {
+  uploadUrl = ({ name, url }) => {
     return new Promise((resolve, reject) => {
-      Url.upload({ name, url, enterId, sourceOrigin, appId, pagePath }).then(
+      Url.upload({ name, url }).then(
         (res) => {
           resolve(res)
         },
