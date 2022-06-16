@@ -1,4 +1,4 @@
-import { makeAutoObservable, makeObservable, observable, action } from 'mobx'
+import { makeAutoObservable } from 'mobx'
 import { Auth } from '../models/index'
 
 class UserStore {
