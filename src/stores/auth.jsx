@@ -53,7 +53,7 @@ class AuthStore {
   }
   changePassword = () => {
     return new Promise((resolve, reject) => {
-      Auth.changePassword(this.values.username, this.values.password)
+      Auth.changePassword(this.values.password)
         .then((user) => {
           UserStore.getCurrentUser()
           resolve(user)

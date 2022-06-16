@@ -28,7 +28,7 @@ const Auth = {
         })
     })
   },
-  changePassword(username, password) {
+  changePassword(password) {
     return new Promise((resolve, reject) => {
       fetch(`${API}/users/changePassword`, {
         method: 'POST',
@@ -37,7 +37,6 @@ const Auth = {
         },
         body: JSON.stringify({
           filter: {
-            username,
             password,
           },
         }),

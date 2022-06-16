@@ -14,15 +14,19 @@ const InnerWrapper = styled.div`
   align-items: center;
 `
 const Component = () => {
-  const { AuthStore, HeaderStore } = useContext(context)
+  const { AuthStore, HeaderStore, UserStore } = useContext(context)
+  const { currentUser } = UserStore
   let navigate = useNavigate()
   const onFinish = (values) => {
-    AuthStore.setUsername(values.username)
     AuthStore.setPassword(values.password)
     AuthStore.changePassword()
-      .then(() => {
-        message.success('修改密码成功')
-        navigate('/')
+      .then((res) => {
+        if (typeof res === 'object') {
+          message.success('修改密码成功')
+          navigate('/')
+        } else {
+          message.error('请登录后修改密码')
+        }
       })
       .catch((err) => {
         message.error('修改密码失败,请重试:', err)
@@ -41,6 +45,7 @@ const Component = () => {
       extra: [],
     })
   }, [])
+  console.log(currentUser)
   return (
     <>
       <InnerWrapper>
@@ -59,28 +64,6 @@ const Component = () => {
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
           autoComplete='on'>
-          <Form.Item
-            label='用户名'
-            name='username'
-            hasFeedback
-            rules={[
-              {
-                required: true,
-              },
-              ({ getFieldValue }) => ({
-                validator(_, value) {
-                  if (/^[a-zA-Z]+$/.test(value)) {
-                    return Promise.resolve()
-                  }
-                  return Promise.reject(
-                    new Error('请输入英文字符，不能包含特殊字符或中文，最少1位')
-                  )
-                },
-              }),
-            ]}>
-            <Input />
-          </Form.Item>
-
           <Form.Item
             label='密码'
             name='password'
@@ -128,9 +111,6 @@ const Component = () => {
               span: 16,
             }}>
             <Space>
-              <Button type='primary' onClick={() => navigate('/login')}>
-                前往登录
-              </Button>
               <Button type='primary' htmlType='submit'>
                 提交
               </Button>
