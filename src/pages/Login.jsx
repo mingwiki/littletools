@@ -20,9 +20,13 @@ const Component = () => {
     AuthStore.setPassword(values.password)
     AuthStore.setUsername(values.username)
     AuthStore.login()
-      .then(() => {
-        message.success('登录成功!')
-        navigate('/')
+      .then((res) => {
+        if (Array.isArray(res)) {
+          message.success('登录成功!')
+          navigate('/')
+        } else {
+          message.error('密码错误或用户名不存在')
+        }
       })
       .catch((err) => {
         message.error('登录失败:', err)
@@ -91,10 +95,7 @@ const Component = () => {
                 提交
               </Button>
               <Button type='primary' onClick={() => navigate('/register')}>
-                注册
-              </Button>
-              <Button type='primary' onClick={() => navigate('/changePassword')}>
-                修改密码
+                前往注册
               </Button>
             </Space>
           </Form.Item>

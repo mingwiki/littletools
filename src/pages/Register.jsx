@@ -21,9 +21,13 @@ const Component = () => {
     AuthStore.setUsername(values.username)
     AuthStore.setPassword(values.password)
     AuthStore.register()
-      .then(() => {
-        message.success('注册成功')
-        navigate('/')
+      .then((res) => {
+        if (typeof res === 'object') {
+          message.success('注册成功')
+          navigate('/')
+        } else {
+          message.error('用户名已被占用')
+        }
       })
       .catch((err) => {
         message.error('注册失败,请重试:', err)
