@@ -1,5 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react'
-import { Button, Typography, notification, Space } from 'antd'
+import React, { useEffect, useState, useContext } from 'react'import { Button, Typography, notification, Space } from 'antd'
 import styled from 'styled-components'
 import UrlStore from '../../stores/url'
 import context from '../../stores'
@@ -13,109 +12,118 @@ const StyledInput = styled.input`
     background-color: red;
   }
 `
-const WrapText = styled(Text)`
+const WrapText = styled( Text )`
   white-space: pre-wrap;
   word-break: break-all;
 `
-const Component = () => {
-  const [url, setUrl] = useState('')
-  const [response, setResponse] = useState('')
-  const { HeaderStore } = useContext(context)
+const Component = () =>
+{
+  const [ url, setUrl ] = useState( '' )
+  const [ response, setResponse ] = useState( '' )
+  const { HeaderStore } = useContext( context )
   const { setHeaders } = HeaderStore
-  useEffect(() => {
+  useEffect( () =>
+  {
     document.title = '解析Page参数'
-    setHeaders({
+    setHeaders( {
       ghost: false,
       onBack: () => window?.history.back(),
       title: 'No. 4',
       subTitle: '截取重定向中的page参数, 并且decode。',
       extra: [
         <Button
-          key={1}
+          key={ 1 }
           danger
-          onClick={() => {
-            setUrl('')
-            setResponse('')
-            notification.warning({ description: '页面数据已全部清除' })
-          }}>
+          onClick={ () =>
+          {
+            setUrl( '' )
+            setResponse( '' )
+            notification.warning( { description: '页面数据已全部清除' } )
+          } }>
           清空页面
         </Button>,
       ],
-    })
-  }, [])
-  const alipaysUrl = decodeURIComponent(response || '')
-    ?.split("'")
-    ?.filter((e) => /^alipays/i.test(e))?.[0]
-  const pageParms = alipaysUrl?.split('&page=')[1]?.split('&query=')[0]
+    } )
+  }, [] )
+  const alipaysUrl = response?.split( "'" )?.filter( ( e ) => /^alipays/i.test( e ) )?.[ 0 ] || ''
+  const pageParms = alipaysUrl?.split( '&page=' )[ 1 ]?.split( '&query=' )[ 0 ]
   return (
     <>
       <Space direction='vertical'>
         <StyledInput
           placeholder='请输入https://benefit.jujienet.com开头的网址'
           pattern='^https?://benefit\.jujienet\.com.+'
-          value={url}
-          onChange={(e) => setUrl(e.target.value.trim())}
+          value={ url }
+          onChange={ ( e ) => setUrl( e.target.value.trim() ) }
         />
         <Button
           type='primary'
-          onClick={() => {
-            if (/^https?:\/\/benefit\.jujienet\.com.+/.test(url)) {
-              fetch(url)
-                .then(async (res) => {
+          onClick={ () =>
+          {
+            if ( /^https?:\/\/benefit\.jujienet\.com.+/.test( url ) )
+            {
+              fetch( url )
+                .then( async ( res ) =>
+                {
                   const data = await res.text()
-                  if (res.status === 200 && data !== '404') {
-                    setResponse(data)
-                    notification.success({ description: '查询成功' })
-                  } else {
-                    notification.info({ description: '无数据' })
+                  if ( res.status === 200 && data !== '404' )
+                  {
+                    setResponse( data )
+                    notification.success( { description: '查询成功' } )
+                  } else
+                  {
+                    notification.info( { description: '无数据' } )
                   }
-                })
-                .catch(() => notification.error({ description: '查询失败' }))
-            } else {
-              notification.error({
+                } )
+                .catch( () => notification.error( { description: '查询失败' } ) )
+            } else
+            {
+              notification.error( {
                 description: '请输入https://benefit.jujienet.com开头的网址',
-              })
+              } )
             }
-          }}>
+          } }>
           查询
         </Button>
       </Space>
-      {pageParms && (
+      { pageParms && (
         <Space direction='vertical'>
           <Space>
             <Text strong>Alipay链接</Text>
             <Button
               type='dashed'
-              onClick={() => {
-                copyToClipboard(alipaysUrl).then(
+              onClick={ () =>
+              {
+                copyToClipboard( alipaysUrl ).then(
                   () =>
-                    notification.success({ description: '链接已复制到剪切板' }),
-                  () => notification.error({ description: '链接复制失败' })
+                    notification.success( { description: '链接已复制到剪切板' } ),
+                  () => notification.error( { description: '链接复制失败' } ),
                 )
-              }}>
+              } }>
               复制此链接
             </Button>
           </Space>
-          <WrapText>{alipaysUrl}</WrapText>
+          <WrapText>{ alipaysUrl }</WrapText>
           <Space>
-            <Text strong>{getPageType(alipaysUrl)}</Text>
+            <Text strong>{ getPageType( alipaysUrl ) }</Text>
             <Button
               type='primary'
-              onClick={() => {
-                copyToClipboard(pageParms).then(
+              onClick={ () =>
+              {
+                copyToClipboard( pageParms ).then(
                   () =>
-                    notification.success({
+                    notification.success( {
                       description: 'page参数已复制到剪贴板',
-                    }),
-                  () => notification.error({ description: '链接复制失败' })
+                    } ),
+                  () => notification.error( { description: '链接复制失败' } ),
                 )
-              }}>
+              } }>
               复制下面的page参数
             </Button>
           </Space>
-          <WrapText>{pageParms}</WrapText>
+          <WrapText>{ pageParms }</WrapText>
         </Space>
-      )}
+      ) }
     </>
   )
 }
