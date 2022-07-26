@@ -1,4 +1,5 @@
-import React, { useEffect, useState, useContext } from 'react'import { Button, Typography, notification, Space } from 'antd'
+import React, { useEffect, useState, useContext } from 'react'
+import { Button, Typography, notification, Space } from 'antd'
 import styled from 'styled-components'
 import UrlStore from '../../stores/url'
 import context from '../../stores'
@@ -45,7 +46,8 @@ const Component = () =>
       ],
     } )
   }, [] )
-  const alipaysUrl = response?.split( "'" )?.filter( ( e ) => /^alipays/i.test( e ) )?.[ 0 ] || ''
+  const alipaysUrl =
+    response?.split( "'" )?.filter( ( e ) => /^alipays/i.test( e ) )?.[ 0 ] || ''
   const pageParms = alipaysUrl?.split( '&page=' )[ 1 ]?.split( '&query=' )[ 0 ]
   return (
     <>
