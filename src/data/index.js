@@ -29,6 +29,7 @@ export const miniAppPages = {
     首页: 'pages/index/index',
     oao列表页: 'pages/oao/index',
     号卡: 'pages/phoneCard/index',
+    商机单: 'pages/businessOrder/index',
   },
 }
 export const miniAppPageExtra = {
