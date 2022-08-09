@@ -30,7 +30,7 @@ export const miniAppPages = {
     oao列表页: 'pages/oao/index',
     号卡: 'pages/phoneCard/index',
     商机单: 'pages/businessOrder/index',
-    宽带红包卡券:'pages/activity/bbRedActivity/index',
+    宽带红包卡券: 'pages/activity/bbRedActivity/index',
   },
 }
 export const miniAppPageExtra = {
@@ -69,11 +69,10 @@ export const cascaderData = Object.entries(miniAppPages).map((e) => {
     value: e[0],
     label: e[0],
     children: Object.keys(e[1]).map((e) => {
-      const page = {
+      return {
         value: e,
         label: e,
       }
-      return page
     }),
   }
   return app
