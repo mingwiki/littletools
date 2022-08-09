@@ -30,6 +30,7 @@ export const miniAppPages = {
     oao列表页: 'pages/oao/index',
     号卡: 'pages/phoneCard/index',
     商机单: 'pages/businessOrder/index',
+    宽带红包卡券:'pages/activity/bbRedActivity/index',
   },
 }
 export const miniAppPageExtra = {
