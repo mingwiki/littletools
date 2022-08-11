@@ -31,6 +31,7 @@ export const miniAppPages = {
     号卡: 'pages/phoneCard/index',
     商机单: 'pages/businessOrder/index',
     宽带红包卡券: 'pages/activity/bbRedActivity/index',
+    订单详情: 'pages/orderDetail/index',
   },
 }
 export const miniAppPageExtra = {
