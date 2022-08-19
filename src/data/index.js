@@ -24,6 +24,7 @@ export const miniAppPages = {
     订单列表: 'pages/tradeList/index',
     订单详情: 'pages/tradeDetail/index',
     协议页面: 'pages/pureText/index',
+    优惠券: 'pages/hongbaoCoupon/index',
   },
   宽带中心小程序: {
     首页: 'pages/index/index',

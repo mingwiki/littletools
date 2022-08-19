@@ -147,7 +147,7 @@ const Component = observer(() => {
     <>
       <Radio.Group value={'alipay'} size='large'>
         <Radio value={'alipay'}>
-          <AlipayCircleOutlined /> Alipay 协议
+          <AlipayCircleOutlined /> alipays 协议
         </Radio>
       </Radio.Group>
       <WrapSpace>
