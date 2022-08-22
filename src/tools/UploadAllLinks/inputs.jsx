@@ -35,7 +35,7 @@ class Inputs {
     return new Promise((resolve, reject) => {
       uploadAllbyArr(this.data).then(
         (res) => resolve(res),
-        (err) => reject(err)
+        (err) => reject(err),
       )
     })
   }

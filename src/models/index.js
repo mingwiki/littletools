@@ -114,6 +114,7 @@ const Url = {
             sourceOrigin: splitSourceOrigin(url),
             appId: splitAppId(url),
             pagePath: splitPagePath(url),
+            isQRcode: 0,
           },
         }),
       })
@@ -137,6 +138,40 @@ const Url = {
         sourceOrigin: splitSourceOrigin(url.val),
         appId: splitAppId(url.val),
         pagePath: splitPagePath(url.val),
+        isQRcode: 0,
+      }
+    })
+    return new Promise((resolve, reject) => {
+      fetch(`${API}/links/upload`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          data,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data)
+          resolve(data)
+        })
+        .catch((error) => {
+          console.log(error)
+          reject(error)
+        })
+    })
+  },
+  uploadFromQrcode(urls) {
+    const data = urls?.map((url) => {
+      return {
+        linkName: url,
+        url,
+        enterId: splitEnterId(url),
+        sourceOrigin: splitSourceOrigin(url),
+        appId: splitAppId(url),
+        pagePath: splitPagePath(url),
+        isQRcode: 1,
       }
     })
     return new Promise((resolve, reject) => {
@@ -236,6 +271,33 @@ const Url = {
             orderBy: 'create_time DESC',
           },
           type: bool,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data)
+          resolve(data)
+        })
+        .catch((error) => {
+          console.log(error)
+          reject(error)
+        })
+    })
+  },
+  queryQRcode() {
+    return new Promise((resolve, reject) => {
+      fetch(`${API}/links/query`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          filter: {
+            isQRcode: 1,
+          },
+          data: {
+            orderBy: 'create_time DESC',
+          },
         }),
       })
         .then((res) => res.json())

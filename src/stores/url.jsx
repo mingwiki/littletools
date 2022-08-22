@@ -101,11 +101,11 @@ class UrlStore {
     this.isQueryAll = isQueryAll === true ? true : false
   }
   splitEnterId = (url) => {
-    const temp = decodeURIComponent(url).split('?')
+    const temp = decodeURIComponent(url)?.split('?')
     const query = temp[temp.length - 1]
-      .split('&query=')
-      .flatMap((e) => e.split('&'))
-      .map((e) => e.split('='))
+      ?.split('&query=')
+      .flatMap((e) => e?.split('&'))
+      .map((e) => e?.split('='))
     const res = []
     for (let [key, val] of query) {
       if (key === 'enter' || key === 'enterId') res.push(val)
@@ -113,11 +113,11 @@ class UrlStore {
     return res
   }
   splitSourceOrigin = (url) => {
-    const temp = decodeURIComponent(url).split('?')
+    const temp = decodeURIComponent(url)?.split('?')
     const query = temp[temp.length - 1]
-      .split('&query=')
-      .flatMap((e) => e.split('&'))
-      .map((e) => e.split('='))
+      ?.split('&query=')
+      .flatMap((e) => e?.split('&'))
+      .map((e) => e?.split('='))
     const res = []
     for (let [key, val] of query) {
       if (key === 'sourceOrigin') res.push(val)
@@ -125,16 +125,16 @@ class UrlStore {
     return res
   }
   splitAppId = (url) => {
-    const temp = decodeURIComponent(url).split('?')
+    const temp = decodeURIComponent(url)?.split('?')
     const query = Object.fromEntries(
-      temp[1].split('&').map((e) => e.split('=')),
+      temp[1]?.split('&').map((e) => e?.split('=')) || [],
     )
     return query['appId']
   }
   splitPagePath = (url) => {
-    const temp = decodeURIComponent(url).split('?')
+    const temp = decodeURIComponent(url)?.split('?')
     const query = Object.fromEntries(
-      temp[1].split('&').map((e) => e.split('=')),
+      temp[1]?.split('&').map((e) => e?.split('=')) || [],
     )
     return query['page']
   }
@@ -148,7 +148,7 @@ class UrlStore {
           Object.entries(miniAppIds).find(
             ([key, val]) => val === this.splitAppId(url),
           )?.[0]
-        ],
+        ] || {},
       ).find(([key, val]) => val === this.splitPagePath(url))?.[0],
     ]
   }

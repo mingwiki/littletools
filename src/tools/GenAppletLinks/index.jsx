@@ -356,7 +356,7 @@ const Component = observer(() => {
             <EditOutlined />
             <StyledMaxInput
               type='text'
-              placeholder='请输入一个链接名称'
+              placeholder='请输入链接名称'
               value={linkName}
               pattern='.+'
               autoFocus={true}
@@ -480,7 +480,7 @@ const Component = observer(() => {
             </Button>
           </WrapSpace>
           {
-            '（为实现Enter ID查重等操作，首次点击以上按钮会自动上传链接，第二次点击才可复制或生成二维码。）'
+            '（为实现Enter ID查重等操作，强制上传链接，点击以上按钮会自动上传，链接上传后才可复制或生成二维码。）'
           }
         </>
       )}

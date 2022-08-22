@@ -230,7 +230,7 @@ const Component = () => {
                 <Card
                   title={
                     <CardFlex>
-                      <Text strong>{e?.linkName}</Text>
+                      <Text strong>{e?.linkName || e?.url}</Text>
                       <NameLabel>
                         <MarginRightDiv>{e?.nickname}</MarginRightDiv>
                         <MarginRightDiv>{getPageType(e?.url)}</MarginRightDiv>
