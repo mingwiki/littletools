@@ -23,8 +23,7 @@ import {
   miniAppPageExtra,
 } from '../../data'
 import { copyToClipboard } from '../../utils'
-
-const QRCode = React.lazy(() => import('qrcode.react'))
+import { QRCodeCanvas } from 'qrcode.react'
 
 const CardFlex = styled.div`
   display: flex;
@@ -268,7 +267,7 @@ const Component = () => {
                         点击复制链接
                       </Button>
                       <Popover
-                        content={<QRCode value={e?.url} size={200} />}
+                        content={<QRCodeCanvas value={e?.url} size={200} />}
                         title='请扫描二维码'
                         trigger='click'
                         visible={isShowDrawerQR[idx]}

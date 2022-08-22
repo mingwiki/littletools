@@ -26,8 +26,7 @@ import {
   miniAppPageExtra,
 } from '../../data'
 import { copyToClipboard } from '../../utils'
-
-const QRCode = React.lazy(() => import('qrcode.react'))
+import { QRCodeCanvas } from 'qrcode.react'
 const { Text } = Typography
 
 const StyledInputWrapper = styled.div`
@@ -442,7 +441,7 @@ const Component = observer(() => {
               点击复制链接
             </Button>
             <Popover
-              content={<QRCode value={deferredEncodedUrl} size={200} />}
+              content={<QRCodeCanvas value={deferredEncodedUrl} size={200} />}
               title='请扫描二维码'
               trigger='click'
               visible={isShowPopover}

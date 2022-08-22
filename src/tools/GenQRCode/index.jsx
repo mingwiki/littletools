@@ -20,7 +20,7 @@ import {
 import styled from 'styled-components'
 import { copyToClipboard } from '../../utils'
 import context from '../../stores'
-import QRCode from 'qrcode.react'
+import { QRCodeCanvas } from 'qrcode.react'
 const { Title, Paragraph, Text, Link } = Typography
 const StyledInputWrapper = styled.div`
   display: flex;
@@ -197,7 +197,7 @@ const Component = observer(() => {
               <StyledText>编号{idx + 1}</StyledText>
               <QRCodeContent>
                 {isShow && link ? (
-                  <QRCode value={link.trim()} size={200} />
+                  <QRCodeCanvas value={link.trim()} size={200} />
                 ) : (
                   '在此预览二维码'
                 )}
