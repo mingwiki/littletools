@@ -97,7 +97,7 @@ const Component = observer(() => {
     setHeaders({
       ghost: false,
       onBack: () => window?.history.back(),
-      title: 'No. 2',
+      title: 'No. 5',
       subTitle: '帮助运营快速上传现有的小程序链接',
       extra: [
         <Button

@@ -11,9 +11,10 @@ const ChangePassword = lazy(() => import('./pages/ChangePassword'))
 const Empty = lazy(() => import('./pages/Empty'))
 const LoginRequired = lazy(() => import('./pages/LoginRequired'))
 const No1 = lazy(() => import('./tools/GenAppletLinks'))
-const No2 = lazy(() => import('./tools/UploadAllLinks'))
+const No2 = lazy(() => import('./tools/GenQRCode'))
 const No3 = lazy(() => import('./tools/UserCenter'))
 const No4 = lazy(() => import('./tools/GetPagePath'))
+const No5 = lazy(() => import('./tools/UploadAllLinks'))
 
 const StyledSpin = styled(Spin)`
   position: fixed;
@@ -37,6 +38,7 @@ const Component = () => {
             { path: '02', element: <No2 /> },
             { path: '03', element: <No3 /> },
             { path: '04', element: <No4 /> },
+            { path: '05', element: <No5 /> },
             { path: '*', element: <Empty /> },
           ].map((item) => (
             <Route key={item.path} path={item.path} element={item.element} />

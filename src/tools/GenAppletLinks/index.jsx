@@ -87,11 +87,12 @@ const Component = observer(() => {
   } = UrlStore
   const { setHeaders } = HeaderStore
   const deferredEncodedUrl = useDeferredValue(getEncodedUrl())
+  const redirectUrl = `https://gkzx.jujienet.com/broadband-web/redirect/${encodeURIComponent(deferredEncodedUrl)}`
   const onChangeAppPage = (value) => {
     setTextInfo(
       <>
         {value[0]} <DoubleRightOutlined /> {value[1]}
-      </>
+      </>,
     )
     setAppId(miniAppIds[value[0]])
     setPagePath(miniAppPages[value[0]][value[1]])
@@ -102,7 +103,7 @@ const Component = observer(() => {
         Object.entries(
           miniAppPageExtra[miniAppIds[value[0]]][
             miniAppPages[value[0]][value[1]]
-          ]
+          ],
         ).map((e) => {
           if (typeof e[1] === 'boolean') {
             e[1] = e[1].toString()
@@ -111,7 +112,7 @@ const Component = observer(() => {
             e[1] = [e[1]]
           }
           return e
-        })
+        }),
       )
     } else {
       setPageCheckData([])
@@ -187,7 +188,7 @@ const Component = observer(() => {
                           e.length < 2
                             ? (temp[val[0]] = e)
                             : (temp[val[0]] = e.filter(
-                                (x) => !temp[val[0]].includes(x)
+                                (x) => !temp[val[0]].includes(x),
                               ))
                           setPageCheckQueries(temp)
                         }}
@@ -354,7 +355,7 @@ const Component = observer(() => {
                         notification.error({
                           description: JSON.stringify(error),
                         })
-                      }
+                      },
                     )
                     .finally(() => {
                       setLinkName('')
@@ -382,7 +383,7 @@ const Component = observer(() => {
                           res.map((item) =>
                             notification.error({
                               description: `此${item.enterId}已经存在于${item.linkName}由${item.nickname}上传`,
-                            })
+                            }),
                           )
                         } else {
                           notification.success({
@@ -394,7 +395,7 @@ const Component = observer(() => {
                         notification.error({
                           description: JSON.stringify(err),
                         })
-                      }
+                      },
                     )
                   }}>
                   入口ID查重
@@ -430,7 +431,7 @@ const Component = observer(() => {
                 copyToClipboard(deferredEncodedUrl).then(
                   () =>
                     notification.success({ description: '链接已复制到剪切板' }),
-                  () => notification.error({ description: '链接复制失败' })
+                  () => notification.error({ description: '链接复制失败' }),
                 )
               }}>
               点击复制链接
@@ -449,6 +450,22 @@ const Component = observer(() => {
                 点击生成二维码
               </Button>
             </Popover>
+            <Button
+              type='primary'
+              style={{
+                color: 'white',
+                backgroundColor: '#74b816',
+                border: 'none',
+              }}
+              onClick={() => {
+                copyToClipboard(redirectUrl).then(
+                  () =>
+                    notification.success({ description: '链接已复制到剪切板' }),
+                  () => notification.error({ description: '链接复制失败' }),
+                )
+              }}>
+              点击复制跳转链接
+            </Button>
           </WrapSpace>
           {
             '（如链接有效请务必上传，以便对链接在云端汇总，从而实现Enter ID查重等操作。）'
