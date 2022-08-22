@@ -57,7 +57,7 @@ class UrlStore {
         (this.getPageCheckUrl() !== '' && this.getPageInputUrl() !== ''
           ? '&'
           : '') +
-        this.getPageInputUrl()
+        this.getPageInputUrl(),
     )
   }
   getEncodeGlobal = () => {
@@ -127,28 +127,28 @@ class UrlStore {
   splitAppId = (url) => {
     const temp = decodeURIComponent(url).split('?')
     const query = Object.fromEntries(
-      temp[1].split('&').map((e) => e.split('='))
+      temp[1].split('&').map((e) => e.split('=')),
     )
     return query['appId']
   }
   splitPagePath = (url) => {
     const temp = decodeURIComponent(url).split('?')
     const query = Object.fromEntries(
-      temp[1].split('&').map((e) => e.split('='))
+      temp[1].split('&').map((e) => e.split('=')),
     )
     return query['page']
   }
   getPageType = (url) => {
     return [
       Object.entries(miniAppIds).find(
-        ([key, val]) => val === this.splitAppId(url)
+        ([key, val]) => val === this.splitAppId(url),
       )?.[0],
       Object.entries(
         miniAppPages?.[
           Object.entries(miniAppIds).find(
-            ([key, val]) => val === this.splitAppId(url)
+            ([key, val]) => val === this.splitAppId(url),
           )?.[0]
-        ]
+        ],
       ).find(([key, val]) => val === this.splitPagePath(url))?.[0],
     ]
   }
@@ -160,7 +160,7 @@ class UrlStore {
         },
         (error) => {
           reject(error)
-        }
+        },
       )
     })
   }
@@ -172,7 +172,7 @@ class UrlStore {
         },
         (error) => {
           reject(error)
-        }
+        },
       )
     })
   }
@@ -184,7 +184,7 @@ class UrlStore {
         },
         (error) => {
           reject(error)
-        }
+        },
       )
     })
   }
@@ -196,7 +196,7 @@ class UrlStore {
         },
         (error) => {
           reject(error)
-        }
+        },
       )
     })
   }
@@ -211,7 +211,7 @@ class UrlStore {
         },
         (error) => {
           reject(error)
-        }
+        },
       )
     })
   }

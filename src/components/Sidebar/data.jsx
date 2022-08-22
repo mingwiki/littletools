@@ -20,7 +20,7 @@ export const data = [
   {
     key: '3',
     icon: <UserOutlined />,
-    label: <Link to='03'>查询链接</Link>,
+    label: <Link to='03'>查询已有小程序链接</Link>,
   },
   {
     key: '4',

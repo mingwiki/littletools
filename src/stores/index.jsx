@@ -2,7 +2,7 @@ import { createContext } from 'react'
 import AuthStore from './auth'
 import UserStore from './user'
 import UrlStore from './url'
-import QueyLinksStore from './userCenter'
+import QueyLinksStore from './queyLinks'
 import HeaderStore from './header'
 const context = createContext({
   AuthStore,

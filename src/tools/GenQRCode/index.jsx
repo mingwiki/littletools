@@ -42,20 +42,8 @@ const Component = observer(() => {
       ghost: false,
       onBack: () => window?.history.back(),
       title: 'No. 2',
-      subTitle: '帮助运营快速二维码生成工具',
-      extra: [
-        // <Button
-        //   key={1}
-        //   danger
-        //   onClick={() => {
-        //     setTextInfo('小程序名称和对应页面')
-        //     setIsShowPopover(false)
-        //     clear()
-        //     notification.warning({ description: '页面数据已全部清除' })
-        //   }}>
-        //   清空页面
-        // </Button>,
-      ],
+      subTitle: '二维码快速生成查询工具',
+      extra: [],
     })
   }, [])
   return (

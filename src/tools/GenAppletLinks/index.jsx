@@ -32,7 +32,6 @@ const { Text } = Typography
 
 const StyledInputWrapper = styled.div`
   display: flex;
-  flex-wrap: wrap;
   gap: 10px;
   align-items: center;
 `
@@ -57,11 +56,18 @@ const StyledInput = styled.input`
     background-color: red;
   }
 `
+const StyledMaxInput = styled.input`
+  width: 100%;
+  &:invalid {
+    background-color: red;
+  }
+`
 const WrapSpace = styled(Space)`
   flex-wrap: wrap;
 `
 const Component = observer(() => {
   const [isShowPopover, setIsShowPopover] = useState(false)
+  const [isUploaded, setIsUploaded] = useState(false)
   const { UrlStore, HeaderStore } = useContext(context)
   const {
     textInfo,
@@ -87,7 +93,9 @@ const Component = observer(() => {
   } = UrlStore
   const { setHeaders } = HeaderStore
   const deferredEncodedUrl = useDeferredValue(getEncodedUrl())
-  const redirectUrl = `https://gkzx.jujienet.com/broadband-web/redirect/${encodeURIComponent(deferredEncodedUrl)}`
+  const redirectUrl = `https://gkzx.jujienet.com/broadband-web/redirect/${encodeURIComponent(
+    deferredEncodedUrl,
+  )}`
   const onChangeAppPage = (value) => {
     setTextInfo(
       <>
@@ -122,6 +130,39 @@ const Component = observer(() => {
     placement: 'bottomRight',
     duration: 3,
   })
+  const confirmAndUpload = () => {
+    if (deferredEncodedUrl === '') {
+      notification.error({
+        description: '当前链接地址为空，请检查。',
+      })
+    } else if (linkName !== '') {
+      uploadUrl({
+        name: linkName,
+        url: deferredEncodedUrl,
+      }).then(
+        (res) => {
+          console.log(res)
+          notification.success({
+            description: `已上传${linkName}`,
+          })
+          setIsUploaded(true)
+        },
+        (error) => {
+          notification.error({
+            description: `上传失败请联系开发人员`,
+          })
+          notification.error({
+            description: JSON.stringify(error),
+          })
+        },
+      )
+    } else {
+      notification.error({ description: '链接名称不得为空' })
+    }
+  }
+  useEffect(() => {
+    setIsUploaded(false)
+  }, [deferredEncodedUrl])
   useEffect(() => {
     document.title = '生成小程序链接'
     setHeaders({
@@ -313,126 +354,90 @@ const Component = observer(() => {
           <StyledUrlWrapper>{deferredEncodedUrl}</StyledUrlWrapper>
           <StyledInputWrapper>
             <EditOutlined />
-            <StyledInput
+            <StyledMaxInput
               type='text'
-              placeholder='请输入一个链接名称，最长50位'
+              placeholder='请输入一个链接名称'
               value={linkName}
               pattern='.+'
-              maxLength='50'
               autoFocus={true}
               onChange={(e) => {
                 setLinkName(e.target.value.trim())
               }}
             />
-            <Button
-              type='primary'
-              style={{
-                color: 'white',
-                backgroundColor: '#74b816',
-                border: 'none',
-              }}
-              onClick={() => {
-                if (deferredEncodedUrl === '') {
-                  notification.error({
-                    description: '当前链接地址为空，请检查。',
-                  })
-                } else if (linkName !== '') {
-                  uploadUrl({
-                    name: linkName,
-                    url: deferredEncodedUrl,
-                  })
-                    .then(
-                      (res) => {
-                        console.log(res)
-                        notification.success({
-                          description: `已上传${linkName}`,
-                        })
-                      },
-                      (error) => {
-                        notification.error({
-                          description: `上传失败请联系开发人员`,
-                        })
-                        notification.error({
-                          description: JSON.stringify(error),
-                        })
-                      },
-                    )
-                    .finally(() => {
-                      setLinkName('')
-                    })
-                } else {
-                  notification.error({ description: '链接名称不得为空' })
-                }
-              }}>
-              上传当前链接
-            </Button>
-            {splitEnterId(deferredEncodedUrl).length > 0 ? (
-              <>
-                <Button
-                  type='primary'
-                  style={{
-                    color: 'white',
-                    backgroundColor: '#cc5de8',
-                    border: 'none',
-                  }}
-                  onClick={() => {
-                    checkEnterId(deferredEncodedUrl).then(
-                      (res) => {
-                        console.log(res)
-                        if (res.length > 0) {
-                          res.map((item) =>
-                            notification.error({
-                              description: `此${item.enterId}已经存在于${item.linkName}由${item.nickname}上传`,
-                            }),
-                          )
-                        } else {
-                          notification.success({
-                            description: `当前Enter ID可用`,
-                          })
-                        }
-                      },
-                      (err) => {
-                        notification.error({
-                          description: JSON.stringify(err),
-                        })
-                      },
-                    )
-                  }}>
-                  入口ID查重
-                </Button>
-                <span>
-                  (当前为<b>{splitEnterId(deferredEncodedUrl).join(',')}</b>)
-                </span>
-              </>
-            ) : null}
-            {splitSourceOrigin(deferredEncodedUrl).length > 0 ? (
-              <>
-                <Button
-                  type='primary'
-                  disabled
-                  style={{
-                    color: 'white',
-                    backgroundColor: 'grey',
-                    border: 'none',
-                  }}>
-                  订单来源查重
-                </Button>
-                <span>
-                  (当前为
-                  <b>{splitSourceOrigin(deferredEncodedUrl).join(',')}</b>)
-                </span>
-              </>
-            ) : null}
           </StyledInputWrapper>
+          {splitEnterId(deferredEncodedUrl).length > 0 ? (
+            <>
+              <Button
+                type='primary'
+                style={{
+                  color: 'white',
+                  backgroundColor: '#cc5de8',
+                  border: 'none',
+                }}
+                onClick={() => {
+                  checkEnterId(deferredEncodedUrl).then(
+                    (res) => {
+                      console.log(res)
+                      if (res.length > 0) {
+                        res.map((item) =>
+                          notification.error({
+                            description: `此${item.enterId}已经存在于${item.linkName}由${item.nickname}上传`,
+                          }),
+                        )
+                      } else {
+                        notification.success({
+                          description: `当前Enter ID可用`,
+                        })
+                      }
+                    },
+                    (err) => {
+                      notification.error({
+                        description: JSON.stringify(err),
+                      })
+                    },
+                  )
+                }}>
+                入口ID查重
+              </Button>
+              <span>
+                (当前为<b>{splitEnterId(deferredEncodedUrl).join(',')}</b>)
+              </span>
+            </>
+          ) : null}
+          {splitSourceOrigin(deferredEncodedUrl).length > 0 ? (
+            <>
+              <Button
+                type='primary'
+                disabled
+                style={{
+                  color: 'white',
+                  backgroundColor: 'grey',
+                  border: 'none',
+                }}>
+                订单来源查重
+              </Button>
+              <span>
+                (当前为
+                <b>{splitSourceOrigin(deferredEncodedUrl).join(',')}</b>)
+              </span>
+            </>
+          ) : null}
+
           <WrapSpace>
             <Button
               type='primary'
               onClick={() => {
-                copyToClipboard(deferredEncodedUrl).then(
-                  () =>
-                    notification.success({ description: '链接已复制到剪切板' }),
-                  () => notification.error({ description: '链接复制失败' }),
-                )
+                if (isUploaded) {
+                  copyToClipboard(deferredEncodedUrl).then(
+                    () =>
+                      notification.success({
+                        description: '链接已复制到剪切板',
+                      }),
+                    () => notification.error({ description: '链接复制失败' }),
+                  )
+                } else {
+                  confirmAndUpload()
+                }
               }}>
               点击复制链接
             </Button>
@@ -441,14 +446,15 @@ const Component = observer(() => {
               title='请扫描二维码'
               trigger='click'
               visible={isShowPopover}
-              onVisibleChange={() => setIsShowPopover(!isShowPopover)}>
-              <Button
-                type='primary'
-                onClick={() => {
+              onVisibleChange={() => {
+                if (isUploaded) {
+                  setIsShowPopover(!isShowPopover)
                   notification.success({ description: '二维码已生成' })
-                }}>
-                点击生成二维码
-              </Button>
+                } else {
+                  confirmAndUpload()
+                }
+              }}>
+              <Button type='primary'>点击生成二维码</Button>
             </Popover>
             <Button
               type='primary'
@@ -458,17 +464,23 @@ const Component = observer(() => {
                 border: 'none',
               }}
               onClick={() => {
-                copyToClipboard(redirectUrl).then(
-                  () =>
-                    notification.success({ description: '链接已复制到剪切板' }),
-                  () => notification.error({ description: '链接复制失败' }),
-                )
+                if (isUploaded) {
+                  copyToClipboard(redirectUrl).then(
+                    () =>
+                      notification.success({
+                        description: '链接已复制到剪切板',
+                      }),
+                    () => notification.error({ description: '链接复制失败' }),
+                  )
+                } else {
+                  confirmAndUpload()
+                }
               }}>
               点击复制跳转链接
             </Button>
           </WrapSpace>
           {
-            '（如链接有效请务必上传，以便对链接在云端汇总，从而实现Enter ID查重等操作。）'
+            '（为实现Enter ID查重等操作，首次点击以上按钮会自动上传链接，第二次点击才可复制或生成二维码。）'
           }
         </>
       )}

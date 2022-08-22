@@ -4,14 +4,16 @@ import styled from 'styled-components'
 import context from '../stores'
 import acct from '../20220614152412.png'
 import { Button } from 'antd'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 const Welcome = styled.div`
   font-size: 50px;
 `
 const Component = observer(() => {
-  const { UserStore, HeaderStore } = useContext(context)
+  const { AuthStore, UserStore, HeaderStore } = useContext(context)
   const { currentUser } = UserStore
   const { setHeaders } = HeaderStore
+  const { logout } = AuthStore
+  let navigate = useNavigate()
   useEffect(() => {
     document.title = appTitle
     setHeaders({
@@ -19,16 +21,28 @@ const Component = observer(() => {
       onBack: () => window?.history.back(),
       title: '',
       subTitle: '',
-      extra: [
-        <Button key={2} onClick={() => navigate('/changePassword')}>
-          修改密码
-        </Button>,
-        <Button key={3} type='primary' danger onClick={() => logout()}>
-          注销
-        </Button>,
-      ],
+      extra: currentUser
+        ? [
+            <Button key={2} onClick={() => navigate('/changePassword')}>
+              修改密码
+            </Button>,
+            <Button key={3} type='primary' danger onClick={() => logout()}>
+              注销
+            </Button>,
+          ]
+        : [
+            <Button key={1} type='primary' onClick={() => navigate('/login')}>
+              登录
+            </Button>,
+            <Button
+              key={2}
+              type='primary'
+              onClick={() => navigate('/register')}>
+              注册
+            </Button>,
+          ],
     })
-  }, [])
+  }, [currentUser])
   return (
     <>
       <Welcome>欢迎使用，{`《${appTitle}》`}</Welcome>

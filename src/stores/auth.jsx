@@ -2,7 +2,7 @@ import { makeAutoObservable } from 'mobx'
 import { Auth } from '../models/index'
 import UserStore from './user'
 import UrlStore from './url'
-import QueyLinks from './userCenter'
+import QueyLinks from './queyLinks'
 class AuthStore {
   values = {
     username: '',
@@ -39,7 +39,7 @@ class AuthStore {
       Auth.register(
         this.values.username,
         this.values.password,
-        this.values.realname
+        this.values.realname,
       )
         .then((user) => {
           UserStore.getCurrentUser()

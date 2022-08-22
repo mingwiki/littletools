@@ -1,6 +1,5 @@
 import { observer } from 'mobx-react'
 import React, { useState, useContext, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
 import {
   Button,
   Typography,
@@ -61,7 +60,6 @@ const { Text } = Typography
 const Component = () => {
   const { AuthStore, UserStore, UrlStore, QueyLinksStore, HeaderStore } =
     useContext(context)
-  const { logout } = AuthStore
   const { currentUser } = UserStore
   const { isSyncing, localUrls, setIsSyncing, setLocalUrls } = QueyLinksStore
   const {
@@ -78,7 +76,6 @@ const Component = () => {
     deleteUrl,
     getPageType,
   } = UrlStore
-  const navigate = useNavigate()
   const { setHeaders } = HeaderStore
   const [isShowDrawerQR, setIsShowDrawerQR] = useState([])
   const syncPull = () => {
@@ -183,7 +180,7 @@ const Component = () => {
           <Text strong>选择查询</Text>
           <Radio.Group onChange={RadioChange} value={isQueryAll}>
             <Radio value={true}>所有用户</Radio>
-            <Radio value={false}>当前用户</Radio>
+            <Radio value={false}>我</Radio>
           </Radio.Group>
         </WrapSpace>
         <Button type='primary' danger onClick={() => syncPull()}>
