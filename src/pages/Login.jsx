@@ -25,15 +25,15 @@ const Component = () => {
           message.success('登录成功!')
           navigate('/')
         } else {
-          message.error('密码错误或用户名不存在')
+          message.error(res)
         }
       })
       .catch((err) => {
-        message.error('登录失败:', err)
+        message.error(err)
       })
   }
   const onFinishFailed = (errorInfo) => {
-    message.error('登录失败:', errorInfo)
+    message.error(errorInfo)
   }
   const { setHeaders } = HeaderStore
   useEffect(() => {

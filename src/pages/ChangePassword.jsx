@@ -29,11 +29,11 @@ const Component = () => {
         }
       })
       .catch((err) => {
-        message.error('修改密码失败,请重试:', err)
+        message.error('修改密码失败,请重试')
       })
   }
   const onFinishFailed = (errorInfo) => {
-    message.error('修改密码失败,请重试:', errorInfo)
+    message.error(errorInfo)
   }
   const { setHeaders } = HeaderStore
   useEffect(() => {
@@ -78,7 +78,7 @@ const Component = () => {
                     return Promise.resolve()
                   }
                   return Promise.reject(
-                    new Error('请输入密码，不能包含特殊字符，最少3位')
+                    new Error('请输入密码，不能包含特殊字符，最少3位'),
                   )
                 },
               }),

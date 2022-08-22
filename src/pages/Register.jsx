@@ -30,11 +30,11 @@ const Component = () => {
         }
       })
       .catch((err) => {
-        message.error('注册失败,请重试:', err)
+        message.error('注册失败,请重试')
       })
   }
   const onFinishFailed = (errorInfo) => {
-    message.error('注册失败,请重试:', errorInfo)
+    message.error(errorInfo)
   }
   const { setHeaders } = HeaderStore
   useEffect(() => {
@@ -78,7 +78,7 @@ const Component = () => {
                     return Promise.resolve()
                   }
                   return Promise.reject(
-                    new Error('请输入中文字符，不能包含特殊字符或英文，2~5位')
+                    new Error('请输入中文字符，不能包含特殊字符或英文，2~5位'),
                   )
                 },
               }),
@@ -99,7 +99,9 @@ const Component = () => {
                     return Promise.resolve()
                   }
                   return Promise.reject(
-                    new Error('请输入英文字符，不能包含特殊字符或中文，最少1位')
+                    new Error(
+                      '请输入英文字符，不能包含特殊字符或中文，最少1位',
+                    ),
                   )
                 },
               }),
@@ -121,7 +123,7 @@ const Component = () => {
                     return Promise.resolve()
                   }
                   return Promise.reject(
-                    new Error('请输入密码，不能包含特殊字符，最少3位')
+                    new Error('请输入密码，不能包含特殊字符，最少3位'),
                   )
                 },
               }),
