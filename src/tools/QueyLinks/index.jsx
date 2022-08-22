@@ -59,11 +59,11 @@ const WrapSpace = styled(Space)`
 `
 const { Text } = Typography
 const Component = () => {
-  const { AuthStore, UserStore, UrlStore, UserCenterStore, HeaderStore } =
+  const { AuthStore, UserStore, UrlStore, QueyLinksStore, HeaderStore } =
     useContext(context)
   const { logout } = AuthStore
   const { currentUser } = UserStore
-  const { isSyncing, localUrls, setIsSyncing, setLocalUrls } = UserCenterStore
+  const { isSyncing, localUrls, setIsSyncing, setLocalUrls } = QueyLinksStore
   const {
     textInfo,
     appId,
@@ -167,20 +167,13 @@ const Component = () => {
     setIsQueryAll(e.target.value)
   }
   useEffect(() => {
-    document.title = '个人中心'
+    document.title = '查询链接'
     setHeaders({
       ghost: false,
       onBack: () => window?.history.back(),
       title: 'No. 3',
-      subTitle: '个人中心管理面板',
-      extra: [
-        <Button key={2} onClick={() => navigate('/changePassword')}>
-          修改密码
-        </Button>,
-        <Button key={3} type='primary' danger onClick={() => logout()}>
-          注销
-        </Button>,
-      ],
+      subTitle: '查询链接管理面板',
+      extra: [],
     })
   }, [])
   return (

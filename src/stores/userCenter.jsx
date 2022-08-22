@@ -1,6 +1,6 @@
 import { makeAutoObservable } from 'mobx'
 
-class UserCenterStore {
+class QueyLinksStore {
   constructor() {
     makeAutoObservable(this)
   }
@@ -18,4 +18,4 @@ class UserCenterStore {
     this.localUrls = []
   }
 }
-export default new UserCenterStore()
+export default new QueyLinksStore()

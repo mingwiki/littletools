@@ -12,7 +12,7 @@ const Empty = lazy(() => import('./pages/Empty'))
 const LoginRequired = lazy(() => import('./pages/LoginRequired'))
 const No1 = lazy(() => import('./tools/GenAppletLinks'))
 const No2 = lazy(() => import('./tools/GenQRCode'))
-const No3 = lazy(() => import('./tools/UserCenter'))
+const No3 = lazy(() => import('./tools/QueyLinks'))
 const No4 = lazy(() => import('./tools/GetPagePath'))
 const No5 = lazy(() => import('./tools/UploadAllLinks'))
 
