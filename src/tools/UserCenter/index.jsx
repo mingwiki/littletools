@@ -101,7 +101,7 @@ const Component = () => {
         (error) => {
           notification.error({ description: `拉取失败请联系开发人员` })
           notification.error({ description: JSON.stringify(error) })
-        }
+        },
       )
       .finally(() => {
         setIsSyncing(false)
@@ -127,7 +127,7 @@ const Component = () => {
         (error) => {
           notification.error({ description: `上传失败请联系开发人员` })
           notification.error({ description: JSON.stringify(error) })
-        }
+        },
       )
       .finally(() => {
         setIsSyncing(false)
@@ -137,7 +137,7 @@ const Component = () => {
     setTextInfo(
       <>
         {value[0]} <DoubleRightOutlined /> {value[1]}
-      </>
+      </>,
     )
     setAppId(miniAppIds[value[0]])
     setPagePath(miniAppPages[value[0]][value[1]])
@@ -148,7 +148,7 @@ const Component = () => {
         Object.entries(
           miniAppPageExtra[miniAppIds[value[0]]][
             miniAppPages[value[0]][value[1]]
-          ]
+          ],
         ).map((e) => {
           if (typeof e[1] === 'boolean') {
             e[1] = e[1].toString()
@@ -157,7 +157,7 @@ const Component = () => {
             e[1] = [e[1]]
           }
           return e
-        })
+        }),
       )
     } else {
       setPageCheckData([])
@@ -188,10 +188,7 @@ const Component = () => {
       <StyledSpace>
         <WrapSpace>
           <Text strong>选择查询</Text>
-          <Radio.Group
-            onChange={RadioChange}
-            value={isQueryAll}
-            defaultValue={false}>
+          <Radio.Group onChange={RadioChange} value={isQueryAll}>
             <Radio value={true}>所有用户</Radio>
             <Radio value={false}>当前用户</Radio>
           </Radio.Group>
@@ -275,7 +272,7 @@ const Component = () => {
                             () =>
                               notification.error({
                                 description: '链接复制失败',
-                              })
+                              }),
                           )
                         }}>
                         点击复制链接

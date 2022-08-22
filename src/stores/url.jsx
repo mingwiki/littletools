@@ -10,7 +10,7 @@ class UrlStore {
   globalInputQueries = [{ key: '', val: '' }]
   linkName = ''
   pageCheckData = []
-  isQueryAll = false
+  isQueryAll = true
   constructor() {
     makeAutoObservable(this)
   }
