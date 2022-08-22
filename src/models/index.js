@@ -165,7 +165,6 @@ const Url = {
   uploadFromQrcode(urls) {
     const data = urls?.map((url) => {
       return {
-        linkName: url,
         url,
         enterId: splitEnterId(url),
         sourceOrigin: splitSourceOrigin(url),
