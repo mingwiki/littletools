@@ -97,6 +97,16 @@ const Auth = {
       .then((res) => res.json())
       .then((res) => res[0])
   },
+  getAllUsers() {
+    return fetch(`${API}/users/list`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => res)
+  },
 }
 const Url = {
   upload({ name, url }) {

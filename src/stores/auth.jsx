@@ -75,6 +75,17 @@ class AuthStore {
     }
     Auth.logout()
   }
+  getAllUsers = () => {
+    return new Promise((resolve, reject) => {
+      Auth.getAllUsers()
+        .then((users) => {
+          resolve(users)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  }
 }
 
 export default new AuthStore()
