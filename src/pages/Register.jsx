@@ -156,9 +156,6 @@ const Component = () => {
               span: 16,
             }}>
             <Space>
-              <Button type='primary' onClick={() => navigate('/login')}>
-                前往登录
-              </Button>
               <Button type='primary' htmlType='submit'>
                 提交
               </Button>

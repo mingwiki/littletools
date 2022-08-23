@@ -2,7 +2,6 @@ import React, { useEffect, useContext, useState } from 'react'
 import { observer } from 'mobx-react'
 import styled from 'styled-components'
 import context from '../stores'
-import acct from '../20220614152412.png'
 import { Button } from 'antd'
 import { useNavigate, Link } from 'react-router-dom'
 const Welcome = styled.div`
