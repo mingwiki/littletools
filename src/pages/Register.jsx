@@ -26,7 +26,7 @@ const Component = () => {
           message.success('注册成功')
           navigate('/')
         } else {
-          message.error('用户名已被占用')
+          message.error(res)
         }
       })
       .catch((err) => {
