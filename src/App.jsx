@@ -29,43 +29,9 @@ const App = () => {
   useEffect(() => {
     getCurrentUser()
     const t = gsap.timeline()
-    t.set(sidebarRef.current, {
-      y: '-100%',
-      opacity: 0,
+    t.to('#root', { padding: '0 5vw', duration: 0.5 }).to('#root', {
+      backgroundColor: 'black',
     })
-      .set(menuRef.current.menu.list, {
-        x: '-100%',
-        opacity: 0,
-        paddingRight: '100%',
-      })
-      .set(headerRef.current, { y: '-100%', opacity: 0 })
-      .set(contentRef.current, {
-        opacity: 0,
-      })
-      .to('#root', { padding: '0 5vw', duration: 1 })
-      .to(sidebarRef.current, {
-        y: '0',
-        opacity: 1,
-      })
-      .to(menuRef.current.menu.list, {
-        x: '0',
-        opacity: 1,
-      })
-      .to(menuRef.current.menu.list, {
-        paddingRight: '0',
-        ease: 'ease-in-out',
-        duration: 1,
-      })
-      .to(headerRef.current, {
-        y: '0',
-        opacity: 1,
-      })
-      .to(contentRef.current, {
-        opacity: 1,
-      })
-      .to('#root', {
-        backgroundColor: 'black',
-      })
   }, [getCurrentUser])
   return (
     <HashRouter>
