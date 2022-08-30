@@ -1,6 +1,6 @@
 import UrlStore from '../stores/url'
 const { splitEnterId, splitSourceOrigin, splitAppId, splitPagePath } = UrlStore
-const API = window.location.origin + '/api'
+const API = '/api'
 const Auth = {
   register(username, password, realname) {
     return new Promise((resolve, reject) => {
