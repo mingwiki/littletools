@@ -34,6 +34,7 @@ export const miniAppPages = {
     宽带红包卡券: 'pages/activity/bbRedActivity/index',
     订单详情: 'pages/orderDetail/index',
     提速: 'pages/activity/speedUp/index',
+    WebView: 'pages/webview/index',
   },
 }
 export const miniAppPageExtra = {
