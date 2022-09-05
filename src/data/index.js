@@ -28,6 +28,7 @@ export const miniAppPages = {
   },
   宽带中心小程序: {
     首页: 'pages/index/index',
+    宽带新装: 'pages/packageDetail/index',
     oao列表页: 'pages/oao/index',
     号卡: 'pages/phoneCard/index',
     商机单: 'pages/businessOrder/index',
