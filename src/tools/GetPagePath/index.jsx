@@ -53,6 +53,7 @@ const Component = () => {
     <>
       <Space direction='vertical'>
         <StyledInput
+          placeholder='输入任意链接，将从该页面返回取出小程序alipays链接。'
           value={url}
           onChange={(e) => setUrl(e.target.value.trim())}
         />
