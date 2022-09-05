@@ -224,6 +224,18 @@ class UrlStore {
     this.linkName = ''
     this.pageCheckData = []
   }
+  cors = (url) => {
+    return new Promise((resolve, reject) => {
+      Url.cors(url).then(
+        (res) => {
+          resolve(res)
+        },
+        (error) => {
+          reject(error)
+        },
+      )
+    })
+  }
 }
 
 export default new UrlStore()

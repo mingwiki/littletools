@@ -5,7 +5,7 @@ import UrlStore from '../../stores/url'
 import context from '../../stores'
 import { copyToClipboard } from '../../utils'
 import { QRCodeCanvas } from 'qrcode.react'
-const { getPageType } = UrlStore
+const { getPageType, cors } = UrlStore
 const { Text } = Typography
 
 const StyledInput = styled.input`
@@ -53,30 +53,17 @@ const Component = () => {
     <>
       <Space direction='vertical'>
         <StyledInput
-          placeholder='请输入https://benefit.jujienet.com开头的网址'
-          pattern='^https?://benefit\.jujienet\.com.+'
           value={url}
           onChange={(e) => setUrl(e.target.value.trim())}
         />
         <Button
           type='primary'
-          onClick={() => {
-            if (/^https?:\/\/benefit\.jujienet\.com.+/.test(url)) {
-              fetch(url)
-                .then(async (res) => {
-                  const data = await res.text()
-                  if (res.status === 200 && data !== '404') {
-                    setResponse(data)
-                    notification.success({ description: '查询成功' })
-                  } else {
-                    notification.info({ description: '无数据' })
-                  }
-                })
-                .catch(() => notification.error({ description: '查询失败' }))
+          onClick={async () => {
+            const data = await cors(url)
+            if (data) {
+              setResponse(data)
             } else {
-              notification.error({
-                description: '请输入https://benefit.jujienet.com开头的网址',
-              })
+              notification.info({ description: '无数据' })
             }
           }}>
           查询

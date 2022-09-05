@@ -344,5 +344,24 @@ const Url = {
         })
     })
   },
+  cors(url) {
+    return new Promise((resolve, reject) => {
+      fetch(`${API}/cors`, {
+        method: 'POST',
+        body: JSON.stringify({
+          url,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data)
+          resolve(data)
+        })
+        .catch((error) => {
+          console.log(error)
+          reject(error)
+        })
+    })
+  },
 }
 export { Auth, Url }
