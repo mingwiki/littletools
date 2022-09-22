@@ -67,7 +67,7 @@ const WrapSpace = styled(Space)`
 const Component = observer(() => {
   const [isShowPopover, setIsShowPopover] = useState(false)
   const [isUploaded, setIsUploaded] = useState(false)
-  const { UrlStore, HeaderStore } = useContext(context)
+  const { UrlStore } = useContext(context)
   const {
     textInfo,
     pageCheckQueries,
@@ -90,7 +90,6 @@ const Component = observer(() => {
     checkEnterId,
     uploadUrl,
   } = UrlStore
-  const { setHeaders } = HeaderStore
   const deferredEncodedUrl = useDeferredValue(getEncodedUrl())
   const redirectUrl = `https://gkzx.jujienet.com/broadband-web/redirect/${encodeURIComponent(
     deferredEncodedUrl,
@@ -164,25 +163,6 @@ const Component = observer(() => {
   }, [deferredEncodedUrl])
   useEffect(() => {
     document.title = '生成小程序链接'
-    setHeaders({
-      ghost: false,
-      onBack: () => window?.history.back(),
-      title: 'No. 1',
-      subTitle: '帮助运营快速生成小程序链接',
-      extra: [
-        <Button
-          key={1}
-          danger
-          onClick={() => {
-            setTextInfo('小程序名称和对应页面')
-            setIsShowPopover(false)
-            clear()
-            notification.warning({ description: '页面数据已全部清除' })
-          }}>
-          清空页面
-        </Button>,
-      ],
-    })
   }, [])
   return (
     <>

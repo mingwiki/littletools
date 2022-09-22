@@ -83,8 +83,7 @@ const Wrapper = styled.div`
   width: 100%;
 `
 const Component = observer(() => {
-  const { HeaderStore, QrcodeStore } = useContext(context)
-  const { setHeaders } = HeaderStore
+  const { QrcodeStore } = useContext(context)
   const { links, setLinks, clear, uploadFromQrcode, queryQRcode } = QrcodeStore
   const [queries, setQueries] = useState([])
   const [isShow, setIsShow] = useState(false)
@@ -94,23 +93,6 @@ const Component = observer(() => {
   }
   useEffect(() => {
     document.title = '二维码生成工具'
-    setHeaders({
-      ghost: false,
-      onBack: () => window?.history.back(),
-      title: 'No. 2',
-      subTitle: '二维码快速生成查询工具',
-      extra: [
-        <Button
-          key={1}
-          danger
-          onClick={() => {
-            clear()
-            notification.warning({ description: '页面数据已全部清除' })
-          }}>
-          清空页面
-        </Button>,
-      ],
-    })
     handleQueryQRcode()
   }, [])
   return (

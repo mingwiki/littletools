@@ -8,17 +8,6 @@ const Login = styled.div`
   font-size: 30px;
 `
 const Component = () => {
-  const { HeaderStore } = useContext(context)
-  const { setHeaders } = HeaderStore
-  useEffect(() => {
-    setHeaders({
-      ghost: false,
-      onBack: () => window?.history.back(),
-      title: '',
-      subTitle: '',
-      extra: [],
-    })
-  }, [])
   return (
     <>
       <Login>

@@ -14,7 +14,7 @@ const InnerWrapper = styled.div`
   align-items: center;
 `
 const Component = () => {
-  const { AuthStore, HeaderStore } = useContext(context)
+  const { AuthStore } = useContext(context)
   let navigate = useNavigate()
   const onFinish = (values) => {
     AuthStore.setPassword(values.password)
@@ -35,16 +35,6 @@ const Component = () => {
   const onFinishFailed = (errorInfo) => {
     message.error(errorInfo)
   }
-  const { setHeaders } = HeaderStore
-  useEffect(() => {
-    setHeaders({
-      ghost: false,
-      onBack: () => window?.history.back(),
-      title: '',
-      subTitle: '',
-      extra: [],
-    })
-  }, [])
   return (
     <>
       <InnerWrapper>

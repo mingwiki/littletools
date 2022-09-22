@@ -57,8 +57,7 @@ const WrapSpace = styled(Space)`
 `
 const { Text } = Typography
 const Component = () => {
-  const { AuthStore, UserStore, UrlStore, QueyLinksStore, HeaderStore } =
-    useContext(context)
+  const { AuthStore, UserStore, UrlStore, QueyLinksStore } = useContext(context)
   const { currentUser } = UserStore
   const { isSyncing, localUrls, setIsSyncing, setLocalUrls } = QueyLinksStore
   const {
@@ -75,7 +74,6 @@ const Component = () => {
     deleteUrl,
     getPageType,
   } = UrlStore
-  const { setHeaders } = HeaderStore
   const [isShowDrawerQR, setIsShowDrawerQR] = useState([])
   const syncPull = () => {
     setIsSyncing(true)
@@ -164,13 +162,6 @@ const Component = () => {
   }
   useEffect(() => {
     document.title = '查询链接'
-    setHeaders({
-      ghost: false,
-      onBack: () => window?.history.back(),
-      title: 'No. 3',
-      subTitle: '查询链接管理面板',
-      extra: [],
-    })
   }, [])
   return (
     <>

@@ -8,9 +8,8 @@ const Welcome = styled.div`
   font-size: 50px;
 `
 const Component = observer(() => {
-  const { AuthStore, UserStore, HeaderStore } = useContext(context)
+  const { AuthStore, UserStore } = useContext(context)
   const { currentUser } = UserStore
-  const { setHeaders } = HeaderStore
   const { logout, getAllUsers } = AuthStore
   const [users, setUsers] = useState([])
 
@@ -20,32 +19,6 @@ const Component = observer(() => {
   }
   useEffect(() => {
     document.title = appTitle
-    setHeaders({
-      ghost: false,
-      onBack: () => window?.history.back(),
-      title: '',
-      subTitle: '',
-      extra: currentUser
-        ? [
-            <Button key={2} onClick={() => navigate('/changePassword')}>
-              修改密码
-            </Button>,
-            <Button key={3} type='primary' danger onClick={() => logout()}>
-              注销
-            </Button>,
-          ]
-        : [
-            <Button key={1} type='primary' onClick={() => navigate('/login')}>
-              登录
-            </Button>,
-            <Button
-              key={2}
-              type='primary'
-              onClick={() => navigate('/register')}>
-              注册
-            </Button>,
-          ],
-    })
   }, [currentUser])
   useEffect(() => {
     handleGetAllUsers()
