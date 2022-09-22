@@ -17,16 +17,13 @@ const App = () => {
   const { UserStore } = useContext(context)
   const { getCurrentUser } = UserStore
   const ref = {
-    logoRef: createRef(null),
-    menuRef: createRef(null),
     headerRef: createRef(null),
     contentRef: createRef(null),
   }
-  const { menuRef, contentRef, headerRef } = ref
   useEffect(() => {
     getCurrentUser()
     const t = gsap.timeline()
-    t.to('#root', { padding: '0 5vw', duration: 0.5 }).to('#root', {
+    t.to('#root', { maxWidth: '1800px', duration: 0.5 }).to('#root', {
       backgroundColor: 'black',
     })
   }, [getCurrentUser])

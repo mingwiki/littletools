@@ -7,7 +7,7 @@ export default defineConfig({
   base: './',
   server: {
     host: true,
-    port: 3001,
+    port: 3002,
     proxy: {
       '/api': {
         target: 'http://0.0.0.0:3000/api',
@@ -15,5 +15,9 @@ export default defineConfig({
         rewrite: (path) => path.replace(/^\/api/, ''),
       },
     },
+  },
+  preview: {
+    host: true,
+    port: 3001,
   },
 })

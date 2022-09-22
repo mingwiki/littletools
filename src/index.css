@@ -5,6 +5,9 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  display: flex;
+  justify-content: center;
+  background-color: #505f4e !important;
 }
 
 code {
@@ -18,7 +21,8 @@ code {
 }
 
 #root {
-  background-color: #505F4E;
+  flex: 1;
+  background-color: #505f4e;
 }
 
 .ant-layout-sider-trigger {

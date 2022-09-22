@@ -30,7 +30,6 @@ const Component = observer(
             注册
           </Button>,
         ]
-
     return (
       <div ref={headerRef}>
         <PageHeader
