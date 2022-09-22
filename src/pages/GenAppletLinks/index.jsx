@@ -84,7 +84,6 @@ const Component = observer(() => {
     setGlobalInputQueries,
     setLinkName,
     setPageCheckData,
-    clear,
     splitEnterId,
     splitSourceOrigin,
     checkEnterId,
@@ -133,9 +132,9 @@ const Component = observer(() => {
       notification.error({
         description: '当前链接地址为空，请检查。',
       })
-    } else if (linkName !== '') {
+    } else {
       uploadUrl({
-        name: linkName,
+        name: linkName || deferredEncodedUrl,
         url: deferredEncodedUrl,
       }).then(
         (res) => {
@@ -154,8 +153,6 @@ const Component = observer(() => {
           })
         },
       )
-    } else {
-      notification.error({ description: '链接名称不得为空' })
     }
   }
   useEffect(() => {
@@ -401,22 +398,20 @@ const Component = observer(() => {
               </span>
             </>
           ) : null}
-
-          <WrapSpace>
+          <WrapSpace
+            onClick={() => {
+              if (!isUploaded) confirmAndUpload()
+            }}>
             <Button
               type='primary'
               onClick={() => {
-                if (isUploaded) {
-                  copyToClipboard(deferredEncodedUrl).then(
-                    () =>
-                      notification.success({
-                        description: '链接已复制到剪切板',
-                      }),
-                    () => notification.error({ description: '链接复制失败' }),
-                  )
-                } else {
-                  confirmAndUpload()
-                }
+                copyToClipboard(deferredEncodedUrl).then(
+                  () =>
+                    notification.success({
+                      description: '链接已复制到剪切板',
+                    }),
+                  () => notification.error({ description: '链接复制失败' }),
+                )
               }}>
               点击复制链接
             </Button>
@@ -424,14 +419,10 @@ const Component = observer(() => {
               content={<QRCodeCanvas value={deferredEncodedUrl} size={200} />}
               title='请扫描二维码'
               trigger='click'
-              visible={isShowPopover}
-              onVisibleChange={() => {
-                if (isUploaded) {
-                  setIsShowPopover(!isShowPopover)
-                  notification.success({ description: '二维码已生成' })
-                } else {
-                  confirmAndUpload()
-                }
+              open={isShowPopover}
+              onOpenChange={() => {
+                setIsShowPopover(!isShowPopover)
+                notification.success({ description: '二维码已生成' })
               }}>
               <Button type='primary'>点击生成二维码</Button>
             </Popover>
@@ -443,24 +434,18 @@ const Component = observer(() => {
                 border: 'none',
               }}
               onClick={() => {
-                if (isUploaded) {
-                  copyToClipboard(redirectUrl).then(
-                    () =>
-                      notification.success({
-                        description: '链接已复制到剪切板',
-                      }),
-                    () => notification.error({ description: '链接复制失败' }),
-                  )
-                } else {
-                  confirmAndUpload()
-                }
+                copyToClipboard(redirectUrl).then(
+                  () =>
+                    notification.success({
+                      description: '链接已复制到剪切板',
+                    }),
+                  () => notification.error({ description: '链接复制失败' }),
+                )
               }}>
               点击复制跳转链接
             </Button>
           </WrapSpace>
-          {
-            '（为实现Enter ID查重等操作，强制上传链接，点击以上按钮会自动上传，链接上传后才可复制或生成二维码。）'
-          }
+          （点击以上按钮会自动上传链接）
         </>
       )}
     </>

@@ -13,9 +13,5 @@ class QueyLinksStore {
     const temp = [...localUrls] || []
     this.localUrls = temp
   }
-  clear= () => {
-    this.isSyncing = false
-    this.localUrls = []
-  }
 }
 export default new QueyLinksStore()

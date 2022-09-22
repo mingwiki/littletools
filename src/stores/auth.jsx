@@ -66,8 +66,6 @@ class AuthStore {
   }
   logout = () => {
     UserStore.resetCurrentUser()
-    UrlStore.clear()
-    QueyLinks.clear()
     this.values = {
       username: '',
       password: '',

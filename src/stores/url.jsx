@@ -6,11 +6,16 @@ class UrlStore {
   appId = null
   pagePath = ''
   pageCheckQueries = {}
-  pageInputQueries = [{ key: '', val: '' }]
+  pageInputQueries = [
+    { key: 'goodsId', val: '' },
+    { key: 'enter', val: '' },
+    { key: 'activityId', val: '' },
+    { key: '', val: '' },
+  ]
   globalInputQueries = [{ key: '', val: '' }]
   linkName = ''
   pageCheckData = []
-  isQueryAll = true
+  isQueryAll = false
   constructor() {
     makeAutoObservable(this)
   }
@@ -26,24 +31,20 @@ class UrlStore {
           .join('&')
   }
   getPageInputUrl = () => {
-    return this.pageInputQueries.length === 1 &&
-      this.pageInputQueries[0].key === '' &&
-      this.pageInputQueries[0].val === ''
-      ? ''
-      : this.pageInputQueries
-          .map((e) => (e.key !== '' && e.val !== '' ? `${e.key}=${e.val}` : ''))
-          .filter((e) => e !== '')
-          .join('&')
+    return (
+      this.pageInputQueries
+        .map((e) => (e.key !== '' && e.val !== '' ? `${e.key}=${e.val}` : ''))
+        .filter((e) => e !== '')
+        .join('&') || ''
+    )
   }
   getGlobalInputUrl = () => {
-    return this.globalInputQueries.length === 1 &&
-      this.globalInputQueries[0].key === '' &&
-      this.globalInputQueries[0].val === ''
-      ? ''
-      : this.globalInputQueries
-          .map((e) => (e.key !== '' && e.val !== '' ? `${e.key}=${e.val}` : ''))
-          .filter((e) => e !== '')
-          .join('&')
+    return (
+      this.globalInputQueries
+        .map((e) => (e.key !== '' && e.val !== '' ? `${e.key}=${e.val}` : ''))
+        .filter((e) => e !== '')
+        .join('&') || ''
+    )
   }
   getEncodePage = () => {
     return encodeURIComponent(
@@ -214,15 +215,6 @@ class UrlStore {
         },
       )
     })
-  }
-  clear = () => {
-    this.appId = ''
-    this.pagePath = ''
-    this.pageCheckQueries = {}
-    this.pageInputQueries = [{ key: '', val: '' }]
-    this.globalInputQueries = [{ key: '', val: '' }]
-    this.linkName = ''
-    this.pageCheckData = []
   }
   cors = (url) => {
     return new Promise((resolve, reject) => {

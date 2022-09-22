@@ -84,7 +84,7 @@ const Wrapper = styled.div`
 `
 const Component = observer(() => {
   const { QrcodeStore } = useContext(context)
-  const { links, setLinks, clear, uploadFromQrcode, queryQRcode } = QrcodeStore
+  const { links, setLinks, uploadFromQrcode, queryQRcode } = QrcodeStore
   const [queries, setQueries] = useState([])
   const [isShow, setIsShow] = useState(false)
   const handleQueryQRcode = async () => {

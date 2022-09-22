@@ -10,9 +10,6 @@ class QrcodeStore {
     const temp = [...links]
     this.links = temp
   }
-  clear = () => {
-    this.links = ['', '']
-  }
   uploadFromQrcode = (links) => {
     return new Promise((resolve, reject) => {
       Url.uploadFromQrcode(links).then(

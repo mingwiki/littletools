@@ -261,8 +261,8 @@ const Component = () => {
                         content={<QRCodeCanvas value={e?.url} size={200} />}
                         title='请扫描二维码'
                         trigger='click'
-                        visible={isShowDrawerQR[idx]}
-                        onVisibleChange={() => {
+                        open={isShowDrawerQR[idx]}
+                        onOpenChange={() => {
                           const temp = [...isShowDrawerQR]
                           temp[idx] = !temp[idx]
                           setIsShowDrawerQR(temp)
