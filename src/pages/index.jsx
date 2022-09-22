@@ -81,4 +81,4 @@ const Component = observer(() => {
 })
 export default Component
 
-export const appTitle = '小小工具箱'
+export const appTitle = 'op小工具'
