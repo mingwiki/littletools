@@ -5,7 +5,9 @@
   "homepage": "https://zed.ink/toolkits",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && vite preview"
+    "build": "vite build",
+    "preview": "vite preview",
+    "start": "vite build && vite preview"
   },
   "dependencies": {
     "antd": "^4.23.2",
