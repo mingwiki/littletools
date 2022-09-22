@@ -37,6 +37,7 @@ export const miniAppPages = {
     提速: 'pages/activity/speedUp/index',
     账单详情: 'pages/activity/activityOrderDetail/index',
     WebView: 'pages/webview/index',
+    对话式商机单: 'pages/chatcardsBusinessOrder/index',
   },
 }
 export const miniAppPageExtra = {

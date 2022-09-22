@@ -28,3 +28,7 @@ code {
 .ant-layout-sider-trigger {
   background: #343a40 !important;
 }
+
+.ant-cascader-menu {
+  height: max-content !important;
+}
