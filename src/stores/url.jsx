@@ -9,7 +9,9 @@ class UrlStore {
   pageInputQueries = [
     { key: 'goodsId', val: '' },
     { key: 'enter', val: '' },
+    { key: 'sourceOrigin', val: '' },
     { key: 'activityId', val: '' },
+    { key: 'type', val: '' },
     { key: '', val: '' },
   ]
   globalInputQueries = [{ key: '', val: '' }]
