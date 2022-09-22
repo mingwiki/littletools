@@ -11,21 +11,18 @@ const MainLayout = styled(Layout)`
   height: 100vh;
   overflow: hidden;
 `
-const Sidebar = lazy(() => import('./components/Sidebar'))
 const PageHeader = lazy(() => import('./components/PageHeader'))
 const Wrapper = lazy(() => import('./components/Wrapper'))
 const App = () => {
-  const { UserStore, HeaderStore } = useContext(context)
+  const { UserStore } = useContext(context)
   const { getCurrentUser } = UserStore
-  const { headers } = HeaderStore
   const ref = {
     logoRef: createRef(null),
-    sidebarRef: createRef(null),
     menuRef: createRef(null),
     headerRef: createRef(null),
     contentRef: createRef(null),
   }
-  const { sidebarRef, menuRef, contentRef, headerRef } = ref
+  const { menuRef, contentRef, headerRef } = ref
   useEffect(() => {
     getCurrentUser()
     const t = gsap.timeline()
@@ -36,9 +33,8 @@ const App = () => {
   return (
     <HashRouter>
       <MainLayout>
-        <Sidebar ref={ref} />
         <Layout>
-          <PageHeader {...headers} ref={ref} />
+          <PageHeader ref={ref} />
           <Wrapper ref={ref}>
             <Routers />
           </Wrapper>
