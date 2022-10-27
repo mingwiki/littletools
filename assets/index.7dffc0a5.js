@@ -1,4 +1,4 @@
-import{a2 as i,v as F,r as c,w as b,k as r,j as l}from"./index.6d8c0639.js";import{Q as w,T as k}from"./index.715ef84a.js";import{B as a,S as Q}from"./index.2a25a4ba.js";import"./transButton.61883223.js";import"./TextArea.b65b0e93.js";const{Title:S,Paragraph:G,Text:u,Link:E}=k,B=i.div`
+import{a2 as i,v as F,r as c,w as b,k as r,j as l}from"./index.354854ad.js";import{Q as w,T as k}from"./index.c2fa80de.js";import{B as a,S as Q}from"./index.7a631096.js";import"./transButton.b9c04f7a.js";import"./TextArea.845466db.js";const{Title:S,Paragraph:G,Text:u,Link:E}=k,B=i.div`
   display: flex;
   gap: 10px;
   align-items: center;
