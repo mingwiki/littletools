@@ -21,6 +21,8 @@ const Component = observer(() => {
     document.title = appTitle
   }, [currentUser])
   useEffect(() => {
+    if (window.location.hostname !== '172.16.57.114')
+      window.location.href = 'http://172.16.57.114:3001/'
     handleGetAllUsers()
   }, [])
   return (
@@ -29,17 +31,7 @@ const Component = observer(() => {
       <Welcome>
         当前用户：{currentUser ? currentUser.nickname : '未登录'}
       </Welcome>
-      {window.location.hostname !== '172.16.57.114' ? (
-        <>
-          <h1>
-            原有服务器挂了，现已改用公司测试服务器。请使用下方的局域网链接，在公司内部访问。
-          </h1>
-          <h1>
-            http://172.16.57.114:3001/
-            <a href='http://172.16.57.114:3001/'>点击跳转</a>
-          </h1>
-        </>
-      ) : null}
+      <h1>若以下数据异常或无法正常显示请联系我重启服务</h1>
       <div style={{ textAlign: 'center' }}>
         <table border={1} cellPadding={2}>
           <thead>
