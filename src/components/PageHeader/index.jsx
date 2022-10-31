@@ -59,13 +59,6 @@ const Component = observer(
                 onClick={() => {
                   navigate('02')
                 }}>
-                生成二维码
-              </Button>,
-              <Button
-                key={4}
-                onClick={() => {
-                  navigate('03')
-                }}>
                 管理链接
               </Button>,
               ...lr,
