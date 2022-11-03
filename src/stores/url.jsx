@@ -11,6 +11,7 @@ class UrlStore {
     { key: 'enter', val: '' },
     { key: 'sourceOrigin', val: '' },
     { key: 'activityId', val: '' },
+    { key: 'serviceNo', val: '' },
     { key: 'type', val: '' },
     { key: '', val: '' },
   ]
