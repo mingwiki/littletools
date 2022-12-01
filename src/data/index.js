@@ -1,3 +1,5 @@
+/** @format */
+
 export const miniAppIds = {
   vv会员: '2021002152610059',
   存量小程序: '2021002181632074',
@@ -31,13 +33,13 @@ export const miniAppPages = {
     宽带新装: 'pages/packageDetail/index',
     oao列表页: 'pages/oao/index',
     号卡: 'pages/phoneCard/index',
-    商机单: 'pages/businessOrder/index',
+    联通商机单: 'pages/businessOrder/index',
     订单详情: 'pages/orderDetail/index',
     宽带红包卡券: 'pages/activity/bbRedActivity/index',
     提速: 'pages/activity/speedUp/index',
     账单详情: 'pages/activity/activityOrderDetail/index',
     WebView: 'pages/webview/index',
-    对话式商机单: 'pages/chatcardsBusinessOrder/index',
+    E管家或重庆商机单: 'pages/chatcardsBusinessOrder/index',
   },
 }
 export const miniAppPageExtra = {
