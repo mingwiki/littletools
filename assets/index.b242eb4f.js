@@ -1,4 +1,4 @@
-import{a2 as a,r,j as s,a3 as d}from"./index.ca596aca.js";const{Content:p}=d,c=a(p)`
+import{a2 as a,r,j as s,a3 as d}from"./index.3e1d4be3.js";const{Content:p}=d,c=a(p)`
   margin: 16px;
   padding: 24px;
   border: 2px dashed;
