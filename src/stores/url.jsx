@@ -1,3 +1,5 @@
+/** @format */
+
 import { makeAutoObservable } from 'mobx'
 import { Url } from '../models/index'
 import { miniAppIds, miniAppPages } from '../data'
@@ -13,6 +15,7 @@ class UrlStore {
     { key: 'activityId', val: '' },
     { key: 'serviceNo', val: '' },
     { key: 'type', val: '' },
+    { key: 'cityCode', val: '' },
     { key: '', val: '' },
   ]
   globalInputQueries = [{ key: '', val: '' }]
