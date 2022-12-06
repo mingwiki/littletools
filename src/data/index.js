@@ -40,6 +40,8 @@ export const miniAppPages = {
     账单详情: 'pages/activity/activityOrderDetail/index',
     WebView: 'pages/webview/index',
     E管家或重庆商机单: 'pages/chatcardsBusinessOrder/index',
+    宽带新装列表页: 'pages/bbinstall/index',
+    查帐号: 'pages/searchRetrieveBizNo/index',
   },
 }
 export const miniAppPageExtra = {
