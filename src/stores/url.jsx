@@ -16,6 +16,7 @@ class UrlStore {
     { key: 'serviceNo', val: '' },
     { key: 'type', val: '' },
     { key: 'cityCode', val: '' },
+    { key: 'operatorCode', val: '' },
     { key: '', val: '' },
   ]
   globalInputQueries = [{ key: '', val: '' }]
