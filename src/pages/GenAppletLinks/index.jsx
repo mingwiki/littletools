@@ -496,10 +496,23 @@ const redirectComponent = observer(() => {
       </Space>
       {returnLinks?.map((i, idx) => (
         <div
-          style={{ borderLeft: '2px solid lightblue', paddingLeft: '20px' }}
+          style={{
+            borderLeft: '2px solid lightblue',
+            paddingLeft: '20px',
+            marginBottom: '30px',
+          }}
           key={idx}>
+          <div
+            style={{
+              marginBottom: '20px',
+              padding: '5px 20px',
+              border: '1px dashed',
+              whiteSpace: 'wrap',
+              wordBreak: 'break-all',
+            }}>
+            {i.link}
+          </div>
           <Space>
-            <Text>{i.name}</Text>
             <Button
               type='primary'
               style={{
@@ -516,19 +529,10 @@ const redirectComponent = observer(() => {
                   () => notification.error({ description: '链接复制失败' })
                 )
               }}>
-              复制下面的链接
+              复制链接
             </Button>
+            <Text>({i.name})</Text>
           </Space>
-          <div
-            style={{
-              margin: '20px 0',
-              padding: '20px',
-              border: '1px dashed',
-              whiteSpace: 'wrap',
-              wordBreak: 'break-all',
-            }}>
-            {i.link}
-          </div>
         </div>
       ))}
     </>
