@@ -494,11 +494,40 @@ const redirectComponent = observer(() => {
         </Button>
       </Space>
       {returnLinks?.map((i, idx) => (
-        <div key={idx}>
-          <div>{i.name}</div>
-          <Text mark copyable editable ellipsis style={{ maxWidth: '500px' }}>
+        <div
+          style={{ borderLeft: '2px solid lightblue', paddingLeft: '20px' }}
+          key={idx}>
+          <Space>
+            <Text>{i.name}</Text>
+            <Button
+              type='primary'
+              style={{
+                color: 'white',
+                backgroundColor: '#74b816',
+                border: 'none',
+              }}
+              onClick={() => {
+                copyToClipboard(i.link).then(
+                  () =>
+                    notification.success({
+                      description: '链接已复制到剪切板',
+                    }),
+                  () => notification.error({ description: '链接复制失败' })
+                )
+              }}>
+              复制
+            </Button>
+          </Space>
+          <div
+            style={{
+              margin: '20px 0',
+              padding: '20px',
+              border: '1px dashed',
+              whiteSpace: 'wrap',
+              wordBreak: 'break-all',
+            }}>
             {i.link}
-          </Text>
+          </div>
         </div>
       ))}
     </>
