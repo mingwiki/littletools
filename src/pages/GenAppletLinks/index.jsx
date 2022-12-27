@@ -502,13 +502,23 @@ const redirectComponent = observer(() => {
             marginBottom: '30px',
           }}
           key={idx}>
+          <Text>{i.name}</Text>
           <div
             style={{
-              marginBottom: '20px',
+              margin: '5px',
               padding: '5px 20px',
               border: '1px dashed',
               whiteSpace: 'wrap',
               wordBreak: 'break-all',
+            }}
+            onClick={() => {
+              copyToClipboard(i.link).then(
+                () =>
+                  notification.success({
+                    description: '链接已复制到剪切板',
+                  }),
+                () => notification.error({ description: '链接复制失败' })
+              )
             }}>
             {i.link}
           </div>
@@ -531,7 +541,6 @@ const redirectComponent = observer(() => {
               }}>
               复制链接
             </Button>
-            <Text>({i.name})</Text>
           </Space>
         </div>
       ))}
