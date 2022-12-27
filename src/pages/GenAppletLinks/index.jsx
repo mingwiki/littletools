@@ -516,7 +516,7 @@ const redirectComponent = observer(() => {
                   () => notification.error({ description: '链接复制失败' })
                 )
               }}>
-              复制
+              复制下面的链接
             </Button>
           </Space>
           <div
