@@ -7,10 +7,10 @@ export default defineConfig({
   base: './',
   server: {
     host: true,
-    port: 3002,
+    port: 3001,
     proxy: {
       '/api': {
-        target: 'http://172.16.57.114:3000/api/v1',
+        target: 'http://10.10.10.10:3000/api/v1',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
       },

@@ -21,8 +21,8 @@ const Component = observer(() => {
     document.title = appTitle
   }, [currentUser])
   useEffect(() => {
-    if (window.location.hostname !== '172.16.57.114')
-      window.location.href = 'http://172.16.57.114:3001/'
+    // if (window.location.hostname !== '172.16.57.114')
+    //   window.location.href = 'http://172.16.57.114:3001/'
     handleGetAllUsers()
   }, [])
   return (
