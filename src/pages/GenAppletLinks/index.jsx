@@ -476,19 +476,24 @@ const redirectComponent = observer(() => {
             border: 'none',
           }}
           onClick={async () => {
-            const res = await fetch(
-              `api/redirect/${encodeURIComponent(redirectValue)}`
-            ).then((res) => res.text())
-            if (res) {
-              setReturnLinks((pre) => [
-                ...pre,
-                { link: res, name: redirectValue },
-              ])
+            if (redirectValue) {
+              const res = await fetch(
+                `api/redirect/${encodeURIComponent(redirectValue)}`
+              ).then((res) => res.text())
+              if (res) {
+                setReturnLinks((pre) => [
+                  ...pre,
+                  { link: res, name: redirectValue },
+                ])
+                setRediectValue('')
+              } else {
+                setReturnLinks((pre) => [
+                  ...pre,
+                  { link: '查询失败', name: redirectValue },
+                ])
+              }
             } else {
-              setReturnLinks((pre) => [
-                ...pre,
-                { link: '查询失败', name: redirectValue },
-              ])
+              notification.error({ description: '查询内容不得为空' })
             }
           }}>
           查询
@@ -499,7 +504,7 @@ const redirectComponent = observer(() => {
           style={{
             borderLeft: '4px solid lightblue',
             paddingLeft: '20px',
-            marginBottom: '30px',
+            marginTop: '26px',
           }}
           key={idx}>
           <Text>{i.name}</Text>
