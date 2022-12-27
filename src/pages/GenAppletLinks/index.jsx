@@ -460,9 +460,10 @@ const redirectComponent = observer(() => {
     <>
       <Space>
         <Input
-          placeholder='渠道入口id'
+          style={{ minWidth: '600px' }}
+          placeholder='请输入渠道入口id或者完整存量h5链接'
           value={redirectValue}
-          size='28'
+          size='36'
           onChange={(e) => {
             setRediectValue(e.target.value.trim())
           }}
@@ -475,9 +476,9 @@ const redirectComponent = observer(() => {
             border: 'none',
           }}
           onClick={async () => {
-            const res = await fetch(`api/redirect/${redirectValue}`).then(
-              (res) => res.text()
-            )
+            const res = await fetch(
+              `api/redirect/${encodeURIComponent(redirectValue)}`
+            ).then((res) => res.text())
             if (res) {
               setReturnLinks((pre) => [
                 ...pre,
