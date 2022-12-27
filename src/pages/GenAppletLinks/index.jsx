@@ -1,4 +1,12 @@
-import React, { useState, useEffect, useDeferredValue, useContext } from 'react'
+/** @format */
+
+import React, {
+  useState,
+  useEffect,
+  useDeferredValue,
+  useContext,
+  useMemo,
+} from 'react'
 import { observer } from 'mobx-react'
 import {
   Cascader,
@@ -9,9 +17,11 @@ import {
   Radio,
   Checkbox,
   Typography,
+  Input,
 } from 'antd'
 import {
   AlipayCircleOutlined,
+  CodepenCircleOutlined,
   DoubleRightOutlined,
   GroupOutlined,
   GlobalOutlined,
@@ -64,7 +74,7 @@ const StyledMaxInput = styled.input`
 const WrapSpace = styled(Space)`
   flex-wrap: wrap;
 `
-const Component = observer(() => {
+const alipayComponent = observer(() => {
   const [isShowPopover, setIsShowPopover] = useState(false)
   const [isUploaded, setIsUploaded] = useState(false)
   const { UrlStore } = useContext(context)
@@ -91,13 +101,13 @@ const Component = observer(() => {
   } = UrlStore
   const deferredEncodedUrl = useDeferredValue(getEncodedUrl())
   const redirectUrl = `https://gkzx.jujienet.com/broadband-web/redirect/${encodeURIComponent(
-    deferredEncodedUrl,
+    deferredEncodedUrl
   )}`
   const onChangeAppPage = (value) => {
     setTextInfo(
       <>
         {value[0]} <DoubleRightOutlined /> {value[1]}
-      </>,
+      </>
     )
     setAppId(miniAppIds[value[0]])
     setPagePath(miniAppPages[value[0]][value[1]])
@@ -108,7 +118,7 @@ const Component = observer(() => {
         Object.entries(
           miniAppPageExtra[miniAppIds[value[0]]][
             miniAppPages[value[0]][value[1]]
-          ],
+          ]
         ).map((e) => {
           if (typeof e[1] === 'boolean') {
             e[1] = e[1].toString()
@@ -117,7 +127,7 @@ const Component = observer(() => {
             e[1] = [e[1]]
           }
           return e
-        }),
+        })
       )
     } else {
       setPageCheckData([])
@@ -151,23 +161,15 @@ const Component = observer(() => {
           notification.error({
             description: JSON.stringify(error),
           })
-        },
+        }
       )
     }
   }
   useEffect(() => {
     setIsUploaded(false)
   }, [deferredEncodedUrl])
-  useEffect(() => {
-    document.title = '生成小程序链接'
-  }, [])
   return (
     <>
-      <Radio.Group value={'alipay'} size='large'>
-        <Radio value={'alipay'}>
-          <AlipayCircleOutlined /> alipays 协议
-        </Radio>
-      </Radio.Group>
       <WrapSpace>
         <Cascader
           options={cascaderData}
@@ -205,7 +207,7 @@ const Component = observer(() => {
                           e.length < 2
                             ? (temp[val[0]] = e)
                             : (temp[val[0]] = e.filter(
-                                (x) => !temp[val[0]].includes(x),
+                                (x) => !temp[val[0]].includes(x)
                               ))
                           setPageCheckQueries(temp)
                         }}
@@ -358,7 +360,7 @@ const Component = observer(() => {
                         res.map((item) =>
                           notification.error({
                             description: `此${item.enterId}已经存在于${item.linkName}由${item.nickname}上传`,
-                          }),
+                          })
                         )
                       } else {
                         notification.success({
@@ -370,7 +372,7 @@ const Component = observer(() => {
                       notification.error({
                         description: JSON.stringify(err),
                       })
-                    },
+                    }
                   )
                 }}>
                 入口ID查重
@@ -410,7 +412,7 @@ const Component = observer(() => {
                     notification.success({
                       description: '链接已复制到剪切板',
                     }),
-                  () => notification.error({ description: '链接复制失败' }),
+                  () => notification.error({ description: '链接复制失败' })
                 )
               }}>
               点击复制链接
@@ -439,7 +441,7 @@ const Component = observer(() => {
                     notification.success({
                       description: '链接已复制到剪切板',
                     }),
-                  () => notification.error({ description: '链接复制失败' }),
+                  () => notification.error({ description: '链接复制失败' })
                 )
               }}>
               点击复制跳转链接
@@ -448,6 +450,86 @@ const Component = observer(() => {
           （点击以上按钮会自动上传链接）
         </>
       )}
+    </>
+  )
+})
+const redirectComponent = observer(() => {
+  const [redirectValue, setRediectValue] = useState('')
+  const [returnLinks, setReturnLinks] = useState([])
+  return (
+    <>
+      <Space>
+        <Input
+          placeholder='渠道入口id'
+          value={redirectValue}
+          size='28'
+          onChange={(e) => {
+            setRediectValue(e.target.value.trim())
+          }}
+        />
+        <Button
+          type='primary'
+          style={{
+            color: 'white',
+            backgroundColor: '#74b816',
+            border: 'none',
+          }}
+          onClick={async () => {
+            const res = await fetch(`api/redirect/${redirectValue}`).then(
+              (res) => res.text()
+            )
+            if (res) {
+              setReturnLinks((pre) => [
+                ...pre,
+                { link: res, name: redirectValue },
+              ])
+            } else {
+              setReturnLinks((pre) => [
+                ...pre,
+                { link: '查询失败', name: redirectValue },
+              ])
+            }
+          }}>
+          查询
+        </Button>
+      </Space>
+      {returnLinks?.map((i, idx) => (
+        <div key={idx}>
+          <div>{i.name}</div>
+          <Text mark copyable editable ellipsis style={{ maxWidth: '500px' }}>
+            {i.link}
+          </Text>
+        </div>
+      ))}
+    </>
+  )
+})
+const Component = observer(() => {
+  const [radioValue, setRadioValue] = useState('alipay')
+  const UI = useMemo(() => {
+    if (radioValue === 'alipay') {
+      return alipayComponent
+    } else {
+      return redirectComponent
+    }
+  }, [radioValue])
+  useEffect(() => {
+    document.title = '生成小程序链接'
+  }, [])
+  return (
+    <>
+      <Radio.Group
+        value={radioValue}
+        size='large'
+        onChange={(e) => setRadioValue(e.target.value)}>
+        <Radio value={'alipay'}>
+          <AlipayCircleOutlined /> alipays 协议
+        </Radio>
+        <Radio value={'redirect'}>
+          <CodepenCircleOutlined /> 存量H5重定向
+        </Radio>
+      </Radio.Group>
+      <UI />
     </>
   )
 })
