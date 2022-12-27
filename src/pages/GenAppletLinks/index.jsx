@@ -502,7 +502,7 @@ const redirectComponent = observer(() => {
       {returnLinks?.map((i, idx) => (
         <div
           style={{
-            borderLeft: '4px solid lightblue',
+            borderLeft: '6px solid lightblue',
             paddingLeft: '20px',
             marginTop: '26px',
           }}
@@ -530,11 +530,6 @@ const redirectComponent = observer(() => {
           <Space>
             <Button
               type='primary'
-              style={{
-                color: 'white',
-                backgroundColor: '#74b816',
-                border: 'none',
-              }}
               onClick={() => {
                 copyToClipboard(i.link).then(
                   () =>
@@ -546,6 +541,95 @@ const redirectComponent = observer(() => {
               }}>
               复制链接
             </Button>
+            {i.link?.startsWith('alipay') && (
+              <>
+                <Button
+                  type='primary'
+                  style={{
+                    color: 'white',
+                    backgroundColor: '#74b816',
+                    border: 'none',
+                  }}
+                  onClick={() => {
+                    copyToClipboard(
+                      decodeURIComponent(
+                        Object.fromEntries(
+                          i.link
+                            .split('?')[1]
+                            .split('&')
+                            .map((i) => i.split('='))
+                        )['page']
+                      )
+                        .split('?')[1]
+                        .split('&')
+                        .map((i) => i.split('='))
+                        .find((i) => i[0] === 'pathname')[1]
+                    ).then(
+                      () =>
+                        notification.success({
+                          description: '链接已复制到剪切板',
+                        }),
+                      () => notification.error({ description: '链接复制失败' })
+                    )
+                  }}>
+                  复制页面路径
+                </Button>
+                <Button
+                  type='primary'
+                  style={{
+                    color: 'white',
+                    backgroundColor: '#74b816',
+                    border: 'none',
+                  }}
+                  onClick={() => {
+                    copyToClipboard(
+                      decodeURIComponent(
+                        Object.fromEntries(
+                          i.link
+                            .split('?')[1]
+                            .split('&')
+                            .map((i) => i.split('='))
+                        )['page']
+                      ).split('?')[1]
+                    ).then(
+                      () =>
+                        notification.success({
+                          description: '链接已复制到剪切板',
+                        }),
+                      () => notification.error({ description: '链接复制失败' })
+                    )
+                  }}>
+                  复制页面参数
+                </Button>
+                <Button
+                  type='primary'
+                  style={{
+                    color: 'white',
+                    backgroundColor: '#74b816',
+                    border: 'none',
+                  }}
+                  onClick={() => {
+                    copyToClipboard(
+                      decodeURIComponent(
+                        Object.fromEntries(
+                          i.link
+                            .split('?')[1]
+                            .split('&')
+                            .map((i) => i.split('='))
+                        )['query']
+                      )
+                    ).then(
+                      () =>
+                        notification.success({
+                          description: '链接已复制到剪切板',
+                        }),
+                      () => notification.error({ description: '链接复制失败' })
+                    )
+                  }}>
+                  复制Query参数
+                </Button>
+              </>
+            )}
           </Space>
         </div>
       ))}
