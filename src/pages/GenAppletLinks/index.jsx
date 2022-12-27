@@ -497,7 +497,7 @@ const redirectComponent = observer(() => {
       {returnLinks?.map((i, idx) => (
         <div
           style={{
-            borderLeft: '2px solid lightblue',
+            borderLeft: '4px solid lightblue',
             paddingLeft: '20px',
             marginBottom: '30px',
           }}
