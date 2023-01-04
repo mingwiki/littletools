@@ -28,6 +28,7 @@ export const miniAppPages = {
     协议页面: 'pages/pureText/index',
     优惠券: 'pages/hongbaoCoupon/index',
     爱音乐: 'pages/iMusic/index',
+    权益列表: 'pages/packageList/index',
   },
   宽带中心小程序: {
     首页: 'pages/index/index',
