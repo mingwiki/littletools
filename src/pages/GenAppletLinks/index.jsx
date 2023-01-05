@@ -235,7 +235,7 @@ const alipayComponent = observer(() => {
                     value={val}
                     maxLength='50'
                     size='28'
-                    pattern='(\w)*'
+                    pattern='(\w|\/)*'
                     onChange={(e) => {
                       const temp = [...pageInputQueries]
                       temp[idx].val = e.target.value.trim()
@@ -294,7 +294,7 @@ const alipayComponent = observer(() => {
                     value={val}
                     maxLength='50'
                     size='28'
-                    pattern='(\w)*'
+                    pattern='(\w|\/)*'
                     onChange={(e) => {
                       const temp = [...globalInputQueries]
                       temp[idx].val = e.target.value.trim()
