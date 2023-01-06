@@ -1,3 +1,5 @@
+/** @format */
+
 import UrlStore from '../stores/url'
 const { splitEnterId, splitSourceOrigin, splitAppId, splitPagePath } = UrlStore
 const API = '/api'
@@ -364,4 +366,42 @@ const Url = {
     })
   },
 }
-export { Auth, Url }
+const Config = {
+  queryAll() {
+    return new Promise((resolve, reject) => {
+      fetch(`${API}/config/all`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          resolve(data)
+        })
+        .catch((error) => {
+          console.log(error)
+          reject(error)
+        })
+    })
+  },
+  queryApplets() {
+    return new Promise((resolve, reject) => {
+      fetch(`${API}/config/getApplets`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          resolve(data)
+        })
+        .catch((error) => {
+          console.log(error)
+          reject(error)
+        })
+    })
+  },
+}
+export { Auth, Url, Config }

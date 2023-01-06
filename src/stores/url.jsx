@@ -2,23 +2,12 @@
 
 import { makeAutoObservable } from 'mobx'
 import { Url } from '../models/index'
-import { miniAppIds, miniAppPages } from '../data'
 class UrlStore {
   textInfo = '小程序名称和对应页面'
   appId = null
   pagePath = ''
   pageCheckQueries = {}
-  pageInputQueries = [
-    { key: 'goodsId', val: '' },
-    { key: 'enter', val: '' },
-    { key: 'sourceOrigin', val: '' },
-    { key: 'activityId', val: '' },
-    { key: 'serviceNo', val: '' },
-    { key: 'type', val: '' },
-    { key: 'cityCode', val: '' },
-    { key: 'operatorCode', val: '' },
-    { key: '', val: '' },
-  ]
+  pageInputQueries = []
   globalInputQueries = [{ key: '', val: '' }]
   linkName = ''
   pageCheckData = []
@@ -65,7 +54,7 @@ class UrlStore {
         (this.getPageCheckUrl() !== '' && this.getPageInputUrl() !== ''
           ? '&'
           : '') +
-        this.getPageInputUrl(),
+        this.getPageInputUrl()
     )
   }
   getEncodeGlobal = () => {
@@ -135,30 +124,16 @@ class UrlStore {
   splitAppId = (url) => {
     const temp = decodeURIComponent(url)?.split('?')
     const query = Object.fromEntries(
-      temp[1]?.split('&').map((e) => e?.split('=')) || [],
+      temp[1]?.split('&').map((e) => e?.split('=')) || []
     )
     return query['appId']
   }
   splitPagePath = (url) => {
     const temp = decodeURIComponent(url)?.split('?')
     const query = Object.fromEntries(
-      temp[1]?.split('&').map((e) => e?.split('=')) || [],
+      temp[1]?.split('&').map((e) => e?.split('=')) || []
     )
     return query['page']
-  }
-  getPageType = (url) => {
-    return [
-      Object.entries(miniAppIds).find(
-        ([key, val]) => val === this.splitAppId(url),
-      )?.[0],
-      Object.entries(
-        miniAppPages?.[
-          Object.entries(miniAppIds).find(
-            ([key, val]) => val === this.splitAppId(url),
-          )?.[0]
-        ] || {},
-      ).find(([key, val]) => val === this.splitPagePath(url))?.[0],
-    ]
   }
   checkEnterId = (url) => {
     return new Promise((resolve, reject) => {
@@ -168,7 +143,7 @@ class UrlStore {
         },
         (error) => {
           reject(error)
-        },
+        }
       )
     })
   }
@@ -180,7 +155,7 @@ class UrlStore {
         },
         (error) => {
           reject(error)
-        },
+        }
       )
     })
   }
@@ -192,7 +167,7 @@ class UrlStore {
         },
         (error) => {
           reject(error)
-        },
+        }
       )
     })
   }
@@ -204,7 +179,7 @@ class UrlStore {
         },
         (error) => {
           reject(error)
-        },
+        }
       )
     })
   }
@@ -219,7 +194,7 @@ class UrlStore {
         },
         (error) => {
           reject(error)
-        },
+        }
       )
     })
   }
@@ -231,7 +206,7 @@ class UrlStore {
         },
         (error) => {
           reject(error)
-        },
+        }
       )
     })
   }

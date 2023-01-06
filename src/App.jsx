@@ -14,19 +14,21 @@ const MainLayout = styled(Layout)`
 const PageHeader = lazy(() => import('./components/PageHeader'))
 const Wrapper = lazy(() => import('./components/Wrapper'))
 const App = () => {
-  const { UserStore } = useContext(context)
+  const { UserStore, ConfigStore } = useContext(context)
   const { getCurrentUser } = UserStore
+  const { getConfig } = ConfigStore
   const ref = {
     headerRef: createRef(null),
     contentRef: createRef(null),
   }
   useEffect(() => {
     getCurrentUser()
+    getConfig()
     const t = gsap.timeline()
     t.to('#root', { maxWidth: '1800px', duration: 0.5 }).to('#root', {
       backgroundColor: 'black',
     })
-  }, [getCurrentUser])
+  }, [])
   return (
     <HashRouter>
       <MainLayout>

@@ -16,12 +16,6 @@ import {
 import { DeleteOutlined, DoubleRightOutlined } from '@ant-design/icons'
 import styled from 'styled-components'
 import context from '../../stores'
-import {
-  cascaderData,
-  miniAppIds,
-  miniAppPages,
-  miniAppPageExtra,
-} from '../../data'
 import { copyToClipboard } from '../../utils'
 import { QRCodeCanvas } from 'qrcode.react'
 
@@ -57,7 +51,8 @@ const WrapSpace = styled(Space)`
 `
 const { Text } = Typography
 const Component = () => {
-  const { AuthStore, UserStore, UrlStore, QueyLinksStore } = useContext(context)
+  const { AuthStore, UserStore, UrlStore, QueyLinksStore, ConfigStore } =
+    useContext(context)
   const { currentUser } = UserStore
   const { isSyncing, localUrls, setIsSyncing, setLocalUrls } = QueyLinksStore
   const {
@@ -72,8 +67,8 @@ const Component = () => {
     setIsQueryAll,
     queryAll,
     deleteUrl,
-    getPageType,
   } = UrlStore
+  const { cascaderData, appletPresets, applets } = ConfigStore
   const [isShowDrawerQR, setIsShowDrawerQR] = useState([])
   const syncPull = () => {
     setIsSyncing(true)
@@ -95,7 +90,7 @@ const Component = () => {
         (error) => {
           notification.error({ description: `拉取失败请联系开发人员` })
           notification.error({ description: JSON.stringify(error) })
-        },
+        }
       )
       .finally(() => {
         setIsSyncing(false)
@@ -121,7 +116,7 @@ const Component = () => {
         (error) => {
           notification.error({ description: `上传失败请联系开发人员` })
           notification.error({ description: JSON.stringify(error) })
-        },
+        }
       )
       .finally(() => {
         setIsSyncing(false)
@@ -131,19 +126,14 @@ const Component = () => {
     setTextInfo(
       <>
         {value[0]} <DoubleRightOutlined /> {value[1]}
-      </>,
+      </>
     )
-    setAppId(miniAppIds[value[0]])
-    setPagePath(miniAppPages[value[0]][value[1]])
-    if (
-      miniAppPageExtra[miniAppIds[value[0]]][miniAppPages[value[0]][value[1]]]
-    ) {
+    const [id, path] = applets(value)
+    setAppId(id)
+    setPagePath(path)
+    if (appletPresets(value)) {
       setPageCheckData(
-        Object.entries(
-          miniAppPageExtra[miniAppIds[value[0]]][
-            miniAppPages[value[0]][value[1]]
-          ],
-        ).map((e) => {
+        Object.entries(appletPresets(value)).map((e) => {
           if (typeof e[1] === 'boolean') {
             e[1] = e[1].toString()
           }
@@ -151,7 +141,7 @@ const Component = () => {
             e[1] = [e[1]]
           }
           return e
-        }),
+        })
       )
     } else {
       setPageCheckData([])
@@ -180,7 +170,7 @@ const Component = () => {
       <StyledSpace>
         <WrapSpace>
           <Cascader
-            options={cascaderData}
+            options={cascaderData()}
             onChange={onChangeAppPage}
             size='large'
             notFoundContent='无数据'>
@@ -223,7 +213,9 @@ const Component = () => {
                       <Text strong>{e?.linkName || e?.url}</Text>
                       <NameLabel>
                         <MarginRightDiv>{e?.nickname}</MarginRightDiv>
-                        <MarginRightDiv>{getPageType(e?.url)}</MarginRightDiv>
+                        <MarginRightDiv>
+                          {e?.appName}-{e?.pageName}
+                        </MarginRightDiv>
                       </NameLabel>
                     </CardFlex>
                   }
@@ -252,7 +244,7 @@ const Component = () => {
                             () =>
                               notification.error({
                                 description: '链接复制失败',
-                              }),
+                              })
                           )
                         }}>
                         点击复制链接
