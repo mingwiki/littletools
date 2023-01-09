@@ -4,14 +4,15 @@ import { makeAutoObservable } from 'mobx'
 import { Config } from '../models/index'
 
 class ConfigStore {
+  linkConfig = []
+  applets = []
   config = []
-  appletsDB = []
   constructor() {
     makeAutoObservable(this)
   }
-  getConfig = () => {
+  getLinkConfig = () => {
     Config.queryAll().then((res) => {
-      this.config = res
+      this.linkConfig = res
     })
   }
   getConfigGroupBy = (arg) => {
@@ -23,7 +24,7 @@ class ConfigStore {
         }),
         {}
       )
-    return groupBy(this.config, arg) || {}
+    return groupBy(this.linkConfig, arg) || {}
   }
   cascaderData = () => {
     const miniAppPages = Object.fromEntries(
@@ -56,7 +57,12 @@ class ConfigStore {
       this.appletsDB = res
     })
   }
-  applets = ([appName, pageName]) => {
+  getConfig = () => {
+    Config.queryConfig().then((res) => {
+      this.config = res
+    })
+  }
+  appletId = ([appName, pageName]) => {
     const temp = Object.fromEntries(
       Object.entries(this.getConfigGroupBy('appName')).map((i) => {
         i[1] = Object.fromEntries(

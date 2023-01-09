@@ -8,6 +8,7 @@ import {
   Popover,
   Checkbox,
   Typography,
+  Switch,
 } from 'antd'
 import {
   DoubleRightOutlined,
@@ -60,6 +61,7 @@ const WrapSpace = styled(Space)`
 const Component = observer(() => {
   const [isShowPopover, setIsShowPopover] = useState(false)
   const [isUploaded, setIsUploaded] = useState(false)
+  const [configSwitch, setConfigSwitch] = useState(false)
   const { UrlStore, ConfigStore } = useContext(context)
   const {
     textInfo,
@@ -82,7 +84,7 @@ const Component = observer(() => {
     checkEnterId,
     uploadUrl,
   } = UrlStore
-  const { cascaderData, appletPresets, applets } = ConfigStore
+  const { cascaderData, appletPresets, appletId } = ConfigStore
   const deferredEncodedUrl = useDeferredValue(getEncodedUrl())
   const redirectUrl = `https://gkzx.jujienet.com/broadband-web/redirect/${encodeURIComponent(
     deferredEncodedUrl
@@ -93,7 +95,7 @@ const Component = observer(() => {
         {value[0]} <DoubleRightOutlined /> {value[1]}
       </>
     )
-    const [id, path] = applets(value)
+    const [id, path] = appletId(value)
     setAppId(id)
     setPagePath(path)
     if (appletPresets(value)) {
@@ -166,8 +168,24 @@ const Component = observer(() => {
           style={{ backgroundColor: '#ffc9c9', color: 'black' }}>
           {textInfo}
         </Button>
+        {deferredEncodedUrl && (
+          <Switch
+            checkedChildren='配置开启'
+            unCheckedChildren='配置关闭'
+            defaultChecked={false}
+            onChange={(e) => setConfigSwitch(e)}
+          />
+        )}
       </WrapSpace>
-      {deferredEncodedUrl && (
+      {configSwitch ? (
+        <>
+          <ParamsWrapper>
+            <div>
+              <GroupOutlined /> <Text keyboard>页面路径</Text>
+            </div>
+          </ParamsWrapper>
+        </>
+      ) : deferredEncodedUrl ? (
         <>
           <ParamsWrapper>
             <div>
@@ -429,6 +447,8 @@ const Component = observer(() => {
           </WrapSpace>
           （点击以上按钮会自动上传链接）
         </>
+      ) : (
+        '请选择小程序和页面名称'
       )}
     </>
   )

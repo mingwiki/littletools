@@ -403,5 +403,23 @@ const Config = {
         })
     })
   },
+  queryConfig() {
+    return new Promise((resolve, reject) => {
+      fetch(`${API}/config/getConfig`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          resolve(data)
+        })
+        .catch((error) => {
+          console.log(error)
+          reject(error)
+        })
+    })
+  },
 }
 export { Auth, Url, Config }
