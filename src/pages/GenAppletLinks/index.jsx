@@ -27,10 +27,10 @@ const Component = observer(() => {
         value={radioValue}
         onChange={(e) => setRadioValue(e.target.value)}>
         <Radio.Button value={'alipay'}>
-          <AlipayCircleOutlined /> 支付宝小程序链接
+          <AlipayCircleOutlined /> 支付宝小程序
         </Radio.Button>
         <Radio.Button value={'redirect'}>
-          <CodepenCircleOutlined /> 存量H5重定向链接
+          <CodepenCircleOutlined /> 存量H5重定向
         </Radio.Button>
       </Radio.Group>
       <UI />

@@ -14,7 +14,10 @@ const Component = observer(
 
     const lr = currentUser
       ? [
-          <Button key={99} onClick={() => navigate('/changePassword')}>
+          <Button
+            key={99}
+            type={location.pathname === '/changePassword' && 'primary'}
+            onClick={() => navigate('/changePassword')}>
             修改密码
           </Button>,
           <Button key={100} type='primary' danger onClick={() => logout()}>
@@ -22,12 +25,15 @@ const Component = observer(
           </Button>,
         ]
       : [
-          <Button key={99} type='primary' onClick={() => navigate('/login')}>
+          <Button
+            key={99}
+            type={location.pathname === '/login' && 'primary'}
+            onClick={() => navigate('/login')}>
             登录
           </Button>,
           <Button
             key={100}
-            type='primary'
+            type={location.pathname === '/register' && 'primary'}
             onClick={() => navigate('/register')}>
             注册
           </Button>,
@@ -64,7 +70,7 @@ const Component = observer(
                 onClick={() => {
                   navigate('02')
                 }}>
-                管理链接
+                查询链接
               </Button>,
               ...lr,
             ],
