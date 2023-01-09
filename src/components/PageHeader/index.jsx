@@ -1,6 +1,6 @@
 import React, { forwardRef, useContext } from 'react'
 import { Button, PageHeader } from 'antd'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { observer } from 'mobx-react'
 import context from '../../stores'
 const Component = observer(
@@ -10,6 +10,8 @@ const Component = observer(
     const { logout } = AuthStore
     const { currentUser } = UserStore
     const navigate = useNavigate()
+    const location = useLocation()
+
     const lr = currentUser
       ? [
           <Button key={99} onClick={() => navigate('/changePassword')}>
@@ -42,6 +44,7 @@ const Component = observer(
             extra: [
               <Button
                 key={1}
+                type={location.pathname === '/' && 'primary'}
                 onClick={() => {
                   navigate('/')
                 }}>
@@ -49,6 +52,7 @@ const Component = observer(
               </Button>,
               <Button
                 key={2}
+                type={location.pathname === '/01' && 'primary'}
                 onClick={() => {
                   navigate('01')
                 }}>
@@ -56,6 +60,7 @@ const Component = observer(
               </Button>,
               <Button
                 key={3}
+                type={location.pathname === '/02' && 'primary'}
                 onClick={() => {
                   navigate('02')
                 }}>
@@ -67,7 +72,7 @@ const Component = observer(
         />
       </div>
     )
-  }),
+  })
 )
 
 export default Component
