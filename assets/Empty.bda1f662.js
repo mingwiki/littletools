@@ -1,1 +1,0 @@
-import{k as F,F as n,j as u,ah as r}from"./index.efb9cc89.js";const a=()=>F(n,{children:[u("h1",{children:"404\uFF0C\u6B64\u9875\u9762\u4E0D\u5B58\u5728\uFF0C\u8BF7\u68C0\u67E5\u7F51\u5740\u662F\u5426\u6B63\u786E\u3002"}),u(r,{to:"/",children:"\u70B9\u51FB\u8FD4\u56DE\u9996\u9875"})]});export{a as default};
