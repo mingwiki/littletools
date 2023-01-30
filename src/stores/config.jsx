@@ -3,14 +3,15 @@ import { Config } from '../models/index'
 
 class ConfigStore {
   linkConfig = []
-  applets = []
-  config = []
   constructor() {
     makeAutoObservable(this)
   }
   getLinkConfig = () => {
-    Config.queryAll().then((res) => {
-      this.linkConfig = res
+    return new Promise((resolve) => {
+      Config.queryAll().then((res) => {
+        this.linkConfig = res
+        resolve(true)
+      })
     })
   }
   getConfigGroupBy = (arg) => {
@@ -50,16 +51,6 @@ class ConfigStore {
       return app
     })
   }
-  getApplets = () => {
-    Config.queryApplets().then((res) => {
-      this.appletsDB = res
-    })
-  }
-  getConfig = () => {
-    Config.queryConfig().then((res) => {
-      this.config = res
-    })
-  }
   appletId = ([appName, pageName]) => {
     const temp = Object.fromEntries(
       Object.entries(this.getConfigGroupBy('appName')).map((i) => {
@@ -97,6 +88,20 @@ class ConfigStore {
           key: i[0],
           val: i[1],
         }))
+  }
+  updatePreset = (appId, pagePath, presets) => {
+    return new Promise((resolve, reject) => {
+      Config.updatePreset(appId, pagePath, presets).then((res) => {
+        if (res.warningCount === 0) {
+          this.getLinkConfig().then(() => {
+            resolve({ status: true })
+          })
+        } else {
+          console.error('updatePreset', res)
+          reject({ status: false, res })
+        }
+      })
+    })
   }
 }
 

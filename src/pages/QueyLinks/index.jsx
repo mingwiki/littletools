@@ -51,7 +51,7 @@ const WrapSpace = styled(Space)`
 `
 const { Text } = Typography
 const Component = () => {
-  const { AuthStore, UserStore, UrlStore, QueyLinksStore, ConfigStore } =
+  const { UserStore, UrlStore, QueyLinksStore, ConfigStore } =
     useContext(context)
   const { currentUser } = UserStore
   const { isSyncing, localUrls, setIsSyncing, setLocalUrls } = QueyLinksStore

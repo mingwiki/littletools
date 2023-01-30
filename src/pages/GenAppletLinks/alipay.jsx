@@ -9,6 +9,7 @@ import {
   Checkbox,
   Typography,
   Switch,
+  Input,
 } from 'antd'
 import {
   DoubleRightOutlined,
@@ -22,7 +23,7 @@ import { QRCodeCanvas } from 'qrcode.react'
 import { copyToClipboard } from '../../utils'
 
 const { Text } = Typography
-
+const { TextArea } = Input
 const StyledInputWrapper = styled.div`
   display: flex;
   gap: 10px;
@@ -63,8 +64,12 @@ const Component = observer(() => {
   const [isUploaded, setIsUploaded] = useState(false)
   const [configSwitch, setConfigSwitch] = useState(false)
   const [sameWithPageQuery, setSameWithPageQuery] = useState(false)
+  const [configTextArea, setConfigTextArea] = useState('')
+  const [appPageName, setAppPageName] = useState([])
   const { UrlStore, ConfigStore } = useContext(context)
   const {
+    appId,
+    pagePath,
     textInfo,
     pageCheckQueries,
     pageInputQueries,
@@ -85,20 +90,22 @@ const Component = observer(() => {
     checkEnterId,
     uploadUrl,
   } = UrlStore
-  const { cascaderData, appletPresets, appletId } = ConfigStore
+  const {
+    cascaderData,
+    appletPresets,
+    appletId,
+    getLinkConfig,
+    linkConfig,
+    updatePreset,
+  } = ConfigStore
   const deferredEncodedUrl = useDeferredValue(getEncodedUrl(sameWithPageQuery))
   const redirectUrl = `https://gkzx.jujienet.com/broadband-web/redirect/${encodeURIComponent(
     deferredEncodedUrl
   )}`
-  const onChangeAppPage = (value) => {
-    setTextInfo(
-      <>
-        {value[0]} <DoubleRightOutlined /> {value[1]}
-      </>
-    )
-    const [id, path] = appletId(value)
-    setAppId(id)
-    setPagePath(path)
+  const currentPageConfig = linkConfig?.find(
+    (i) => i.pagePath === pagePath && i.appId === appId
+  )
+  const setPageCheckDataFunc = (value) => {
     if (appletPresets(value)) {
       setPageCheckData(
         Object.entries(appletPresets(value)).map((e) => {
@@ -115,6 +122,19 @@ const Component = observer(() => {
     } else {
       setPageCheckData([])
     }
+  }
+  const onChangeAppPage = (value) => {
+    setTextInfo(
+      <>
+        {value[0]} <DoubleRightOutlined /> {value[1]}
+      </>
+    )
+    setAppPageName(value)
+    const [id, path] = appletId(value)
+    setAppId(id)
+    setPagePath(path)
+    setConfigSwitch(false)
+    setPageCheckDataFunc(value)
   }
   notification.config({
     placement: 'bottomRight',
@@ -151,6 +171,12 @@ const Component = observer(() => {
   useEffect(() => {
     setIsUploaded(false)
   }, [deferredEncodedUrl])
+
+  useEffect(() => {
+    getLinkConfig()
+  }, [])
+
+  console.log('currentPageConfig', currentPageConfig)
   return (
     <>
       <WrapSpace>
@@ -165,11 +191,11 @@ const Component = observer(() => {
         </Cascader>
         <Button type='dashed'>配置页面路径</Button>
         <Text>{textInfo}</Text>
-        {deferredEncodedUrl && (
+        {deferredEncodedUrl && currentPageConfig?.presets && (
           <Switch
             checkedChildren='配置开启'
             unCheckedChildren='配置关闭'
-            defaultChecked={false}
+            checked={configSwitch}
             onChange={(e) => setConfigSwitch(e)}
           />
         )}
@@ -177,9 +203,55 @@ const Component = observer(() => {
       {configSwitch ? (
         <>
           <ParamsWrapper>
-            <div>
-              <GroupOutlined /> <Text keyboard>页面路径</Text>
-            </div>
+            <TextArea
+              autoSize
+              bordered
+              defaultValue={JSON.stringify(
+                JSON.parse(currentPageConfig?.presets || '{}'),
+                null,
+                4
+              )}
+              onChange={(e) => setConfigTextArea(e.target.value)}
+              onPressEnter={() => {
+                try {
+                  setConfigTextArea(
+                    JSON.stringify(JSON.parse(configTextArea || '{}'), null, 4)
+                  )
+                } catch (error) {
+                  notification.error({ description: error.toString() })
+                }
+              }}
+            />
+            <Button
+              type='primary'
+              onClick={() => {
+                try {
+                  console.log(
+                    'configTextArea',
+                    configTextArea || currentPageConfig?.presets
+                  )
+                  if (
+                    JSON.parse(configTextArea || currentPageConfig?.presets)
+                  ) {
+                    updatePreset(
+                      appId,
+                      pagePath,
+                      configTextArea || currentPageConfig?.presets
+                    ).then((x) => {
+                      if (x.status) {
+                        setConfigSwitch(false)
+                        setPageCheckDataFunc(appPageName)
+                      } else {
+                        notification.error({ description: x.res })
+                      }
+                    })
+                  }
+                } catch (error) {
+                  notification.error({ description: error.toString() })
+                }
+              }}>
+              保存页面配置
+            </Button>
           </ParamsWrapper>
         </>
       ) : deferredEncodedUrl ? (

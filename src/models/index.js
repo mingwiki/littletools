@@ -385,9 +385,9 @@ const Config = {
         })
     })
   },
-  queryApplets() {
+  queryConfig() {
     return new Promise((resolve, reject) => {
-      fetch(`${API}/config/getApplets`, {
+      fetch(`${API}/config/getConfig`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -403,13 +403,14 @@ const Config = {
         })
     })
   },
-  queryConfig() {
+  updatePreset(appId, pagePath, presets) {
     return new Promise((resolve, reject) => {
-      fetch(`${API}/config/getConfig`, {
+      fetch(`${API}/config/updatePreset`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
+        body: JSON.stringify({ appId, pagePath, presets }),
       })
         .then((res) => res.json())
         .then((data) => {

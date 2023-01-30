@@ -16,14 +16,12 @@ const Wrapper = lazy(() => import('./components/Wrapper'))
 const App = () => {
   const { UserStore, ConfigStore } = useContext(context)
   const { getCurrentUser } = UserStore
-  const { getLinkConfig } = ConfigStore
   const ref = {
     headerRef: createRef(null),
     contentRef: createRef(null),
   }
   useEffect(() => {
     getCurrentUser()
-    getLinkConfig()
     const t = gsap.timeline()
     t.to('#root', { maxWidth: '1800px', duration: 0.5 }).to('#root', {
       backgroundColor: 'black',
