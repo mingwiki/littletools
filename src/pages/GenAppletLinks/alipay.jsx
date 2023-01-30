@@ -62,6 +62,7 @@ const Component = observer(() => {
   const [isShowPopover, setIsShowPopover] = useState(false)
   const [isUploaded, setIsUploaded] = useState(false)
   const [configSwitch, setConfigSwitch] = useState(false)
+  const [sameWithPageQuery, setSameWithPageQuery] = useState(false)
   const { UrlStore, ConfigStore } = useContext(context)
   const {
     textInfo,
@@ -85,7 +86,7 @@ const Component = observer(() => {
     uploadUrl,
   } = UrlStore
   const { cascaderData, appletPresets, appletId } = ConfigStore
-  const deferredEncodedUrl = useDeferredValue(getEncodedUrl())
+  const deferredEncodedUrl = useDeferredValue(getEncodedUrl(sameWithPageQuery))
   const redirectUrl = `https://gkzx.jujienet.com/broadband-web/redirect/${encodeURIComponent(
     deferredEncodedUrl
   )}`
@@ -162,12 +163,8 @@ const Component = observer(() => {
             <Button type='primary'>点击选择或切换</Button>
           </a>
         </Cascader>
-        <Button
-          type='dashed'
-          disabled
-          style={{ backgroundColor: '#ffc9c9', color: 'black' }}>
-          {textInfo}
-        </Button>
+        <Button type='dashed'>配置页面路径</Button>
+        <Text>{textInfo}</Text>
         {deferredEncodedUrl && (
           <Switch
             checkedChildren='配置开启'
@@ -271,61 +268,68 @@ const Component = observer(() => {
           <ParamsWrapper>
             <div>
               <GlobalOutlined /> <Text keyboard>全局级参数</Text>
+              <Switch
+                checkedChildren='已应用'
+                unCheckedChildren='同页面级参数'
+                defaultChecked={false}
+                onChange={(e) => setSameWithPageQuery(e)}
+              />
             </div>
-            {globalInputQueries.map(({ key, val }, idx) => {
-              return (
-                <StyledInputWrapper key={idx}>
-                  <StyledInput
-                    placeholder='输入key，最长20位，以字母开头'
-                    value={key}
-                    maxLength='20'
-                    size='28'
-                    pattern='^[A-Za-z](\w)*'
-                    onChange={(e) => {
-                      const temp = [...globalInputQueries]
-                      temp[idx].key = e.target.value.trim()
-                      setGlobalInputQueries(temp)
-                    }}
-                  />
-                  <StyledInput
-                    placeholder='输入value，最大长度50位'
-                    value={val}
-                    maxLength='50'
-                    size='28'
-                    pattern='(\w|\/)*'
-                    onChange={(e) => {
-                      const temp = [...globalInputQueries]
-                      temp[idx].val = e.target.value.trim()
-                      setGlobalInputQueries(temp)
-                    }}
-                  />
-                  <Button
-                    type='primary'
-                    onClick={() => {
-                      let temp = [...globalInputQueries]
-                      if (globalInputQueries.length !== 1) {
-                        temp.splice(idx, 1)
-                      } else {
-                        temp = [{ key: '', val: '' }]
-                      }
-                      setGlobalInputQueries(temp)
-                    }}>
-                    -
-                  </Button>
-                  {idx === globalInputQueries.length - 1 ? (
+            {!sameWithPageQuery &&
+              globalInputQueries.map(({ key, val }, idx) => {
+                return (
+                  <StyledInputWrapper key={idx}>
+                    <StyledInput
+                      placeholder='输入key，最长20位，以字母开头'
+                      value={key}
+                      maxLength='20'
+                      size='28'
+                      pattern='^[A-Za-z](\w)*'
+                      onChange={(e) => {
+                        const temp = [...globalInputQueries]
+                        temp[idx].key = e.target.value.trim()
+                        setGlobalInputQueries(temp)
+                      }}
+                    />
+                    <StyledInput
+                      placeholder='输入value，最大长度50位'
+                      value={val}
+                      maxLength='50'
+                      size='28'
+                      pattern='(\w|\/)*'
+                      onChange={(e) => {
+                        const temp = [...globalInputQueries]
+                        temp[idx].val = e.target.value.trim()
+                        setGlobalInputQueries(temp)
+                      }}
+                    />
                     <Button
                       type='primary'
                       onClick={() => {
-                        const temp = [...globalInputQueries]
-                        temp.push({ key: '', val: '' })
+                        let temp = [...globalInputQueries]
+                        if (globalInputQueries.length !== 1) {
+                          temp.splice(idx, 1)
+                        } else {
+                          temp = [{ key: '', val: '' }]
+                        }
                         setGlobalInputQueries(temp)
                       }}>
-                      +
+                      -
                     </Button>
-                  ) : null}
-                </StyledInputWrapper>
-              )
-            })}
+                    {idx === globalInputQueries.length - 1 ? (
+                      <Button
+                        type='primary'
+                        onClick={() => {
+                          const temp = [...globalInputQueries]
+                          temp.push({ key: '', val: '' })
+                          setGlobalInputQueries(temp)
+                        }}>
+                        +
+                      </Button>
+                    ) : null}
+                  </StyledInputWrapper>
+                )
+              })}
           </ParamsWrapper>
           <StyledUrlWrapper>{deferredEncodedUrl}</StyledUrlWrapper>
           <StyledInputWrapper>
@@ -448,7 +452,7 @@ const Component = observer(() => {
           （点击以上按钮会自动上传链接）
         </>
       ) : (
-        '请选择小程序和页面名称'
+        <div>请选择小程序和页面名称</div>
       )}
     </>
   )

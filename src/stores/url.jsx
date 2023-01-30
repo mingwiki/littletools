@@ -1,5 +1,3 @@
-/** @format */
-
 import { makeAutoObservable } from 'mobx'
 import { Url } from '../models/index'
 class UrlStore {
@@ -57,18 +55,22 @@ class UrlStore {
         this.getPageInputUrl()
     )
   }
-  getEncodeGlobal = () => {
+  getEncodeGlobal = (sameWithPageQuery) => {
     return (
-      (this.getGlobalInputUrl() !== '' ? '&query=' : '') +
-      encodeURIComponent(this.getGlobalInputUrl())
+      (this.getGlobalInputUrl() !== '' || sameWithPageQuery ? '&query=' : '') +
+      encodeURIComponent(
+        sameWithPageQuery ? this.getPageInputUrl() : this.getGlobalInputUrl()
+      )
     )
   }
-  getEncodedUrl = () => {
+  getEncodedUrl = (sameWithPageQuery) => {
     return this.pagePath === ''
       ? ''
       : `alipays://platformapi/startapp?appId=${
           this.appId
-        }&page=${this.getEncodePage()}${this.getEncodeGlobal()}`
+        }&page=${this.getEncodePage()}${this.getEncodeGlobal(
+          sameWithPageQuery
+        )}`
   }
   setTextInfo = (textInfo) => {
     this.textInfo = textInfo

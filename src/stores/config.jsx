@@ -1,5 +1,3 @@
-/** @format */
-
 import { makeAutoObservable } from 'mobx'
 import { Config } from '../models/index'
 
