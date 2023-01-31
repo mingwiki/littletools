@@ -23,9 +23,12 @@ const App = () => {
   useEffect(() => {
     getCurrentUser()
     const t = gsap.timeline()
-    t.to('#root', { maxWidth: '1800px', duration: 0.5 }).to('#root', {
-      backgroundColor: 'black',
-    })
+    t.to('#root', { maxWidth: '1800px', width: '80vw', duration: 0.8 }).to(
+      '#root',
+      {
+        backgroundColor: 'black',
+      }
+    )
   }, [])
   return (
     <HashRouter>

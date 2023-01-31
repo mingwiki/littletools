@@ -38,6 +38,12 @@ const Component = observer(
             注册
           </Button>,
         ]
+    const tabs = [
+      { name: '首页', path: '/' },
+      { name: '生成链接', path: '/01' },
+      { name: '配置', path: '/02' },
+      { name: '历史', path: '/03' },
+    ]
     return (
       <div ref={headerRef}>
         <PageHeader
@@ -48,38 +54,16 @@ const Component = observer(
             title: '',
             subTitle: '',
             extra: [
-              <Button
-                key={1}
-                type={location.pathname === '/' && 'primary'}
-                onClick={() => {
-                  navigate('/')
-                }}>
-                首页
-              </Button>,
-              <Button
-                key={2}
-                type={location.pathname === '/01' && 'primary'}
-                onClick={() => {
-                  navigate('01')
-                }}>
-                生成链接
-              </Button>,
-              <Button
-                key={3}
-                type={location.pathname === '/02' && 'primary'}
-                onClick={() => {
-                  navigate('02')
-                }}>
-                配置
-              </Button>,
-              <Button
-                key={4}
-                type={location.pathname === '/03' && 'primary'}
-                onClick={() => {
-                  navigate('03')
-                }}>
-                历史
-              </Button>,
+              ...tabs.map((tab, idx) => (
+                <Button
+                  key={idx}
+                  type={location.pathname === tab.path && 'primary'}
+                  onClick={() => {
+                    navigate(tab.path)
+                  }}>
+                  {tab.name}
+                </Button>
+              )),
               ...lr,
             ],
           }}
