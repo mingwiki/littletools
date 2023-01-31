@@ -1,4 +1,4 @@
-import React, { useEffect, lazy, useContext, createRef, useMemo } from 'react'
+import React, { useEffect, lazy, useContext, createRef } from 'react'
 import { HashRouter } from 'react-router-dom'
 import { observer } from 'mobx-react'
 import 'antd/dist/antd.min.css'
@@ -14,7 +14,7 @@ const MainLayout = styled(Layout)`
 const PageHeader = lazy(() => import('./components/PageHeader'))
 const Wrapper = lazy(() => import('./components/Wrapper'))
 const App = () => {
-  const { UserStore, ConfigStore } = useContext(context)
+  const { UserStore } = useContext(context)
   const { getCurrentUser } = UserStore
   const ref = {
     headerRef: createRef(null),

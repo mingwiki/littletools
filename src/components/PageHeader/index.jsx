@@ -70,7 +70,15 @@ const Component = observer(
                 onClick={() => {
                   navigate('02')
                 }}>
-                查询链接
+                配置
+              </Button>,
+              <Button
+                key={4}
+                type={location.pathname === '/03' && 'primary'}
+                onClick={() => {
+                  navigate('03')
+                }}>
+                历史
               </Button>,
               ...lr,
             ],

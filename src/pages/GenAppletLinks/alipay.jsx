@@ -189,7 +189,6 @@ const Component = observer(() => {
             <Button type='primary'>点击选择或切换</Button>
           </a>
         </Cascader>
-        <Button type='dashed'>配置页面路径</Button>
         <Text>{textInfo}</Text>
         {deferredEncodedUrl && currentPageConfig?.presets && (
           <Switch

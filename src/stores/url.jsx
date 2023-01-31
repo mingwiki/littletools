@@ -59,7 +59,13 @@ class UrlStore {
     return (
       (this.getGlobalInputUrl() !== '' || sameWithPageQuery ? '&query=' : '') +
       encodeURIComponent(
-        sameWithPageQuery ? this.getPageInputUrl() : this.getGlobalInputUrl()
+        sameWithPageQuery
+          ? this.getPageCheckUrl() +
+              (this.getPageCheckUrl() !== '' && this.getPageInputUrl() !== ''
+                ? '&'
+                : '') +
+              this.getPageInputUrl()
+          : this.getGlobalInputUrl()
       )
     )
   }

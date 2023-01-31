@@ -11,7 +11,7 @@ const ChangePassword = lazy(() => import('./pages/ChangePassword'))
 const Empty = lazy(() => import('./pages/Empty'))
 const LoginRequired = lazy(() => import('./pages/LoginRequired'))
 const No1 = lazy(() => import('./pages/GenAppletLinks'))
-const No2 = lazy(() => import('./pages/QueyLinks'))
+const No3 = lazy(() => import('./pages/QueyLinks'))
 
 const StyledSpin = styled(Spin)`
   position: fixed;
@@ -32,7 +32,7 @@ const Component = () => {
         {currentUser ? (
           [
             { path: '01', element: <No1 /> },
-            { path: '02', element: <No2 /> },
+            { path: '03', element: <No3 /> },
             { path: '*', element: <Empty /> },
           ].map((item) => (
             <Route key={item.path} path={item.path} element={item.element} />
