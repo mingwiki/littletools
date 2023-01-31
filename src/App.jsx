@@ -23,7 +23,7 @@ const App = () => {
   useEffect(() => {
     getCurrentUser()
     const t = gsap.timeline()
-    t.to('#root', { maxWidth: '1800px', width: '80vw', duration: 0.8 }).to(
+    t.to('#root', { maxWidth: '1800px', width: '80vw', duration: 0.6 }).to(
       '#root',
       {
         backgroundColor: 'black',

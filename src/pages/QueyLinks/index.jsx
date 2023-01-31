@@ -163,9 +163,6 @@ const Component = () => {
             <Radio value={false}>我</Radio>
           </Radio.Group>
         </WrapSpace>
-        <Button type='primary' danger onClick={() => syncPull()}>
-          查询所有页面数据
-        </Button>
       </StyledSpace>
       <StyledSpace>
         <WrapSpace>
@@ -188,6 +185,9 @@ const Component = () => {
           </Text>
         </WrapSpace>
         <WrapSpace>
+          <Button type='primary' danger onClick={() => syncPull()}>
+            查询所有页面数据
+          </Button>
           <Button
             type='primary'
             onClick={() => {

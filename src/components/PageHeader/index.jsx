@@ -11,7 +11,6 @@ const Component = observer(
     const { currentUser } = UserStore
     const navigate = useNavigate()
     const location = useLocation()
-
     const lr = currentUser
       ? [
           <Button
@@ -44,6 +43,7 @@ const Component = observer(
       { name: '配置', path: '/02' },
       { name: '历史', path: '/03' },
     ]
+    
     return (
       <div ref={headerRef}>
         <PageHeader

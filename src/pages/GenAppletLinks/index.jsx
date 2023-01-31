@@ -22,17 +22,18 @@ const Component = observer(() => {
   }, [])
   return (
     <>
-      <Radio.Group
-        buttonStyle='solid'
-        value={radioValue}
-        onChange={(e) => setRadioValue(e.target.value)}>
-        <Radio.Button value={'alipay'}>
-          <AlipayCircleOutlined /> 支付宝小程序
-        </Radio.Button>
-        <Radio.Button value={'redirect'}>
-          <CodepenCircleOutlined /> 存量H5重定向
-        </Radio.Button>
-      </Radio.Group>
+      <div style={{ border: '1px dashed gray', padding: '5px 10px' }}>
+        <Radio.Group
+          value={radioValue}
+          onChange={(e) => setRadioValue(e.target.value)}>
+          <Radio value={'alipay'}>
+            <AlipayCircleOutlined /> 支付宝小程序
+          </Radio>
+          <Radio value={'redirect'}>
+            <CodepenCircleOutlined /> 存量H5重定向
+          </Radio>
+        </Radio.Group>
+      </div>
       <UI />
     </>
   )
