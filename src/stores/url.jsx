@@ -5,7 +5,7 @@ class UrlStore {
   appId = null
   pagePath = ''
   pageCheckQueries = {}
-  pageInputQueries = []
+  pageInputQueries = [{ key: '', val: '' }]
   globalInputQueries = [{ key: '', val: '' }]
   linkName = ''
   pageCheckData = []

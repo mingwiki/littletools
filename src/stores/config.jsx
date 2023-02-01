@@ -12,7 +12,6 @@ class ConfigStore {
     if (idx !== -1) {
       temp.splice(idx, 1, item)
     } else {
-      item.id = -1
       temp.push(item)
     }
     this.linkConfig = [...temp]
@@ -93,12 +92,15 @@ class ConfigStore {
         return i
       })
     )
+    const t = Object.entries(temp[appName][pageName]).map((i) => ({
+      key: i[0],
+      val: i[1],
+    }))
     return check
       ? temp[appName][pageName]
-      : Object.entries(temp[appName][pageName]).map((i) => ({
-          key: i[0],
-          val: i[1],
-        }))
+      : t.length === 0
+      ? [{ key: '', val: '' }]
+      : t
   }
   updatePreset = (appId, pageName, pagePath, presets) => {
     return new Promise((resolve, reject) => {
