@@ -403,14 +403,33 @@ const Config = {
         })
     })
   },
-  updatePreset(appId, pagePath, presets) {
+  updatePreset(appId, pageName, pagePath, presets) {
     return new Promise((resolve, reject) => {
       fetch(`${API}/config/updatePreset`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ appId, pagePath, presets }),
+        body: JSON.stringify({ appId, pageName, pagePath, presets }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          resolve(data)
+        })
+        .catch((error) => {
+          console.log(error)
+          reject(error)
+        })
+    })
+  },
+  updateConfig(data) {
+    return new Promise((resolve, reject) => {
+      fetch(`${API}/config/updateConfig`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ filter: data }),
       })
         .then((res) => res.json())
         .then((data) => {

@@ -21,7 +21,6 @@ import styled from 'styled-components'
 import context from '../../stores'
 import { QRCodeCanvas } from 'qrcode.react'
 import { copyToClipboard } from '../../utils'
-import { toJS } from 'mobx'
 
 const { Text } = Typography
 const { TextArea } = Input
@@ -177,7 +176,6 @@ const Component = observer(() => {
     getLinkConfig()
   }, [])
 
-  console.log('currentPageConfig', toJS(currentPageConfig))
   return (
     <>
       <WrapSpace>
@@ -235,6 +233,7 @@ const Component = observer(() => {
                   ) {
                     updatePreset(
                       appId,
+                      appPageName[1],
                       pagePath,
                       configTextArea || currentPageConfig?.presets
                     ).then((x) => {

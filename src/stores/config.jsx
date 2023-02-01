@@ -6,6 +6,17 @@ class ConfigStore {
   constructor() {
     makeAutoObservable(this)
   }
+  updateLinkConfig = (id, item) => {
+    const idx = this.linkConfig.findIndex((i) => i.id === id)
+    const temp = [...this.linkConfig]
+    if (idx !== -1) {
+      temp.splice(idx, 1, item)
+    } else {
+      item.id = -1
+      temp.push(item)
+    }
+    this.linkConfig = [...temp]
+  }
   getLinkConfig = () => {
     return new Promise((resolve) => {
       Config.queryAll().then((res) => {
@@ -89,9 +100,9 @@ class ConfigStore {
           val: i[1],
         }))
   }
-  updatePreset = (appId, pagePath, presets) => {
+  updatePreset = (appId, pageName, pagePath, presets) => {
     return new Promise((resolve, reject) => {
-      Config.updatePreset(appId, pagePath, presets).then((res) => {
+      Config.updatePreset(appId, pageName, pagePath, presets).then((res) => {
         if (res.warningCount === 0) {
           this.getLinkConfig().then(() => {
             resolve({ status: true })
@@ -101,6 +112,17 @@ class ConfigStore {
           reject({ status: false, res })
         }
       })
+    })
+  }
+  updateConfig = (data) => {
+    return new Promise((resolve, reject) => {
+      Config.updateConfig(data)
+        .then((res) => {
+          resolve(res)
+        })
+        .catch((err) => {
+          reject(err)
+        })
     })
   }
 }
