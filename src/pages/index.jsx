@@ -17,12 +17,23 @@ const Component = observer(() => {
   const handleGetAllUsers = () => {
     getAllUsers().then((res) => setUsers(res))
   }
+  const pad = (v) => {
+    return v < 10 ? '0' + v : v
+  }
+  const getDateString = (date) => {
+    const d = new Date(date)
+    const year = d.getFullYear()
+    const month = pad(d.getMonth() + 1)
+    const day = pad(d.getDate())
+    const hour = pad(d.getHours())
+    const min = pad(d.getMinutes())
+    const sec = pad(d.getSeconds())
+    return `${year.toString().slice(-2)}/${month}/${day} ${hour}:${min}:${sec}`
+  }
   useEffect(() => {
     document.title = appTitle
   }, [currentUser])
   useEffect(() => {
-    // if (window.location.hostname !== '172.16.57.114')
-    //   window.location.href = 'http://172.16.57.114:3001/'
     handleGetAllUsers()
   }, [])
   return (
@@ -52,14 +63,10 @@ const Component = observer(() => {
                   <td>{user.username}</td>
                   <td>{user.nickname}</td>
                   <td>
-                    {user.create_time
-                      ? new Date(user.create_time).toLocaleString()
-                      : null}
+                    {user.create_time ? getDateString(user.create_time) : null}
                   </td>
                   <td>
-                    {user.update_time
-                      ? new Date(user.update_time).toLocaleString()
-                      : null}
+                    {user.update_time ? getDateString(user.update_time) : null}
                   </td>
                   <td>{user.disabled === 1 ? '已禁用' : '正常'}</td>
                 </tr>
