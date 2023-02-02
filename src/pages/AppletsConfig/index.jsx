@@ -6,6 +6,7 @@ import { toJS } from 'mobx'
 const Component = observer(() => {
   const [radioValue, setRadioValue] = useState('')
   const [currentInputs, setCurrentInputs] = useState([])
+  const [isInit, setIsInit] = useState(false)
   const { UrlStore, ConfigStore } = useContext(context)
   const {
     linkConfig,
@@ -18,11 +19,11 @@ const Component = observer(() => {
     getConfigGroupBy('appName')[radioValue] ||
     getConfigGroupBy('appName')[Object.keys(getConfigGroupBy('appName'))[0]]
   useEffect(() => {
-    getLinkConfig()
+    getLinkConfig().then(() => setIsInit((pre) => !pre))
   }, [])
   useEffect(() => {
-    setCurrentInputs(currentPageConfig)
-  }, [radioValue])
+    if (currentPageConfig?.length > 0) setCurrentInputs(currentPageConfig)
+  }, [radioValue, isInit])
   return (
     <>
       <div style={{ border: '1px dashed gray', padding: '5px 10px' }}>
