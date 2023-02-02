@@ -19,7 +19,6 @@ const Component = observer(() => {
     getConfigGroupBy('appName')[Object.keys(getConfigGroupBy('appName'))[0]]
   useEffect(() => {
     getLinkConfig()
-    setRadioValue(Object.keys(getConfigGroupBy('appName'))[0])
   }, [])
   useEffect(() => {
     setCurrentInputs(currentPageConfig)
@@ -28,7 +27,7 @@ const Component = observer(() => {
     <>
       <div style={{ border: '1px dashed gray', padding: '5px 10px' }}>
         <Radio.Group
-          value={radioValue}
+          value={radioValue || Object.keys(getConfigGroupBy('appName'))[0]}
           onChange={(e) => setRadioValue(e.target.value)}>
           {Object.keys(getConfigGroupBy('appName')).map((item, idx) => (
             <Radio key={idx} value={item}>
