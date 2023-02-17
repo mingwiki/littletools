@@ -1,0 +1,11 @@
+{
+  "apps": [
+    {
+      "name": "toolkits",
+      "script": "npm",
+      "args": "run preview",
+      "instances": "max",
+      "exec_mode": "cluster"
+    }
+  ]
+}
