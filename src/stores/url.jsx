@@ -70,13 +70,23 @@ class UrlStore {
     )
   }
   getEncodedUrl = (sameWithPageQuery) => {
-    return this.pagePath === ''
-      ? ''
-      : `alipays://platformapi/startapp?appId=${
+    if (this.pagePath) {
+      if (this.appId === '2021002181632074') {
+        return `alipays://platformapi/startapp?appId=${
+          this.appId
+        }${this.getEncodeGlobal(
+          sameWithPageQuery
+        )}&page=${this.getEncodePage()}`
+      } else {
+        return `alipays://platformapi/startapp?appId=${
           this.appId
         }&page=${this.getEncodePage()}${this.getEncodeGlobal(
           sameWithPageQuery
         )}`
+      }
+    } else {
+      return ''
+    }
   }
   setTextInfo = (textInfo) => {
     this.textInfo = textInfo
