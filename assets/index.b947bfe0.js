@@ -1,4 +1,4 @@
-import{$ as r,r as a,j as s,a0 as d}from"./index.5f352b20.js";const{Content:p}=d,c=r(p)`
+import{$ as r,r as a,j as s,a0 as d}from"./index.a6ca1a83.js";const{Content:p}=d,c=r(p)`
   margin: 16px;
   padding: 24px;
   border: 2px dashed;
