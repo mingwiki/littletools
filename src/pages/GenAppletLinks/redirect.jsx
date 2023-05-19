@@ -28,7 +28,7 @@ const Component = observer(() => {
           onClick={async () => {
             if (redirectValue) {
               const res = await fetch(
-                `api/redirect/${encodeURIComponent(redirectValue)}`
+                `api/redirect/${encodeURIComponent(encodeURIComponent(redirectValue))}`
               ).then((res) => res.text())
               if (res) {
                 setReturnLinks((pre) => [
