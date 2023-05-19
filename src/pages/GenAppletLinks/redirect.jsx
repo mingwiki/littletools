@@ -8,53 +8,12 @@ const Component = observer(() => {
   const [returnLinks, setReturnLinks] = useState([])
   return (
     <>
-      <Space>
-        <Input
-          style={{ minWidth: '600px' }}
-          placeholder='请输入渠道入口id或者完整存量h5链接'
-          value={redirectValue}
-          size='36'
-          onChange={(e) => {
-            setRediectValue(e.target.value.trim())
-          }}
-        />
-        <Button
-          type='primary'
-          style={{
-            color: 'white',
-            backgroundColor: '#74b816',
-            border: 'none',
-          }}
-          onClick={async () => {
-            if (redirectValue) {
-              const res = await fetch(
-                `api/redirect/${encodeURIComponent(encodeURIComponent(redirectValue))}`
-              ).then((res) => res.text())
-              if (res) {
-                setReturnLinks((pre) => [
-                  ...pre,
-                  { link: res, name: redirectValue },
-                ])
-                setRediectValue('')
-              } else {
-                setReturnLinks((pre) => [
-                  ...pre,
-                  { link: '查询失败', name: redirectValue },
-                ])
-              }
-            } else {
-              notification.error({ description: '查询内容不得为空' })
-            }
-          }}>
-          查询
-        </Button>
-      </Space>
       {returnLinks?.map((i, idx) => (
         <div
           style={{
             borderLeft: '6px solid lightblue',
             paddingLeft: '20px',
-            marginTop: '26px',
+            marginBottom: '26px',
           }}
           key={idx}>
           <Text>{i.name}</Text>
@@ -183,6 +142,49 @@ const Component = observer(() => {
           </Space>
         </div>
       ))}
+      <Space>
+        <Input
+          style={{ minWidth: '600px' }}
+          placeholder='请输入渠道入口id或者完整存量h5链接'
+          value={redirectValue}
+          size='36'
+          onChange={(e) => {
+            setRediectValue(e.target.value.trim())
+          }}
+        />
+        <Button
+          type='primary'
+          style={{
+            color: 'white',
+            backgroundColor: '#74b816',
+            border: 'none',
+          }}
+          onClick={async () => {
+            if (redirectValue) {
+              const res = await fetch(
+                `api/redirect/${encodeURIComponent(
+                  encodeURIComponent(redirectValue)
+                )}`
+              ).then((res) => res.text())
+              if (res) {
+                setReturnLinks((pre) => [
+                  ...pre,
+                  { link: res, name: redirectValue },
+                ])
+                setRediectValue('')
+              } else {
+                setReturnLinks((pre) => [
+                  ...pre,
+                  { link: '查询失败', name: redirectValue },
+                ])
+              }
+            } else {
+              notification.error({ description: '查询内容不得为空' })
+            }
+          }}>
+          查询
+        </Button>
+      </Space>
     </>
   )
 })
