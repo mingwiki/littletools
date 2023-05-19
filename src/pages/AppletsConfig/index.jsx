@@ -19,6 +19,7 @@ const Component = observer(() => {
     getConfigGroupBy('appName')[radioValue] ||
     getConfigGroupBy('appName')[Object.keys(getConfigGroupBy('appName'))[0]]
   useEffect(() => {
+    document.title = '配置小程序链接'
     getLinkConfig().then(() => setIsInit((pre) => !pre))
   }, [])
   useEffect(() => {
