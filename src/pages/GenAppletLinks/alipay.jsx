@@ -1,5 +1,10 @@
-import React, { useState, useEffect, useDeferredValue, useContext } from 'react'
-import { observer } from 'mobx-react'
+import React, {
+  useState,
+  useEffect,
+  useDeferredValue,
+  useContext,
+} from "react";
+import { observer } from "mobx-react";
 import {
   Cascader,
   notification,
@@ -10,63 +15,63 @@ import {
   Typography,
   Switch,
   Input,
-} from 'antd'
+} from "antd";
 import {
   DoubleRightOutlined,
   GroupOutlined,
   GlobalOutlined,
   EditOutlined,
-} from '@ant-design/icons'
-import styled from 'styled-components'
-import context from '../../stores'
-import { QRCodeCanvas } from 'qrcode.react'
-import { copyToClipboard } from '../../utils'
+} from "@ant-design/icons";
+import styled from "styled-components";
+import context from "../../stores";
+import { QRCodeCanvas } from "qrcode.react";
+import { copyToClipboard } from "../../utils";
 
-const { Text } = Typography
-const { TextArea } = Input
+const { Text } = Typography;
+const { TextArea } = Input;
 const StyledInputWrapper = styled.div`
   display: flex;
   gap: 10px;
   align-items: center;
-`
+`;
 const StyledUrlWrapper = styled.p`
   word-wrap: break-word;
   word-break: break-all;
   white-space: pre-wrap;
   padding: 10px;
   box-shadow: 0px 0px 5px 2px #5d7ea3;
-`
+`;
 const ParamsWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
   padding: 10px;
   border: 1px solid;
-`
+`;
 const StyledInput = styled.input`
   min-width: 30%;
   max-width: 100%;
   &:invalid {
     background-color: red;
   }
-`
+`;
 const StyledMaxInput = styled.input`
   width: 100%;
   &:invalid {
     background-color: red;
   }
-`
+`;
 const WrapSpace = styled(Space)`
   flex-wrap: wrap;
-`
+`;
 const Component = observer(() => {
-  const [isShowPopover, setIsShowPopover] = useState(false)
-  const [isUploaded, setIsUploaded] = useState(false)
-  const [configSwitch, setConfigSwitch] = useState(false)
-  const [sameWithPageQuery, setSameWithPageQuery] = useState(false)
-  const [configTextArea, setConfigTextArea] = useState('')
-  const [appPageName, setAppPageName] = useState([])
-  const { UrlStore, ConfigStore } = useContext(context)
+  const [isShowPopover, setIsShowPopover] = useState(false);
+  const [isUploaded, setIsUploaded] = useState(false);
+  const [configSwitch, setConfigSwitch] = useState(false);
+  const [sameWithPageQuery, setSameWithPageQuery] = useState(false);
+  const [configTextArea, setConfigTextArea] = useState("");
+  const [appPageName, setAppPageName] = useState([]);
+  const { UrlStore, ConfigStore } = useContext(context);
   const {
     appId,
     pagePath,
@@ -89,7 +94,7 @@ const Component = observer(() => {
     splitSourceOrigin,
     checkEnterId,
     uploadUrl,
-  } = UrlStore
+  } = UrlStore;
   const {
     cascaderData,
     appletPresets,
@@ -97,84 +102,84 @@ const Component = observer(() => {
     getLinkConfig,
     linkConfig,
     updatePreset,
-  } = ConfigStore
-  const deferredEncodedUrl = useDeferredValue(getEncodedUrl(sameWithPageQuery))
+  } = ConfigStore;
+  const deferredEncodedUrl = useDeferredValue(getEncodedUrl(sameWithPageQuery));
   const redirectUrl = `https://gkzx.jujienet.com/broadband-web/redirect/${encodeURIComponent(
     deferredEncodedUrl
-  )}`
+  )}`;
   const currentPageConfig = linkConfig?.find(
     (i) => i.pagePath === pagePath && i.appId === appId
-  )
+  );
   const setPageCheckDataFunc = (value) => {
     if (appletPresets(value)) {
       setPageCheckData(
         Object.entries(appletPresets(value)).map((e) => {
-          if (typeof e[1] === 'boolean') {
-            e[1] = e[1].toString()
+          if (typeof e[1] === "boolean") {
+            e[1] = e[1].toString();
           }
           if (!Array.isArray(e[1])) {
-            e[1] = [e[1]]
+            e[1] = [e[1]];
           }
-          return e
+          return e;
         })
-      )
-      setPageInputQueries(appletPresets(value, false))
+      );
+      setPageInputQueries(appletPresets(value, false));
     } else {
-      setPageCheckData([])
+      setPageCheckData([]);
     }
-  }
+  };
   const onChangeAppPage = (value) => {
     setTextInfo(
       <>
         {value[0]} <DoubleRightOutlined /> {value[1]}
       </>
-    )
-    setAppPageName(value)
-    const [id, path] = appletId(value)
-    setAppId(id)
-    setPagePath(path)
-    setConfigSwitch(false)
-    setPageCheckDataFunc(value)
-  }
+    );
+    setAppPageName(value);
+    const [id, path] = appletId(value);
+    setAppId(id);
+    setPagePath(path);
+    setConfigSwitch(false);
+    setPageCheckDataFunc(value);
+  };
   notification.config({
-    placement: 'bottomRight',
+    placement: "bottomRight",
     duration: 3,
-  })
+  });
   const confirmAndUpload = () => {
-    if (deferredEncodedUrl === '') {
+    if (deferredEncodedUrl === "") {
       notification.error({
-        description: '当前链接地址为空，请检查。',
-      })
+        description: "当前链接地址为空，请检查。",
+      });
     } else {
       uploadUrl({
         name: linkName || deferredEncodedUrl,
         url: deferredEncodedUrl,
       }).then(
         (res) => {
-          console.log(res)
+          console.log(res);
           notification.success({
             description: `已上传${linkName}`,
-          })
-          setIsUploaded(true)
+          });
+          setIsUploaded(true);
         },
         (error) => {
           notification.error({
             description: `上传失败请联系开发人员`,
-          })
+          });
           notification.error({
             description: JSON.stringify(error),
-          })
+          });
         }
-      )
+      );
     }
-  }
+  };
   useEffect(() => {
-    setIsUploaded(false)
-  }, [deferredEncodedUrl])
+    setIsUploaded(false);
+  }, [deferredEncodedUrl]);
 
   useEffect(() => {
-    getLinkConfig()
-  }, [])
+    getLinkConfig();
+  }, []);
 
   return (
     <>
@@ -182,17 +187,18 @@ const Component = observer(() => {
         <Cascader
           options={cascaderData()}
           onChange={onChangeAppPage}
-          size='large'
-          notFoundContent='无数据'>
-          <a href='/#'>
-            <Button type='primary'>点击选择或切换</Button>
+          size="large"
+          notFoundContent="无数据"
+        >
+          <a href="/#">
+            <Button type="primary">点击选择或切换</Button>
           </a>
         </Cascader>
         <Text>{textInfo}</Text>
         {deferredEncodedUrl && currentPageConfig?.presets && (
           <Switch
-            checkedChildren='配置开启'
-            unCheckedChildren='配置关闭'
+            checkedChildren="配置开启"
+            unCheckedChildren="配置关闭"
             checked={configSwitch}
             onChange={(e) => setConfigSwitch(e)}
           />
@@ -205,7 +211,7 @@ const Component = observer(() => {
               autoSize
               bordered
               defaultValue={JSON.stringify(
-                JSON.parse(currentPageConfig?.presets || '{}'),
+                JSON.parse(currentPageConfig?.presets || "{}"),
                 null,
                 4
               )}
@@ -213,21 +219,21 @@ const Component = observer(() => {
               onPressEnter={() => {
                 try {
                   setConfigTextArea(
-                    JSON.stringify(JSON.parse(configTextArea || '{}'), null, 4)
-                  )
+                    JSON.stringify(JSON.parse(configTextArea || "{}"), null, 4)
+                  );
                 } catch (error) {
-                  notification.error({ description: error.toString() })
+                  notification.error({ description: error.toString() });
                 }
               }}
             />
             <Button
-              type='primary'
+              type="primary"
               onClick={() => {
                 try {
                   console.log(
-                    'configTextArea',
+                    "configTextArea",
                     configTextArea || currentPageConfig?.presets
-                  )
+                  );
                   if (
                     JSON.parse(configTextArea || currentPageConfig?.presets)
                   ) {
@@ -238,17 +244,18 @@ const Component = observer(() => {
                       configTextArea || currentPageConfig?.presets
                     ).then((x) => {
                       if (x.status) {
-                        setConfigSwitch(false)
-                        setPageCheckDataFunc(appPageName)
+                        setConfigSwitch(false);
+                        setPageCheckDataFunc(appPageName);
                       } else {
-                        notification.error({ description: x.res })
+                        notification.error({ description: x.res });
                       }
-                    })
+                    });
                   }
                 } catch (error) {
-                  notification.error({ description: error.toString() })
+                  notification.error({ description: error.toString() });
                 }
-              }}>
+              }}
+            >
               保存页面配置
             </Button>
           </ParamsWrapper>
@@ -264,84 +271,87 @@ const Component = observer(() => {
               : pageCheckData.map((val, idx) => {
                   return (
                     <div key={idx}>
-                      {val[0]}:{' '}
+                      {val[0]}:{" "}
                       <Checkbox.Group
                         options={val[1]}
                         value={pageCheckQueries[val[0]]}
                         onChange={(e) => {
-                          const temp = { ...pageCheckQueries }
+                          const temp = { ...pageCheckQueries };
                           e.length < 2
                             ? (temp[val[0]] = e)
                             : (temp[val[0]] = e.filter(
                                 (x) => !temp[val[0]].includes(x)
-                              ))
-                          setPageCheckQueries(temp)
+                              ));
+                          setPageCheckQueries(temp);
                         }}
                       />
+                      {val[0] === "apChannel" && "（备注：1、支付宝；2、短信；）"}
                     </div>
-                  )
+                  );
                 })}
             {pageInputQueries.map(({ key, val }, idx) => {
               return (
                 <StyledInputWrapper key={idx}>
                   <StyledInput
-                    placeholder='输入key，最长20位，以字母开头'
+                    placeholder="输入key，最长20位，以字母开头"
                     value={key}
-                    maxLength='20'
-                    size='28'
-                    pattern='^[A-Za-z](\w)*'
+                    maxLength="20"
+                    size="28"
+                    pattern="^[A-Za-z](\w)*"
                     onChange={(e) => {
-                      const temp = [...pageInputQueries]
-                      temp[idx].key = e.target.value.trim()
-                      setPageInputQueries(temp)
+                      const temp = [...pageInputQueries];
+                      temp[idx].key = e.target.value.trim();
+                      setPageInputQueries(temp);
                     }}
                   />
                   <StyledInput
-                    placeholder='输入value，最长50位'
+                    placeholder="输入value，最长50位"
                     value={val}
-                    maxLength='50'
-                    size='28'
-                    pattern='(\w|\/)*'
+                    maxLength="50"
+                    size="28"
+                    pattern="(\w|\/)*"
                     onChange={(e) => {
-                      const temp = [...pageInputQueries]
-                      temp[idx].val = e.target.value.trim()
-                      setPageInputQueries(temp)
+                      const temp = [...pageInputQueries];
+                      temp[idx].val = e.target.value.trim();
+                      setPageInputQueries(temp);
                     }}
                   />
                   <Button
-                    type='primary'
+                    type="primary"
                     onClick={() => {
-                      let temp = [...pageInputQueries]
+                      let temp = [...pageInputQueries];
                       if (pageInputQueries.length !== 1) {
-                        temp.splice(idx, 1)
+                        temp.splice(idx, 1);
                       } else {
-                        temp = [{ key: '', val: '' }]
+                        temp = [{ key: "", val: "" }];
                       }
-                      setPageInputQueries(temp)
-                    }}>
+                      setPageInputQueries(temp);
+                    }}
+                  >
                     -
                   </Button>
                   {idx === pageInputQueries.length - 1 ? (
                     <Button
-                      type='primary'
+                      type="primary"
                       onClick={() => {
-                        const temp = [...pageInputQueries]
-                        temp.push({ key: '', val: '' })
-                        setPageInputQueries(temp)
-                      }}>
+                        const temp = [...pageInputQueries];
+                        temp.push({ key: "", val: "" });
+                        setPageInputQueries(temp);
+                      }}
+                    >
                       +
                     </Button>
                   ) : null}
                 </StyledInputWrapper>
-              )
+              );
             })}
           </ParamsWrapper>
           <ParamsWrapper>
             <div>
               <GlobalOutlined /> <Text keyboard>全局级参数</Text>
               <Switch
-                checkedChildren='已应用'
-                unCheckedChildren='同页面级参数'
+                checkedChildren="已应用"
+                unCheckedChildren="同页面级参数"
                 defaultChecked={false}
                 onChange={(e) => setSameWithPageQuery(e)}
               />
@@ -351,172 +361,180 @@ const Component = observer(() => {
                 return (
                   <StyledInputWrapper key={idx}>
                     <StyledInput
-                      placeholder='输入key，最长20位，以字母开头'
+                      placeholder="输入key，最长20位，以字母开头"
                       value={key}
-                      maxLength='20'
-                      size='28'
-                      pattern='^[A-Za-z](\w)*'
+                      maxLength="20"
+                      size="28"
+                      pattern="^[A-Za-z](\w)*"
                       onChange={(e) => {
-                        const temp = [...globalInputQueries]
-                        temp[idx].key = e.target.value.trim()
-                        setGlobalInputQueries(temp)
+                        const temp = [...globalInputQueries];
+                        temp[idx].key = e.target.value.trim();
+                        setGlobalInputQueries(temp);
                       }}
                     />
                     <StyledInput
-                      placeholder='输入value，最大长度50位'
+                      placeholder="输入value，最大长度50位"
                       value={val}
-                      maxLength='50'
-                      size='28'
-                      pattern='(\w|\/)*'
+                      maxLength="50"
+                      size="28"
+                      pattern="(\w|\/)*"
                       onChange={(e) => {
-                        const temp = [...globalInputQueries]
-                        temp[idx].val = e.target.value.trim()
-                        setGlobalInputQueries(temp)
+                        const temp = [...globalInputQueries];
+                        temp[idx].val = e.target.value.trim();
+                        setGlobalInputQueries(temp);
                       }}
                     />
                     <Button
-                      type='primary'
+                      type="primary"
                       onClick={() => {
-                        let temp = [...globalInputQueries]
+                        let temp = [...globalInputQueries];
                         if (globalInputQueries.length !== 1) {
-                          temp.splice(idx, 1)
+                          temp.splice(idx, 1);
                         } else {
-                          temp = [{ key: '', val: '' }]
+                          temp = [{ key: "", val: "" }];
                         }
-                        setGlobalInputQueries(temp)
-                      }}>
+                        setGlobalInputQueries(temp);
+                      }}
+                    >
                       -
                     </Button>
                     {idx === globalInputQueries.length - 1 ? (
                       <Button
-                        type='primary'
+                        type="primary"
                         onClick={() => {
-                          const temp = [...globalInputQueries]
-                          temp.push({ key: '', val: '' })
-                          setGlobalInputQueries(temp)
-                        }}>
+                          const temp = [...globalInputQueries];
+                          temp.push({ key: "", val: "" });
+                          setGlobalInputQueries(temp);
+                        }}
+                      >
                         +
                       </Button>
                     ) : null}
                   </StyledInputWrapper>
-                )
+                );
               })}
           </ParamsWrapper>
           <StyledUrlWrapper>{deferredEncodedUrl}</StyledUrlWrapper>
           <StyledInputWrapper>
             <EditOutlined />
             <StyledMaxInput
-              type='text'
-              placeholder='请输入链接名称'
+              type="text"
+              placeholder="请输入链接名称"
               value={linkName}
-              pattern='.+'
+              pattern=".+"
               autoFocus={true}
               onChange={(e) => {
-                setLinkName(e.target.value.trim())
+                setLinkName(e.target.value.trim());
               }}
             />
           </StyledInputWrapper>
           {splitEnterId(deferredEncodedUrl).length > 0 ? (
             <>
               <Button
-                type='primary'
+                type="primary"
                 style={{
-                  color: 'white',
-                  backgroundColor: '#cc5de8',
-                  border: 'none',
+                  color: "white",
+                  backgroundColor: "#cc5de8",
+                  border: "none",
                 }}
                 onClick={() => {
                   checkEnterId(deferredEncodedUrl).then(
                     (res) => {
-                      console.log(res)
+                      console.log(res);
                       if (res.length > 0) {
                         res.map((item) =>
                           notification.error({
                             description: `此${item.enterId}已经存在于${item.linkName}由${item.nickname}上传`,
                           })
-                        )
+                        );
                       } else {
                         notification.success({
                           description: `当前Enter ID可用`,
-                        })
+                        });
                       }
                     },
                     (err) => {
                       notification.error({
                         description: JSON.stringify(err),
-                      })
+                      });
                     }
-                  )
-                }}>
+                  );
+                }}
+              >
                 入口ID查重
               </Button>
               <span>
-                (当前为<b>{splitEnterId(deferredEncodedUrl).join(',')}</b>)
+                (当前为<b>{splitEnterId(deferredEncodedUrl).join(",")}</b>)
               </span>
             </>
           ) : null}
           {splitSourceOrigin(deferredEncodedUrl).length > 0 ? (
             <>
               <Button
-                type='primary'
+                type="primary"
                 disabled
                 style={{
-                  color: 'white',
-                  backgroundColor: 'grey',
-                  border: 'none',
-                }}>
+                  color: "white",
+                  backgroundColor: "grey",
+                  border: "none",
+                }}
+              >
                 订单来源查重
               </Button>
               <span>
                 (当前为
-                <b>{splitSourceOrigin(deferredEncodedUrl).join(',')}</b>)
+                <b>{splitSourceOrigin(deferredEncodedUrl).join(",")}</b>)
               </span>
             </>
           ) : null}
           <WrapSpace
             onClick={() => {
-              if (!isUploaded) confirmAndUpload()
-            }}>
+              if (!isUploaded) confirmAndUpload();
+            }}
+          >
             <Button
-              type='primary'
+              type="primary"
               onClick={() => {
                 copyToClipboard(deferredEncodedUrl).then(
                   () =>
                     notification.success({
-                      description: '链接已复制到剪切板',
+                      description: "链接已复制到剪切板",
                     }),
-                  () => notification.error({ description: '链接复制失败' })
-                )
-              }}>
+                  () => notification.error({ description: "链接复制失败" })
+                );
+              }}
+            >
               点击复制链接
             </Button>
             <Popover
               content={<QRCodeCanvas value={deferredEncodedUrl} size={200} />}
-              title='请扫描二维码'
-              trigger='click'
+              title="请扫描二维码"
+              trigger="click"
               open={isShowPopover}
               onOpenChange={() => {
-                setIsShowPopover(!isShowPopover)
-                notification.success({ description: '二维码已生成' })
-              }}>
-              <Button type='primary'>点击生成二维码</Button>
+                setIsShowPopover(!isShowPopover);
+                notification.success({ description: "二维码已生成" });
+              }}
+            >
+              <Button type="primary">点击生成二维码</Button>
             </Popover>
             <Button
-              type='primary'
+              type="primary"
               style={{
-                color: 'white',
-                backgroundColor: '#74b816',
-                border: 'none',
+                color: "white",
+                backgroundColor: "#74b816",
+                border: "none",
               }}
               onClick={() => {
                 copyToClipboard(redirectUrl).then(
                   () =>
                     notification.success({
-                      description: '链接已复制到剪切板',
+                      description: "链接已复制到剪切板",
                     }),
-                  () => notification.error({ description: '链接复制失败' })
-                )
-              }}>
+                  () => notification.error({ description: "链接复制失败" })
+                );
+              }}
+            >
               点击复制跳转链接
             </Button>
           </WrapSpace>
@@ -526,7 +544,7 @@ const Component = observer(() => {
         <div>请选择小程序和页面名称</div>
       )}
     </>
-  )
-})
+  );
+});
 
-export default Component
+export default Component;
