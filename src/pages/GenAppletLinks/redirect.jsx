@@ -146,24 +146,6 @@ const Component = observer(() => {
                   }}>
                   复制全局参数
                 </Button>
-                <Button
-                  type='primary'
-                  style={{
-                    color: 'white',
-                    backgroundColor: '#74b816',
-                    border: 'none',
-                  }}
-                  onClick={() => {
-                    copyToClipboard(i.link).then(
-                      () =>
-                        notification.success({
-                          description: '链接已复制到剪切板',
-                        }),
-                      () => notification.error({ description: '链接复制失败' })
-                    )
-                  }}>
-                  复制完整链接
-                </Button>
               </>
             )}
           </Space>
